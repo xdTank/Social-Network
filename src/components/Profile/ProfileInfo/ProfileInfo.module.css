@@ -1,0 +1,13 @@
+.ava img{
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+}
+.profileBlock{
+    display: grid;
+    grid-template-columns: 2fr 10fr;
+    padding: 20px;
+}
+.descriptionBlock{
+    padding: 50px;
+}
