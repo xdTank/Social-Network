@@ -7,9 +7,11 @@ import DialogsItems from "./DialogsItems/DialogItems"
 
 
 const Dialogs = (props) => {
+
     let state = props.dialogsPage
-    let dialogsElements = props.state.dialogs.map(d => <DialogsItems name={d.name} id={d.id} />)
-    let massagesElements = props.state.massage.map(m => <Masseges masseges={m.masseges} />)
+
+    let dialogsElements = props.state.dialogs.map(d => <DialogsItems name={d.name} key={d.id} id={d.id} />)
+    let massagesElements = props.state.massage.map(m => <Masseges masseges={m.masseges} key={m.id} />)
     let newMessageBody = props.state.newMessageBody
     let newText = React.createRef();
     let onSendMessageClick = () => {

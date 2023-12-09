@@ -8,23 +8,18 @@ import { BrowserRouter } from 'react-router-dom';
 import store from "./redux/reduxStore"
 import { Provider } from 'react-redux';
 
-let _callSubscriber = (state) => {
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(
-        <React.StrictMode>
-            <BrowserRouter>
-                <Provider store={store}>
-                    <App />
-                </Provider>
-            </BrowserRouter>
-        </React.StrictMode>
-    );
-}
-_callSubscriber(store.getState());
-store.subscribe(() => {
-    let state = store.getState()
-    _callSubscriber(state)
-});
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+    <React.StrictMode>
+        <BrowserRouter>
+            <Provider store={store}>
+                <App />
+            </Provider>
+        </BrowserRouter>
+    </React.StrictMode>
+);
+
 
 
 
