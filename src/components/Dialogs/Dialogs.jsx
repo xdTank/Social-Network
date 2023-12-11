@@ -1,7 +1,7 @@
 import React from "react";
 import s from "./Dialogs.module.css"
-import Masseges from "./Messeges/Messeges"
 import DialogsItems from "./DialogsItems/DialogItems"
+import Masseges from "./DialogsItems/Messeges/Messeges";
 
 
 

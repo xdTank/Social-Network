@@ -1,42 +1,56 @@
 import React from "react";
+import photoImg from "../../assets/img/44884218_345707102882519_2446069589734326272_n.jpg"
+import styles from './Users.module.css'
 
 let Users = (props) => {
-    if (props.users.length === 0){
-        props.setUsers(
-            [
+        
+        let pageCount = Math.ceil(props.totalUsersCount / props.pageSize)
+
+        let pages = [ ]
+        for (let i = 1; i <= pageCount; i++){
+            pages.push(i)
+        }
+        return <div>
+            <div>
+                {
+                    pages.map(p => {
+                    return <span className={props.currentPage === p && styles.selectedPage}
+                        onClick={() => {props.onPageChanged(p); }}>{p}</span>
+                    })
+                }
+            </div>
+            {
+
                 
-            ]
-        )
-    }
-    return <div>
-        {
             props.users.map(u => <div key={u.id}>
                 <span>
                     <div>
-                        <img src={u.photoUrl} alt="" />
+                        <img src={u.photos.small != null ? u.photos : photoImg } alt="" />
                     </div>
                     <div>
-                        {u.followed ? <button onClick={() => { props.unfollow(u.id) }}>Unfollow</button> : <button onClick={props.follow(u.id)}>Follow</button>}
-                    </div>
-                </span>
-                <span>
-                    <div>
-                        {u.fullName}
-                    </div>
-                    <div>
-                        {u.status}
+                        {u.followed ? <button onClick={() => {props.unfollow(u.id) }}>Unfollow</button> : <button onClick={props.follow(u.id)}>Follow</button>}
                     </div>
                 </span>
                 <span>
                     <div>
-                        {u.location.country}
+                        {u.name}
                     </div>
                     <div>
-                        {u.location.city}
+                           {u.status}
+                    </div>
+                </span>  
+                <span>
+                    <div>
+                        {/* {u.location.country} */}
+                    </div>
+                    <div>
+                        {/* {u.location.city} */}
                     </div>
                 </span>
             </div>)
         }
     </div>
-}
+    }
+
+
 export default Users

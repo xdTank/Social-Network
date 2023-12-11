@@ -1,6 +1,6 @@
 import React from "react";
 import s from "./Myposts.module.css"
-import icon from "../../../img/44884218_345707102882519_2446069589734326272_n.jpg"
+import icon from "../../../assets/img/44884218_345707102882519_2446069589734326272_n.jpg"
 
 
 const Posts = (props) => {
