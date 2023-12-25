@@ -1,8 +1,18 @@
 .header{
     grid-area: h;
     border-bottom: solid 1px gray;
-    display: grid;
-    align-items: center;
-    padding: 20px;
-  
+    display: flex;
+    align-items: center ;
+}
+.header h1 {
+    margin: 20px;
+}
+.loginBlock{
+    float: right;
+    
+}
+.loginBlock a{
+    color:  black;
+    text-decoration: none;
+    
 }
