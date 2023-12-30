@@ -6,18 +6,20 @@ import DialogsContainer from './components/Dialogs/DialogsContainer';
 import UsersContainer from './components/Users/Users';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
+import Login from './components/Login/login';
 
 
-const App  = (props) => {
+const App = (props) => {
   return (
     <div className='app-wrapper'>
-      <HeaderContainer/>
+      <HeaderContainer store={props.store} />
       <Navbar />
       <div className='app-wrapper-content'>
         <Routes>
           <Route path='/profile/:userId?' Component={() => <ProfileContainer store={props.store} />} />
           <Route path='/dialogs' Component={() => <DialogsContainer store={props.store} />} />
           <Route path='/users' Component={() => <UsersContainer store={props.store} />} />
+          <Route path='/login' Component={() => <Login />} />
         </Routes>
       </div>
     </div>

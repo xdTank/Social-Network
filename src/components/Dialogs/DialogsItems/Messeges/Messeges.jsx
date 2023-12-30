@@ -5,10 +5,10 @@ import s from "../../Dialogs.module.css"
 
 const Masseges = (props) => {
     return (
-            <div className={s.dialog}>
-                <img src={icon} alt="" />
+        <div className={s.dialog}>
+            <img src={icon} alt="" />
             <div className={s.masseges}>{props.masseges}</div>
-                </div>
+        </div>
     )
 }
 

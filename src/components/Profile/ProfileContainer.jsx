@@ -1,31 +1,54 @@
 import React from "react";
 import Profile from "./Profile";
-import axios from "axios";
 import { connect } from "react-redux";
-import setUserProfile from '../../redux/profileReducer'
+import { getUserProfile } from "../../redux/profileReducer";
+import { useParams } from "react-router-dom";
+import { withAuthRedirect } from "../../hoc/withAuthRedirect";
+import { compose } from "redux";
+import { getStatus } from "../../redux/profileReducer";
+import { updateStatus } from "../../redux/profileReducer";
+
 
 class ProfileContainer extends React.Component {
     componentDidMount() {
-        let userId = this.props.match.params.userId
+        let userId = this.props.userId
         if (!userId) {
-            userId = 2
+            userId = 30555
         }
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/` + userId)
-            .then(response => {
-                this.props.setUserProfile(response.data)
-            })
+        this.props.getUserProfile(userId)
+        this.props.getStatus(userId)
     }
     render() {
+
         return (
-            <Profile {...this.props} profile={this.props.profile} />
+            <Profile {...this.props} profile={this.props.profile} status={this.props.status} updateStatus={this.props.updateStatus} />
 
         )
     }
 }
-let mapStateToProps = (state) => ({
-    profile: state.profilePage.profile
+function mapStateToProps(state) {
+    return {
+        profile: state.profilePage.profile,
+        status: state.profilePage.status
+    }
+}
 
-})
 
-// let withUrlDataContainerComponent = Router(ProfileContainer)
-export default connect(mapStateToProps, { setUserProfile })(ProfileContainer)
+
+const withRouter = WrappedComponent => props => {
+    const params = useParams();
+
+    return (
+        <WrappedComponent
+            {...props}
+            {...{ params, }}
+        />
+    );
+};
+
+
+export default compose(
+    connect(mapStateToProps, { getUserProfile, getStatus, updateStatus }),
+    withRouter,
+    withAuthRedirect
+)(ProfileContainer)
