@@ -1,6 +1,9 @@
 import React from "react";
 import s from "./Myposts.module.css"
 import icon from "../../../assets/img/44884218_345707102882519_2446069589734326272_n.jpg"
+import { Field, reduxForm } from "redux-form";
+import { maxLengthCreator, required } from "../../../utils/validators/validators";
+import { TextArea } from "../../../FormsControl/FormsControl";
 
 
 const Posts = (props) => {
@@ -19,14 +22,10 @@ const Posts = (props) => {
 
 
 const Myposts = (props) => {
-    let newPostElement = React.createRef();
-    let onAddPost = () => {
-        props.addPost()
+    let onAddPost = (values) => {
+        props.addPost(values.newPostText)
     }
-    let onPostChange = () => {
-        let text = newPostElement.current.value;
-        props.updateNewPostText(text)
-    }
+
 
     let postsElements = props.posts.map(p => <Posts massege={p.massege} likeCount={p.likeCount} />)
     return (
@@ -35,11 +34,7 @@ const Myposts = (props) => {
                 <h3>My posts</h3>
             </div>
             <div>
-                <textarea
-                    onChange={onPostChange}
-                    value={props.newPostText}
-                    ref={newPostElement} />
-                <button onClick={onAddPost}>Add posts</button>
+                <AddNewPostReduxForm onSubmit={onAddPost} />
             </div>
             <div className={s.posts}>
                 {postsElements}
@@ -47,5 +42,15 @@ const Myposts = (props) => {
         </div>
     )
 }
+const AddNewPostForm = (props) => {
+    return (
+        <form onSubmit={props.handleSubmit}>
+            <Field name="newPostText" component={TextArea} validate={[required, maxLengthCreator(10)]} />
+            <button>Add posts</button>
+        </form>
+    )
+}
+
+const AddNewPostReduxForm = reduxForm({ form: "ProfileAddNewPostForm" })(AddNewPostForm)
 
 export default Myposts

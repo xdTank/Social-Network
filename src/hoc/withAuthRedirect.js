@@ -11,7 +11,7 @@ export const withAuthRedirect = (Component) => {
     class RedirectComponent extends React.Component {
         render() {
             if (!this.props.isAuth) return <Routes>
-                <Route path="redirect" element={<Navigate to="/login" />} />
+                <Route path="*" element={<Navigate to="/login" />} />
             </Routes>
             return <Component {...this.props} />
         }

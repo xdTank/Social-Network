@@ -2,8 +2,9 @@ import React from "react";
 import s from "./Dialogs.module.css"
 import DialogsItems from "./DialogsItems/DialogItems"
 import Masseges from "./DialogsItems/Messeges/Messeges";
-import { Navigate, Route, Routes, } from "react-router-dom";
 import { Field, reduxForm } from "redux-form";
+import { TextArea } from "../../FormsControl/FormsControl";
+import { maxLengthCreator, required } from "../../utils/validators/validators";
 
 
 
@@ -18,10 +19,6 @@ const Dialogs = (props) => {
         props.sendMessageCreator(values.newMessageBody)
     }
 
-    if (!props.isAuth)
-        return <Routes>
-            <Route path="/redirect" element={<Navigate to="/login" />} />
-        </Routes>
 
     return (
         <div className={s.dialogs}>
@@ -43,7 +40,7 @@ const AddMessageForm = (props) => {
         <form onSubmit={props.handleSubmit}>
 
             <div>
-                <Field component={"textarea"} name="newMessageBody" placeholder="Enter your message" />
+                <Field component={TextArea} validate={[required, maxLengthCreator(100)]} name="newMessageBody" placeholder="Enter your message" />
             </div>
             <div>
                 <button>Send</button>
