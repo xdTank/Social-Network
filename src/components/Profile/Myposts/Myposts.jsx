@@ -21,13 +21,13 @@ const Posts = (props) => {
 }
 
 
-const Myposts = (props) => {
+const Myposts = React.memo(props => {
     let onAddPost = (values) => {
         props.addPost(values.newPostText)
     }
 
 
-    let postsElements = props.posts.map(p => <Posts massege={p.massege} likeCount={p.likeCount} />)
+    let postsElements = [...props.posts].reverse().map(p => <Posts massege={p.massege} likeCount={p.likeCount} />)
     return (
         <div className={s.postsBlock}>
             <div>
@@ -41,7 +41,7 @@ const Myposts = (props) => {
             </div>
         </div>
     )
-}
+})
 const AddNewPostForm = (props) => {
     return (
         <form onSubmit={props.handleSubmit}>

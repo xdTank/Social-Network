@@ -13,7 +13,7 @@ const Dialogs = (props) => {
     let state = props.dialogsPage
 
     let dialogsElements = state.dialogs.map(d => <DialogsItems name={d.name} key={d.id} id={d.id} />)
-    let massagesElements = state.messages.map(m => <Masseges messages={m.messages} key={m.id} />)
+    let massagesElements = state.messages.map(m => <Masseges messages={m.messages} key={m.id} id={m.id} />)
 
     let addNewMessage = (values) => {
         props.sendMessageCreator(values.newMessageBody)
