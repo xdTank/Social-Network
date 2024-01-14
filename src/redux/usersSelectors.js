@@ -8,7 +8,7 @@ export const getUsers = createSelector(getUsersSelector, (users) => {
 })
 
 export const getPageSize = (state) => {
-    return state.usersPage.users
+    return state.usersPage.pageSize
 }
 export const getTotalUsersCount = (state) => {
     return state.usersPage.totalUsersCount

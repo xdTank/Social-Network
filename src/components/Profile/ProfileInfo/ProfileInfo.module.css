@@ -1,13 +1,16 @@
-.ava img{
-  width: 100px;
-  height: 100px;
-  /* border-radius: 50px; */
+.ava img {
+  width: 150px;
+  height: 150px;
 }
-.profileBlock{
-    display: grid;
-    grid-template-columns: 2fr 10fr;
-    padding: 20px;
+
+.profileBlock {
+  padding: 20px;
 }
-.descriptionBlock{
+
+/* .descriptionBlock{
     padding: 50px;
+} */
+
+.contacts {
+  padding-left: 10px;
 }

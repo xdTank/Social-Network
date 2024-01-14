@@ -19,9 +19,19 @@ const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileCo
 
 
 class App extends Component {
+  catchAllUnhandleErrors = (promiseRejectionEvent) => {
+    alert("Some error occured")
+    console.error(promiseRejectionEvent)
+  }
   componentDidMount() {
     this.props.initializeApp()
+    window.addEventListener("unhandlereject", this.catchAllUnhandleErrors)
   }
+
+  componentWillUnmount() {
+    window.removeEventListener("unhandlereject", this.catchAllUnhandleErrors)
+  }
+
   render() {
     if (!this.props.initialiazed) {
       return <Preloader />
@@ -32,11 +42,13 @@ class App extends Component {
         <Navbar />
         <div className='app-wrapper-content'>
           <Routes>
+            <Route path='/project' Component={() => <Login />} />
             <Route path='/profile/:userId?' Component={withSuspense(ProfileContainer)} />
             <Route path='/dialogs' Component={withSuspense(DialogsContainer)} />
             <Route path='/users' Component={() => <UsersContainer />} />
             <Route path='/login' Component={() => <Login />} />
             <Route path='/' Component={() => <Login />} />
+            <Route path='*' Component={() => <div>404 not found</div>} />
           </Routes>
         </div>
       </div>
@@ -53,7 +65,7 @@ let AppContainer = compose(
   connect(mapStateToProps, { initializeApp }))(App);
 
 const MainApp = (props) => {
-  return <BrowserRouter>
+  return <BrowserRouter >
     <Provider store={store}>
       <AppContainer />
     </Provider>

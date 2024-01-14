@@ -1,10 +1,10 @@
-import React from "react"
 import { getAuthUserData } from "./authReducer"
 
 const INITIALIAZED_SUCCESS = 'INITIALIAZED_SUCCESS'
 
 let initialState = {
     initialiazed: false,
+    globalError: null
 
 }
 const appReducer = (state = initialState, action) => {

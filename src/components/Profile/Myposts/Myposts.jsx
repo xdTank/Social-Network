@@ -3,7 +3,7 @@ import s from "./Myposts.module.css"
 import icon from "../../../assets/img/44884218_345707102882519_2446069589734326272_n.jpg"
 import { Field, reduxForm } from "redux-form";
 import { maxLengthCreator, required } from "../../../utils/validators/validators";
-import { TextArea } from "../../../FormsControl/FormsControl";
+import { Textarea } from "../../../FormsControl/FormsControl";
 
 
 const Posts = (props) => {
@@ -45,7 +45,7 @@ const Myposts = React.memo(props => {
 const AddNewPostForm = (props) => {
     return (
         <form onSubmit={props.handleSubmit}>
-            <Field name="newPostText" component={TextArea} validate={[required, maxLengthCreator(10)]} />
+            <Field name="newPostText" component={Textarea} validate={[required, maxLengthCreator(10)]} />
             <button>Add posts</button>
         </form>
     )
