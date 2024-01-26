@@ -1,6 +1,5 @@
 .app-wrapper {
   display: grid;
-  width: 1200px;
   margin: 0 auto;
   grid-template-areas:
     "h h"
@@ -13,4 +12,18 @@
 .app-wrapper-content {
   grid-area: c;
   background-color: #fff;
+}
+
+button {
+  width: 100px;
+  height: 25px;
+  background-color: #fff;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  outline: none;
+  border-radius: 40px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  font-weight: 600;
 }
