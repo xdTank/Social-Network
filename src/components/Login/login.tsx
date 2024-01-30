@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { InjectedFormProps, reduxForm } from "redux-form";
-import { Input, createField } from "../../FormsControl/FormsControl";
+import { GetStringKeys, Input, createField } from "../../FormsControl/FormsControl";
 import { required } from "../../utils/validators/validators";
 import { connect } from "react-redux";
 import { login } from "../../redux/authReducer";
@@ -19,7 +19,7 @@ type LoginFormType = {
     captcha: string
 }
 
-type LoginFormValuesKeysType = keyof LoginFormType
+type LoginFormValuesKeysType = GetStringKeys<LoginFormType>
 
 const LoginForm: FC<InjectedFormProps<LoginFormType, LoginFormOwnProps> & LoginFormOwnProps> = ({ handleSubmit, error, captchaUrl }) => {
     return (
