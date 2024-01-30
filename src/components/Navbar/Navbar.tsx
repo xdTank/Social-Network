@@ -1,31 +1,34 @@
-import React from "react";
+import React, { FC } from "react";
 import s from './Navbar.module.css'
 import { NavLink, } from "react-router-dom";
-const Navbar = (props) => {
+type PropsType = {
+
+}
+const Navbar: FC<PropsType> = (props) => {
     return (
         <nav className={s.nav}>
             <div className={s.item}>
-                <i class='bx bxs-home'></i>
-                <NavLink to="/profile" activeClassName={s.active}>Profile</NavLink>
+                <i className='bx bxs-home'></i>
+                <NavLink to="/profile" >Profile</NavLink>
             </div>
             <div className={s.item}>
-            <i class='bx bxs-chat'></i>
+                <i className='bx bxs-chat'></i>
                 <NavLink to="/dialogs">Messages</NavLink>
             </div>
             <div className={s.item}>
-                <i class='bx bxs-user'></i>
+                <i className='bx bxs-user'></i>
                 <NavLink to="/users">Users</NavLink>
             </div>
             <div className={s.item}>
-                <i class='bx bxs-news' ></i>
+                <i className='bx bxs-news' ></i>
                 <NavLink to="/dialogs">News</NavLink>
             </div>
             <div className={s.item}>
-                <i class='bx bxs-music' ></i>
+                <i className='bx bxs-music' ></i>
                 <NavLink to="/dialogs">Music</NavLink>
             </div>
             <div className={s.item}>
-                <i class='bx bxs-cog' ></i>
+                <i className='bx bxs-cog' ></i>
                 <NavLink to="/dialogs">Settings</NavLink>
             </div>
             <div>
