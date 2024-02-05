@@ -1,4 +1,4 @@
-import React, { ComponentType } from "react";
+import React, { ComponentType, FC } from "react";
 import Profile from "./Profile";
 import { connect } from "react-redux";
 import { getUserProfile, saveProfile, savePhoto, updateStatus, getStatus } from "../../redux/profileReducer";
@@ -20,41 +20,32 @@ type ParamsType = {
     userId: string
 }
 type PropsType = MapPropsType & DispatchPropsType & ParamsType
-class ProfileContainer extends React.Component<PropsType> {
-    refreshProfile() {
-        let userId: number | null = +this.props.match.params.userId
+
+
+const ProfileContainer: FC<PropsType> = (props) => {
+    let { userId } = useParams();
+    let userId: number | null = +props.match.params.userId
+    if (!userId) {
+        userId = props.authorizedUserId
         if (!userId) {
-            userId = this.props.authorizedUserId
-            if (!userId) {
-                <Routes>
-                    <Route path="*" element={<Navigate to="/login" />} />
-                </Routes>
-            }
+            <Routes>
+                <Route path="*" element={<Navigate to="/login" />} />
+            </Routes>
         }
         if (!userId) {
             console.error("ID should exist in URI params or in state ('authorizedUserId')")
         } else {
-            this.props.getUserProfile(userId)
-            this.props.getStatus(userId)
+            props.getUserProfile(userId)
+            props.getStatus(userId)
         }
     }
-    componentDidMount() {
-        this.refreshProfile()
-    }
+    // if (props.match.params.userId !== prevProps.match.params.userId) {
+    // }
+    return (
+        <Profile  {...props} savePhoto={props.savePhoto} isOwner={!props.params.userId} profile={props.profile} status={props.status} updateStatus={props.updateStatus} />
 
-    componentDidUpdate(prevProps: PropsType, prevState: PropsType) {
-        if (this.props.match.params.userId !== prevProps.match.params.userId) {
-            this.refreshProfile()
-        }
-    }
+    )
 
-    render() {
-
-        return (
-            <Profile  {...this.props} savePhoto={this.props.savePhoto} isOwner={!this.props.params.userId} profile={this.props.profile} status={this.props.status} updateStatus={this.props.updateStatus} />
-
-        )
-    }
 }
 function mapStateToProps(state: AppStateType) {
     return {
@@ -67,17 +58,9 @@ function mapStateToProps(state: AppStateType) {
 
 
 
-const withRouter = (WrappedComponent: React.JSX.IntrinsicAttributes) => (props: React.JSX.IntrinsicAttributes) => {
-    const params = useParams();
-    return (
-        <WrappedComponent {...props}
-            {...{ params, }} />
-    );
-};
 
 
 export default compose<ComponentType>(
     connect(mapStateToProps, { getUserProfile, getStatus, updateStatus, savePhoto, saveProfile }),
-    withRouter,
     withAuthRedirect
 )(ProfileContainer)
