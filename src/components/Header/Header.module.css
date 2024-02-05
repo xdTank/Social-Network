@@ -1,6 +1,5 @@
 .header{
     grid-area: h;
-    border-bottom: solid 1px gray;
     display: flex;
     align-items: center ;
     justify-content: space-between;
@@ -8,6 +7,7 @@
 }
 .header h1 {
     margin: 20px;
+    color: #D0DEE1;
 }
 .loginBlock{
     float: right;

@@ -3,6 +3,9 @@
     grid-template-columns: 2fr 10fr;
 }
 
+.dialog img{
+    border-radius: 50%;
+}
 .dialogsItems {
     padding: 10px;
 }
@@ -33,7 +36,7 @@
 
 .names a {
     padding: 20px;
-    color: black;
+    color: #fff;
     text-decoration: none;
 }
 

@@ -4,11 +4,12 @@ import s from "../../Dialogs.module.css"
 
 type PropsType = {
     message: string
+    id: number
 }
 const Masseges: FC<PropsType> = (props) => {
     return (
         <div className={s.dialog}>
-            <img src={icon} alt="" />
+            <img src={icon}  alt="" />
             <div className={s.masseges}>{props.message}</div>
         </div>
     )

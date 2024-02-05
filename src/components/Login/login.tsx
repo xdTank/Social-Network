@@ -39,7 +39,7 @@ const LoginForm: FC<InjectedFormProps<LoginFormType, LoginFormOwnProps> & LoginF
                     <button>Login</button>
                 </div>
                 <div className={s.registerLink}>
-                    <p>Don't have an account? <a href="#">Register</a></p>
+                    <p>Don't have an account? <a href="https://social-network.samuraijs.com/signUp">Register</a></p>
                 </div>
             </form>
         </div>

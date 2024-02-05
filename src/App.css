@@ -11,19 +11,21 @@
 
 .app-wrapper-content {
   grid-area: c;
-  background-color: #fff;
+    background-color: #313338;
+    color:#fff ;
+    border-radius: 10px 0 0 10px  ;
 }
 
 button {
   width: 100px;
   height: 25px;
-  background-color: #fff;
+  background-color: #1E1F22;
   border: 2px solid rgba(0, 0, 0, 0.2);
   outline: none;
-  border-radius: 40px;
+  border-radius: 15px;
   box-shadow: 0 0 10px rgba(0, 0, 0, .1);
   cursor: pointer;
   font-size: 14px;
-  color: #333;
+  color: #DBDEE1;
   font-weight: 600;
 }

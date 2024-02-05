@@ -14,7 +14,10 @@ import { withSuspense } from './hoc/withSuspense';
 import UsersContainer from './components/Users/UsersContainer';
 
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'))
-const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'))
+const ProfileContainer = React.lazy(
+  () => import('./components/Profile/ProfileContainer').then(module => ({ default: module.default as React.ComponentType }))
+);
+
 
 type PropsType = ReturnType<typeof mapStateToProps>
 type DispatchPropsType = {
@@ -68,12 +71,18 @@ let AppContainer = compose<ComponentType>(
   connect(mapStateToProps, { initializeApp }))(App);
 
 const MainApp: FC = () => {
-  return <BrowserRouter>
-    <Provider store={store}>
-      <AppContainer />
-    </Provider>
-  </BrowserRouter>
-}
+  return (
+    <BrowserRouter>
+      <Provider store={store}>
+        <React.Suspense fallback={<Preloader />}>
+          <AppContainer />
+        </React.Suspense>
+      </Provider>
+    </BrowserRouter>
+  );
+};
 
 export default MainApp
+
+
 

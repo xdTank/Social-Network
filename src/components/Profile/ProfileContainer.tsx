@@ -1,66 +1,77 @@
-import React, { ComponentType, FC } from "react";
+import React, { FC, useEffect } from "react";
 import Profile from "./Profile";
 import { connect } from "react-redux";
 import { getUserProfile, saveProfile, savePhoto, updateStatus, getStatus } from "../../redux/profileReducer";
-import { Navigate, Route, Routes, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 import { compose } from "redux";
 import { AppStateType } from "../../redux/reduxStore";
 import { ProfileType } from "../../types/types";
 
-type MapPropsType = ReturnType<typeof mapStateToProps>
+
+type MapPropsType = ReturnType<typeof mapStateToProps>;
 type DispatchPropsType = {
-    getUserProfile: (userId: number) => void
-    getStatus: (userId: number) => void
-    updateStatus: (status: string) => void
-    savePhoto: (file: File) => void
-    saveProfile: (profile: ProfileType) => Promise<any>
-}
+    getUserProfile: (userId: number) => void;
+    getStatus: (userId: number) => void;
+    updateStatus: (status: string) => void;
+    savePhoto: (file: File) => void;
+    saveProfile: (profile: ProfileType) => Promise<any>;
+};
 type ParamsType = {
-    userId: string
+    userId: string;
 }
-type PropsType = MapPropsType & DispatchPropsType & ParamsType
+type PropsType = MapPropsType & DispatchPropsType & ParamsType;
 
+const ProfileContainer: React.FC<PropsType> = (props) => {
+    const navigate = useNavigate();
+    const { userId } = useParams<ParamsType>();
+    useEffect(() => {
+        const refreshProfile = () => {
+            let parsedUserId = userId;
+            if (!parsedUserId) {
+                parsedUserId = props.authorizedUserId?.toString();
+                if (!parsedUserId) {
+                    navigate('/login');
+                    return;
+                }
+            }
 
-const ProfileContainer: FC<PropsType> = (props) => {
-    let { userId } = useParams();
-    let userId: number | null = +props.match.params.userId
-    if (!userId) {
-        userId = props.authorizedUserId
-        if (!userId) {
-            <Routes>
-                <Route path="*" element={<Navigate to="/login" />} />
-            </Routes>
+            if (!parsedUserId) {
+                console.error("ID должен существовать в параметрах URI или в состоянии ('authorizedUserId')");
+                return;
+            }
+
+            props.getUserProfile(+parsedUserId);
+            props.getStatus(+parsedUserId);
+        };
+
+        if (userId !== props.authorizedUserId) {
+            refreshProfile();
         }
-        if (!userId) {
-            console.error("ID should exist in URI params or in state ('authorizedUserId')")
-        } else {
-            props.getUserProfile(userId)
-            props.getStatus(userId)
-        }
-    }
-    // if (props.match.params.userId !== prevProps.match.params.userId) {
-    // }
+    }, [userId, props.authorizedUserId, props.getUserProfile, props.getStatus, navigate]);
+
     return (
-        <Profile  {...props} savePhoto={props.savePhoto} isOwner={!props.params.userId} profile={props.profile} status={props.status} updateStatus={props.updateStatus} />
+        <Profile
+            {...props}
+            savePhoto={props.savePhoto}
+            isOwner={!userId}
+            profile={props.profile}
+            status={props.status}
+            updateStatus={props.updateStatus}
+        />
+    );
+};
 
-    )
-
-}
 function mapStateToProps(state: AppStateType) {
     return {
         profile: state.profilePage.profile,
         status: state.profilePage.status,
-        authorizedUserId: state.auth.id,
+        authorizedUserId: state.auth.id?.toString(), // Convert to string if necessary
         isAuth: state.auth.isAuth,
-    }
+    };
 }
 
-
-
-
-
-export default compose<ComponentType>(
+export default compose(
     connect(mapStateToProps, { getUserProfile, getStatus, updateStatus, savePhoto, saveProfile }),
     withAuthRedirect
-)(ProfileContainer)
+)(ProfileContainer);
