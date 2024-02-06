@@ -15,7 +15,7 @@ let User: FC<PropsType> = ({ user, followingInProgress, unfollow, follow }) => {
     return (
         <div>
             <span>
-                <div>
+                <div className={styles.userBlock}>
                     <NavLink to={'/profile/' + user.id}>
                         <img src={user.photos.small != null ? user.photos.small : userPhoto} alt='!'
                             className={styles.userPhoto} />

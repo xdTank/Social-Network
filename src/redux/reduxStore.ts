@@ -31,7 +31,7 @@ export type BaseThunkType<A extends Action, R = Promise<void>> = ThunkAction<R, 
 
 const store = configureStore({
     reducer: rootReducer,
-    middleware: getDefaultMiddleware => getDefaultMiddleware().prepend()
+    middleware: getDefaultMiddleware => getDefaultMiddleware()
 })
 
 

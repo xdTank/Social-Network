@@ -1,9 +1,10 @@
 import React from 'react'
-import preloader from '../../../assets/img/Circles-menu-3.gif'
+import preloader from '../../../assets/img/Rolling-1s-200px.svg'
+import s from './Preloader.module.css'
 
 let Preloader = () => {
-    return <div>
-            <img src={preloader} alt="!" />
+    return <div className={s.preloader}>
+        <img src={preloader} alt="!" />
     </div>
 }
 

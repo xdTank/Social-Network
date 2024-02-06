@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
 import HeaderContainer from './components/Header/HeaderContainer';
-import Login from './components/Login/login';
+import { LoginPage } from './components/Login/login';
 import { Component } from 'react';
 import { Provider, connect } from 'react-redux';
 import { initializeApp } from './redux/appReducer';
@@ -11,7 +11,7 @@ import Preloader from './components/common/Preloader/Preloader';
 import { compose } from 'redux';
 import store, { AppStateType } from './redux/reduxStore';
 import { withSuspense } from './hoc/withSuspense';
-import UsersContainer from './components/Users/UsersContainer';
+import { UsersPage } from './components/Users/UsersContainer';
 
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'))
 const ProfileContainer = React.lazy(
@@ -40,25 +40,28 @@ class App extends Component<PropsType & DispatchPropsType> {
 
   render() {
     if (!this.props.initialiazed) {
-      return <Preloader />
+      return (
+        <Preloader />)
     }
     return (
-      <div className='app-wrapper' >
-        <HeaderContainer />
-        < Navbar />
-        <div className='app-wrapper-content' >
-          <Routes>
-            <Route path='/project' Component={() => <Login />} />
-            <Route path='/profile/:userId?' Component={withSuspense(ProfileContainer)} />
-            <Route path='/dialogs' Component={withSuspense(DialogsContainer)} />
-            <Route path='/users' Component={() => <UsersContainer />} />
-            <Route path='/login' Component={() => <Login />} />
-            <Route path='/' Component={() => <Login />} />
-            <Route path='*' Component={() => <div>404 not found </div>} />
-          </Routes>
+      <div>
+        <Routes>
+          <Route path='/login' Component={() => <LoginPage />} />
+          <Route path='/' Component={() => <LoginPage />} />
+        </Routes>
+        <div className='app-wrapper'>
+          <HeaderContainer />
+          < Navbar />
+          <div className='app-wrapper-content' >
+            <Routes>
+              <Route path='/profile/:userId?' Component={withSuspense(ProfileContainer)} />
+              <Route path='/dialogs' Component={withSuspense(DialogsContainer)} />
+              <Route path='/users' Component={() => <UsersPage />} />
+              <Route path='*' Component={() => <div>404 not found </div>} />
+            </Routes>
+          </div>
         </div>
       </div>
-
     )
   }
 }
@@ -75,6 +78,7 @@ const MainApp: FC = () => {
     <BrowserRouter>
       <Provider store={store}>
         <React.Suspense fallback={<Preloader />}>
+          
           <AppContainer />
         </React.Suspense>
       </Provider>

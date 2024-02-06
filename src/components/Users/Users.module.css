@@ -16,6 +16,9 @@
     border: 1px solid rgba(0, 0, 0, 0.2);
 
 }
+.userBlock img {
+    border-radius: 50%;
+}
 
 .search i {
     position: absolute;

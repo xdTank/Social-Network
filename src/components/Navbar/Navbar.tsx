@@ -21,15 +21,15 @@ const Navbar: FC<PropsType> = (props) => {
             </div>
             <div className={s.item}>
                 <i className='bx bxs-news' ></i>
-                <NavLink to="/dialogs">News</NavLink>
+                <NavLink to="/news">News</NavLink>
             </div>
             <div className={s.item}>
                 <i className='bx bxs-music' ></i>
-                <NavLink to="/dialogs">Music</NavLink>
+                <NavLink to="/music">Music</NavLink>
             </div>
             <div className={s.item}>
                 <i className='bx bxs-cog' ></i>
-                <NavLink to="/dialogs">Settings</NavLink>
+                <NavLink to="/settings">Settings</NavLink>
             </div>
             <div>
             </div>
