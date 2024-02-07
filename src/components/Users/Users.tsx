@@ -6,10 +6,15 @@ import { FilterType, requestUsers } from "../../redux/usersReducer";
 import { useSelector } from "react-redux";
 import { getCurrentPage, getFollowingInProgress, getPageSize, getTotalUsersCount, getUsers, getUsersFilter } from "../../redux/usersSelectors";
 import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 type PropsType = {
 }
+type QueryParamsType = {
+    entries(): Iterable<readonly [PropertyKey, any]>; term?: string; page?: string; friend?: string
+}
+
 
 export const Users: FC<PropsType> = (props) => {
 
@@ -21,10 +26,49 @@ export const Users: FC<PropsType> = (props) => {
     const followingInProgress = useSelector(getFollowingInProgress)
 
     const dispatch = useDispatch<any>()
+    const { search } = useLocation();
+    const navigate = useNavigate();
+
+    
+    // useQueryParams
+    useEffect(() => {
+        const searchParams = new URLSearchParams(search.substring(1)) as QueryParamsType
+        const parsed = Object.fromEntries(searchParams.entries())
+
+        let actualPage = currentPage
+        let actualFilter = filter
+
+        if (!!parsed.page) actualPage = Number(parsed.page)
+
+
+        if (!!parsed.term) actualFilter = { ...actualFilter, term: parsed.term as string }
+
+        switch (parsed.friend) {
+            case "null":
+                actualFilter = { ...actualFilter, friend: null }
+                break;
+            case "true":
+                actualFilter = { ...actualFilter, friend: true }
+                break;
+            case "false":
+                actualFilter = { ...actualFilter, friend: false }
+                break;
+        }
+        dispatch(requestUsers(currentPage, pageSize, filter))
+    }, [search, dispatch, currentPage, pageSize, filter])
+
 
     useEffect(() => {
-        dispatch(requestUsers(currentPage, pageSize, filter))
-    }, [])
+        const searchParams = new URLSearchParams();
+
+        if (!!filter.term) searchParams.append('term', filter.term)
+        if (filter.friend !== null) searchParams.append('friend', String(filter.friend))
+        if (currentPage !== 1) searchParams.append('page', String(currentPage))
+
+        navigate({
+            search: searchParams.toString()
+        })
+    }, [filter, currentPage, navigate]);
 
     const onPageChanged = (pageNumber: number) => {
         dispatch(requestUsers(pageNumber, pageSize, filter))
