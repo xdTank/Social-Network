@@ -1,35 +1,27 @@
-import React, { FC, useEffect } from "react";
+import React, { useEffect } from "react";
 import Profile from "./Profile";
-import { connect } from "react-redux";
-import { getUserProfile, saveProfile, savePhoto, updateStatus, getStatus } from "../../redux/profileReducer";
+import { getUserProfile, getStatus } from "../../redux/profileReducer";
 import { useNavigate, useParams } from "react-router-dom";
-import { withAuthRedirect } from "../../hoc/withAuthRedirect";
-import { compose } from "redux";
-import { AppStateType } from "../../redux/reduxStore";
-import { ProfileType } from "../../types/types";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { selectAuthorizedUserId } from "../../redux/authSelectors";
 
 
-type MapPropsType = ReturnType<typeof mapStateToProps>;
-type DispatchPropsType = {
-    getUserProfile: (userId: number) => void;
-    getStatus: (userId: number) => void;
-    updateStatus: (status: string) => void;
-    savePhoto: (file: File) => void;
-    saveProfile: (profile: ProfileType) => Promise<any>;
-};
+
 type ParamsType = {
     userId: string;
 }
-type PropsType = MapPropsType & DispatchPropsType & ParamsType;
 
-const ProfileContainer: React.FC<PropsType> = (props) => {
+export const ProfileContainer: React.FC = () => {
+    const authorizedUserId = useSelector(selectAuthorizedUserId)
     const navigate = useNavigate();
+    const dispatch = useDispatch<any>()
     const { userId } = useParams<ParamsType>();
     useEffect(() => {
         const refreshProfile = () => {
             let parsedUserId = userId;
             if (!parsedUserId) {
-                parsedUserId = props.authorizedUserId?.toString();
+                parsedUserId = authorizedUserId?.toString();
                 if (!parsedUserId) {
                     navigate('/login');
                     return;
@@ -41,37 +33,19 @@ const ProfileContainer: React.FC<PropsType> = (props) => {
                 return;
             }
 
-            props.getUserProfile(+parsedUserId);
-            props.getStatus(+parsedUserId);
+            dispatch(getUserProfile(+parsedUserId))
+            dispatch(getStatus(+parsedUserId))
         };
 
-        if (userId !== props.authorizedUserId) {
+        if (userId !== authorizedUserId) {
             refreshProfile();
         }
-    }, [userId, props.authorizedUserId, props.getUserProfile, props.getStatus, navigate]);
+    }, [userId, authorizedUserId, getUserProfile, getStatus, navigate]);
 
     return (
         <Profile
-            {...props}
-            savePhoto={props.savePhoto}
             isOwner={!userId}
-            profile={props.profile}
-            status={props.status}
-            updateStatus={props.updateStatus}
         />
-    );
-};
-
-function mapStateToProps(state: AppStateType) {
-    return {
-        profile: state.profilePage.profile,
-        status: state.profilePage.status,
-        authorizedUserId: state.auth.id?.toString(), // Convert to string if necessary
-        isAuth: state.auth.isAuth,
-    };
+    )
 }
 
-export default compose(
-    connect(mapStateToProps, { getUserProfile, getStatus, updateStatus, savePhoto, saveProfile }),
-    withAuthRedirect
-)(ProfileContainer);

@@ -21,7 +21,7 @@
     border: 2px solid rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(20px);
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);
-    color: #fff;
+    color: #333;
     border-radius: 10px;
     padding: 30px 40px;
 }
@@ -48,12 +48,12 @@
     border: 2px solid rgba(0, 0, 0, 0.2);
     border-radius: 40px;
     font-size: 16px;
-    color: #fff;
+    color: #333;
     padding: 20px 45px 20px 20px;
 }
 
 .inputBox input::placeholder {
-    color: #fff;
+    color: #333;
 }
 
 .inputBox i {
@@ -81,7 +81,7 @@
 }
 
 .rememberForgot a {
-    color: #fff;
+    color: #333;
     text-decoration: none;
 }
 
@@ -110,7 +110,7 @@
 }
 
 .registerLink p a {
-    color: #fff;
+    color: #333;
     text-decoration: none;
     font-weight: 600;
 }

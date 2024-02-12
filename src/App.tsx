@@ -1,85 +1,120 @@
-import React, { ComponentType, FC } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import React, { ComponentType, FC, lazy, useEffect, useState } from 'react';
+import { BrowserRouter, Link, Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
-import Navbar from './components/Navbar/Navbar';
-import HeaderContainer from './components/Header/HeaderContainer';
+import 'antd'
 import { LoginPage } from './components/Login/login';
-import { Component } from 'react';
-import { Provider, connect } from 'react-redux';
+import { Provider } from 'react-redux';
 import { initializeApp } from './redux/appReducer';
 import Preloader from './components/common/Preloader/Preloader';
-import { compose } from 'redux';
 import store, { AppStateType } from './redux/reduxStore';
 import { withSuspense } from './hoc/withSuspense';
 import { UsersPage } from './components/Users/UsersContainer';
+import {
+  UserOutlined,
+  HomeOutlined,
+  MessageOutlined
+} from '@ant-design/icons';
+import { Layout, Menu, theme } from 'antd';
+import { Header } from './components/Header/Header'
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+
+
+const { Sider, Content } = Layout;
 
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'))
-const ProfileContainer = React.lazy(
-  () => import('./components/Profile/ProfileContainer').then(module => ({ default: module.default as React.ComponentType }))
-);
+
+const ChatPage = lazy(() =>
+  import('./pages/chat/chat')
+    .then(({ ChatPage }) => ({ default: ChatPage })),
+)
+const ProfileContainer = lazy(() =>
+  import('./components/Profile/ProfileContainer')
+    .then(({ ProfileContainer }) => ({ default: ProfileContainer })),
+)
 
 
-type PropsType = ReturnType<typeof mapStateToProps>
-type DispatchPropsType = {
-  initializeApp: () => void
-}
+const App: React.FC = () => {
+  const initialiazed = useSelector((state: AppStateType) => state.app.initialiazed)
+  const dispatch = useDispatch<any>()
+  const [collapsed, setCollapsed] = useState(false);
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken()
 
-class App extends Component<PropsType & DispatchPropsType> {
-  catchAllUnhandleErrors = (promiseRejectionEvent: any) => {
-    alert("Some error occured")
-    console.error(promiseRejectionEvent)
-  }
-  componentDidMount() {
-    this.props.initializeApp()
-    window.addEventListener("unhandlereject", this.catchAllUnhandleErrors)
-  }
+  useEffect(() => {
+    dispatch(initializeApp())
+  }, [initializeApp])
 
-  componentWillUnmount() {
-    window.removeEventListener("unhandlereject", this.catchAllUnhandleErrors)
-  }
-
-  render() {
-    if (!this.props.initialiazed) {
-      return (
-        <Preloader />)
-    }
+  if (!initialiazed) {
     return (
-      <div>
-        <Routes>
-          <Route path='/login' Component={() => <LoginPage />} />
-          <Route path='/' Component={() => <LoginPage />} />
-        </Routes>
-        <div className='app-wrapper'>
-          <HeaderContainer />
-          < Navbar />
-          <div className='app-wrapper-content' >
-            <Routes>
-              <Route path='/profile/:userId?' Component={withSuspense(ProfileContainer)} />
-              <Route path='/dialogs' Component={withSuspense(DialogsContainer)} />
-              <Route path='/users' Component={() => <UsersPage />} />
-              <Route path='*' Component={() => <div>404 not found </div>} />
-            </Routes>
-          </div>
-        </div>
-      </div>
-    )
-  }
-}
+      <Preloader />)
+  } return (
+    < Layout >
+      <Sider trigger={null} collapsible collapsed={collapsed}>
+        <div className="demo-logo-vertical" />
+        <Menu className=''
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={['1']}
+          items={[
+            {
+              key: '1',
+              icon: <HomeOutlined />,
+              label: <Link to="/profile" >Profile</Link>,
+            },
+            {
+              key: '2',
+              icon: <MessageOutlined />,
+              label: <Link to="/dialogs">Messages</Link>,
+            },
+            {
+              key: '3',
+              icon: <UserOutlined />,
+              label: <Link to="/users">Users</Link>,
+            },
+            {
+              key: '4',
+              icon: <UserOutlined />,
+              label: <Link to="/chat">Chat</Link>,
+            },
+          ]}
+        />
+      </Sider>
+      <Layout>
+        <Header />
+        <Content
+          style={{
+            margin: '24px 16px',
+            padding: 24,
+            minHeight: 280,
+            background: colorBgContainer,
+            borderRadius: borderRadiusLG,
+          }}
+        >
+          <Routes>
+            <Route path='/login' Component={() => <LoginPage />} />
+            <Route path='/' Component={() => <LoginPage />} />
+            <Route path='/project' Component={() => <LoginPage />} />
+            <Route path='/profile/:userId?' Component={withSuspense(ProfileContainer)} />
+            <Route path='/dialogs' Component={withSuspense(DialogsContainer)} />
+            <Route path='/chat' Component={withSuspense(ChatPage)} />
+            <Route path='/users' Component={() => <UsersPage />} />
+            <Route path='*' Component={() => <div><h1>404 not found</h1></div>} />
+          </Routes>
+        </Content>
+      </Layout>
+    </Layout >
+  );
+};
 
-const mapStateToProps = (state: AppStateType) => ({
-  initialiazed: state.app.initialiazed
-})
-
-let AppContainer = compose<ComponentType>(
-  connect(mapStateToProps, { initializeApp }))(App);
 
 const MainApp: FC = () => {
   return (
     <BrowserRouter>
       <Provider store={store}>
         <React.Suspense fallback={<Preloader />}>
-          
-          <AppContainer />
+          <App />
         </React.Suspense>
       </Provider>
     </BrowserRouter>

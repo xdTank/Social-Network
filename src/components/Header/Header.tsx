@@ -1,28 +1,54 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import s from "./Header.module.css"
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { Avatar, Button, Layout, theme } from "antd";
+import {
+    MenuFoldOutlined,
+    MenuUnfoldOutlined,
+    UserOutlined,
+} from '@ant-design/icons';
+import { useSelector } from "react-redux";
+import { selectIsAuth, selectLogin } from "../../redux/authSelectors";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/authReducer";
 
-export type PropsType = {
-    isAuth: boolean
-    login: string | null
-}
-export type DispatchType = {
-    logout: () => void
-}
-const Header: FC<PropsType & DispatchType> = (props) => {
+
+
+export const Header = () => {
+    const isAuth = useSelector(selectIsAuth)
+    const login = useSelector(selectLogin)
+    const dispatch = useDispatch<any>()
+    const logoutCallback = () => {
+        dispatch(logout())
+    }
+
+    const [collapsed, setCollapsed] = useState(false);
+    const {
+        token: { colorBgContainer },
+    } = theme.useToken();
+
+    const { Header } = Layout;
+
     return (
-        <div className={s.header}>
-            <div>
-                <h1>Social-network</h1>
-            </div>
+        <Header style={{ padding: 0, background: colorBgContainer }}>
+            <Button
+                type="text"
+                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                onClick={() => setCollapsed(!collapsed)}
+                style={{
+                    fontSize: '16px',
+                    width: 64,
+                    height: 64,
+                }}
+            />
             <div className={s.loginBlock}>
-                {props.isAuth
-                    ? <div>{props.login} - <button onClick={props.logout}>Log out</button></div>
-                    : <NavLink to={'/login'}>Login</NavLink>}
+                {isAuth
+                    ? <div >
+                        <Avatar className="" icon={<UserOutlined />} />
+                        {login} <Button onClick={logoutCallback}>Log out</Button></div>
+                    : <Link to={'/login'}>Login</Link>}
             </div>
-        </div>
-
+        </Header>
     )
 }
 
-export default Header

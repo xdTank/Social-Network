@@ -5,17 +5,21 @@ import StatusWithHooks from "./ProfileStatusWithHooks";
 import userPhoto from "../../../assets/img/44884218_345707102882519_2446069589734326272_n.jpg"
 import ProfileDataForm from "./ProfileDataForm";
 import { ContactsType, ProfileType } from "../../../types/types";
+import { useSelector } from "react-redux";
+import { selectProfile, selectStatus } from "../../../redux/profileSelector";
+import { useDispatch } from "react-redux";
+import { savePhoto, saveProfile } from "../../../redux/profileReducer";
 
 type PropsType = {
-    profile: ProfileType | null
-    status: string
-    updateStatus: (starus: string) => void
     isOwner: boolean
-    savePhoto: (file: File) => void
-    saveProfile: (profile: ProfileType) => Promise<any>
 }
 
-const ProfileInfo: FC<PropsType> = ({ profile, status, updateStatus, isOwner, savePhoto, saveProfile }) => {
+const ProfileInfo: FC<PropsType> = ({ isOwner, }) => {
+
+    const profile = useSelector(selectProfile)
+    const status = useSelector(selectStatus)
+    const dispatch = useDispatch<any>()
+
     let [editMode, setEditMode] = useState(false)
     if (!profile) {
         return <Preloader />
@@ -23,11 +27,11 @@ const ProfileInfo: FC<PropsType> = ({ profile, status, updateStatus, isOwner, sa
 
     const onPhotoSelected = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files?.length) {
-            savePhoto(e.target.files[0])
+            dispatch(savePhoto(e.target.files[0]))
         }
     }
     const onSubmit = (formData: ProfileType) => {
-        saveProfile(formData).then(
+        dispatch(saveProfile(formData)).then(
             () => {
                 setEditMode(false)
             }
@@ -42,7 +46,7 @@ const ProfileInfo: FC<PropsType> = ({ profile, status, updateStatus, isOwner, sa
                     <div> <ProfileData profile={profile} isOwner={isOwner} onEditMode={() => { setEditMode(true) }} /> </div>}
             </div>
             <div className={s.descriptionBlock}>
-                <StatusWithHooks status={status} updateStatus={updateStatus} />
+                <StatusWithHooks status={status} />
             </div>
         </div>
     )
