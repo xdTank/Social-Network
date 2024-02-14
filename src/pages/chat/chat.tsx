@@ -1,5 +1,5 @@
 import { Avatar, Button } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
     UserOutlined,
 } from '@ant-design/icons';
@@ -23,6 +23,7 @@ export const ChatPage: React.FC = () => {
 
 export const Chat: React.FC = () => {
     const dispatch = useDispatch<any>()
+    const status = useSelector((state: AppStateType) => state.chat.status)
     useEffect(() => {
         dispatch(startChating())
         return () => {
@@ -31,31 +32,49 @@ export const Chat: React.FC = () => {
     }, [])
     return (
         <div>
+            {status === 'error' && <div> Some error occured. Please refresh the page</div>}
             <Messages />
             <AddMessageForm />
-        </div>
+        </div >
+
     )
 }
 export const Messages: React.FC = () => {
     const messages = useSelector((state: AppStateType) => state.chat.messages)
+    const messagesAnchorRef = useRef<HTMLDivElement>(null)
+    const [isAutoScroll, setIsAutoScroll] = useState(true)
+
+    const scrollHandler = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+        let element = e.currentTarget
+        if (Math.abs(element.scrollHeight - element.scrollTop) - element.clientHeight) {
+            !isAutoScroll && setIsAutoScroll(true)
+        } else {
+            isAutoScroll && setIsAutoScroll(false)
+        }
+    }
+    useEffect(() => {
+        if (isAutoScroll) {
+            messagesAnchorRef.current?.scrollIntoView({ behavior: 'smooth', inline: 'end' })
+        }
+    }, [])
     return (
-        <div style={{ height: '600px', overflowY: 'auto' }}>
-            {messages.map((m: any, index) =>
-                <Message message={m} key={index} />
+        <div style={{ height: '600px', overflowY: 'auto' }} onScroll={scrollHandler}>
+            {messages.map((m: any, index) => <Message message={m} key={m.id} />
             )}
+            <div ref={messagesAnchorRef}></div>
         </div>
     )
 }
-export const Message: React.FC<{ message: ChatMessageType }> = ({ message }) => {
+export const Message: React.FC<{ message: ChatMessageType }> = React.memo(({ message }) => {
     return (
-        <div>
+        <div >
             <Avatar icon={<UserOutlined />} />
             <b>{message.userName}</b>
             <p>{message.message}</p>
             <hr />
         </div>
     )
-}
+})
 
 export const AddMessageForm: React.FC = () => {
     const [message, setMessage] = useState('')

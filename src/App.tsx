@@ -18,6 +18,8 @@ import { Layout, Menu, theme } from 'antd';
 import { Header } from './components/Header/Header'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import { selectIsAuth } from './redux/authSelectors';
+import s from './components/Navbar/Navbar.module.css'
 
 
 const { Sider, Content } = Layout;
@@ -49,11 +51,16 @@ const App: React.FC = () => {
   if (!initialiazed) {
     return (
       <Preloader />)
-  } return (
-    < Layout >
+  }
+  return (
+    <Layout >
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="demo-logo-vertical" />
-        <Menu className=''
+        <Menu
+          style={{
+            backgroundColor: '#1E1F22',
+            height: '100%'
+          }}
           theme="dark"
           mode="inline"
           defaultSelectedKeys={['1']}
@@ -81,32 +88,35 @@ const App: React.FC = () => {
           ]}
         />
       </Sider>
-      <Layout>
+      <Layout style={{
+        backgroundColor: '#2B2D31',
+      }
+      }>
         <Header />
         <Content
           style={{
             margin: '24px 16px',
+            backgroundColor: '#313338',
             padding: 24,
             minHeight: 280,
-            background: colorBgContainer,
             borderRadius: borderRadiusLG,
-          }}
-        >
+          }}>
           <Routes>
-            <Route path='/login' Component={() => <LoginPage />} />
-            <Route path='/' Component={() => <LoginPage />} />
-            <Route path='/project' Component={() => <LoginPage />} />
+            <Route path='/login' element={<LoginPage />} />
+            <Route path='/' element={<LoginPage />} />
+            <Route path='/project' element={<LoginPage />} />
             <Route path='/profile/:userId?' Component={withSuspense(ProfileContainer)} />
             <Route path='/dialogs' Component={withSuspense(DialogsContainer)} />
             <Route path='/chat' Component={withSuspense(ChatPage)} />
-            <Route path='/users' Component={() => <UsersPage />} />
-            <Route path='*' Component={() => <div><h1>404 not found</h1></div>} />
+            <Route path='/users' element={<UsersPage />} />
+            <Route path='*' element={<div><h1>404 not found</h1></div>} />
           </Routes>
         </Content>
       </Layout>
     </Layout >
-  );
-};
+  )
+}
+
 
 
 const MainApp: FC = () => {
@@ -118,8 +128,8 @@ const MainApp: FC = () => {
         </React.Suspense>
       </Provider>
     </BrowserRouter>
-  );
-};
+  )
+}
 
 export default MainApp
 

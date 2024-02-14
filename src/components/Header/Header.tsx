@@ -30,7 +30,7 @@ export const Header = () => {
     const { Header } = Layout;
 
     return (
-        <Header style={{ padding: 0, background: colorBgContainer }}>
+        <Header style={{ padding: 0, backgroundColor: '#2B2D31', }}>
             <Button
                 type="text"
                 icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}

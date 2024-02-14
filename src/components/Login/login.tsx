@@ -10,6 +10,7 @@ import { AppStateType } from "../../redux/reduxStore";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
+
 type LoginFormOwnProps = {
     captchaUrl: string | null
 }
@@ -30,7 +31,7 @@ const LoginForm: FC<InjectedFormProps<LoginFormType, LoginFormOwnProps> & LoginF
                 <div className={s.inputBox}>{createField<LoginFormValuesKeysType>("Email", "email", [required], Input)} <i className='bx bxs-user'></i></div>
                 <div className={s.inputBox}>{createField<LoginFormValuesKeysType>("Password", "password", [required], Input, { type: "password" })} <i className='bx bxs-lock-alt'></i></div>
                 <div className={s.rememberForgot}>{createField<LoginFormValuesKeysType>(undefined, "rememberMe", [], Input, { type: "checkbox" }, "Remember me")}
-                    <a href="#">Forgot password?</a>
+                    <a className="" href="#">Forgot password?</a>
                 </div>
                 {captchaUrl && <img src={captchaUrl} />}
                 {captchaUrl && createField<LoginFormValuesKeysType>("Symbols from image", "captcha", [required], Input)}

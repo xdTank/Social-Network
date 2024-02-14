@@ -27,7 +27,6 @@ export const ProfileContainer: React.FC = () => {
                     return;
                 }
             }
-
             if (!parsedUserId) {
                 console.error("ID должен существовать в параметрах URI или в состоянии ('authorizedUserId')");
                 return;
