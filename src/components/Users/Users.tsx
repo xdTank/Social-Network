@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { getCurrentPage, getFollowingInProgress, getPageSize, getTotalUsersCount, getUsers, getUsersFilter } from "../../redux/usersSelectors";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Pagination } from "antd";
 
 
 type PropsType = {
@@ -29,7 +30,7 @@ export const Users: FC<PropsType> = (props) => {
     const { search } = useLocation();
     const navigate = useNavigate();
 
-    
+
     // useQueryParams
     useEffect(() => {
         const searchParams = new URLSearchParams(search.substring(1)) as QueryParamsType
@@ -87,8 +88,7 @@ export const Users: FC<PropsType> = (props) => {
         <div>
             <UsersSearchForm onFilterChanged={onFilterChanged} />
         </div>
-        <Paginator totalItemsCount={totalUsersCount} pageSize={pageSize} currentPage={currentPage} onPageChanged={onPageChanged} />
-        <div>
+        <div style={{ overflowY: 'auto', height: '750px' }}>
             {
                 users.map(u => <User user={u}
                     followingInProgress={followingInProgress}
@@ -100,6 +100,9 @@ export const Users: FC<PropsType> = (props) => {
                 )
 
             }
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center'}}>
+            <Paginator totalItemsCount={totalUsersCount} pageSize={pageSize} currentPage={currentPage} onPageChanged={onPageChanged} />
         </div>
     </div>
 }

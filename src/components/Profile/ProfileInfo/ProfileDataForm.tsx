@@ -3,6 +3,7 @@ import { GetStringKeys, Input, Textarea, createField } from "../../../FormsContr
 import { InjectedFormProps, reduxForm } from "redux-form"
 import style from "../../../FormsControl/FormsControl.module.css"
 import { ProfileType } from "../../../types/types"
+import { Button } from "antd"
 
 type PropsType = {
     profile: ProfileType
@@ -13,7 +14,7 @@ const ProfileDataForm: FC<InjectedFormProps<ProfileType, PropsType> & PropsType>
     return <form onSubmit={handleSubmit}>
         {error && <div className={style.formSummeryError}>{error}</div>}
         <div>
-            <button>Save</button>
+            <Button onClick={handleSubmit}>Save</Button>
         </div>
         <div>
             <b>Full Name</b>: {createField<ProfileTypeKeys>("Full name", "fullName", [], Input)}
@@ -38,6 +39,7 @@ const ProfileDataForm: FC<InjectedFormProps<ProfileType, PropsType> & PropsType>
     </form >
 }
 
-const ProfileDataFormReduxForm = reduxForm<ProfileType, PropsType>({ form: 'edit-profile' })(ProfileDataForm)
+const ProfileDataFormReduxForm = reduxForm<ProfileType, PropsType>({ form: 'edit-profile', enableReinitialize: true })(ProfileDataForm)
+
 
 export default ProfileDataFormReduxForm

@@ -26,7 +26,7 @@ const StatusWithHooks: FC<PropsType> = (props) => {
         setStatus(e.currentTarget.value)
     }
     return (
-        <div>
+        <div style={{ color: '#DBDEE1' }}>
             {!editMode &&
                 <div>
                     <b>Status</b>: <span onDoubleClick={activateEditMode} >{props.status || "-"}</span>

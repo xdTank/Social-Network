@@ -10,9 +10,7 @@
     padding: 10px;
 }
 
-.dialogsItems .active {
-    color: gold;
-}
+
 
 .dialog {
     padding: 20px;
@@ -32,11 +30,13 @@
     border: solid 1px gray;
     border-radius: 15px;
     margin: 10px;
+    color: #DBDEE1;
 }
 
 .names a {
     padding: 20px;
-    color: #333;
+    color: #DBDEE1;
+    
     text-decoration: none;
 }
 

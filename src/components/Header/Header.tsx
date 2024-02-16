@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { selectIsAuth, selectLogin } from "../../redux/authSelectors";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/authReducer";
+import DropdownMenu from "../common/DropdownMenu/dropdownmenu";
 
 
 
@@ -41,11 +42,9 @@ export const Header = () => {
                     height: 64,
                 }}
             />
-            <div className={s.loginBlock}>
+            <div className={s.loginBlock} style={{ marginRight: '20px' }}>
                 {isAuth
-                    ? <div >
-                        <Avatar className="" icon={<UserOutlined />} />
-                        {login} <Button onClick={logoutCallback}>Log out</Button></div>
+                    ? <DropdownMenu />
                     : <Link to={'/login'}>Login</Link>}
             </div>
         </Header>

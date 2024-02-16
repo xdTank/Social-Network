@@ -1,4 +1,3 @@
-import { createSelector } from "reselect"
 import { AppStateType } from "./reduxStore";
 
 export const selectProfile = (state: AppStateType) => {

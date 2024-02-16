@@ -54,7 +54,7 @@ export const Messages: React.FC = () => {
     }
     useEffect(() => {
         if (isAutoScroll) {
-            messagesAnchorRef.current?.scrollIntoView({ behavior: 'smooth', inline: 'end' })
+            messagesAnchorRef.current?.scrollIntoView({ inline: 'end', behavior: 'smooth' })
         }
     }, [])
     return (

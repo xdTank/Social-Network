@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { selectProfile, selectStatus } from "../../../redux/profileSelector";
 import { useDispatch } from "react-redux";
 import { savePhoto, saveProfile } from "../../../redux/profileReducer";
+import { Button } from "antd";
 
 type PropsType = {
     isOwner: boolean
@@ -60,7 +61,7 @@ type ProfileDataPropsType = {
 const ProfileData: FC<ProfileDataPropsType> = ({ profile, isOwner, onEditMode }) => {
     return <div>
         <div>
-            {isOwner && <button onClick={onEditMode}>Edit</button>}
+            {isOwner && <Button onClick={onEditMode}>Edit</Button>}
         </div>
         <div>
             <b>Full Name</b>:  {profile.fullName}

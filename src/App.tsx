@@ -18,13 +18,11 @@ import { Layout, Menu, theme } from 'antd';
 import { Header } from './components/Header/Header'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { selectIsAuth } from './redux/authSelectors';
-import s from './components/Navbar/Navbar.module.css'
+import Dialogs from './components/Dialogs/Dialogs';
 
 
 const { Sider, Content } = Layout;
 
-const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'))
 
 const ChatPage = lazy(() =>
   import('./pages/chat/chat')
@@ -53,7 +51,7 @@ const App: React.FC = () => {
       <Preloader />)
   }
   return (
-    <Layout >
+    <Layout style={{}} >
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="demo-logo-vertical" />
         <Menu
@@ -82,7 +80,7 @@ const App: React.FC = () => {
             },
             {
               key: '4',
-              icon: <UserOutlined />,
+              icon: <MessageOutlined />,
               label: <Link to="/chat">Chat</Link>,
             },
           ]}
@@ -106,7 +104,7 @@ const App: React.FC = () => {
             <Route path='/' element={<LoginPage />} />
             <Route path='/project' element={<LoginPage />} />
             <Route path='/profile/:userId?' Component={withSuspense(ProfileContainer)} />
-            <Route path='/dialogs' Component={withSuspense(DialogsContainer)} />
+            <Route path='/dialogs' element={<Dialogs />} />
             <Route path='/chat' Component={withSuspense(ChatPage)} />
             <Route path='/users' element={<UsersPage />} />
             <Route path='*' element={<div><h1>404 not found</h1></div>} />

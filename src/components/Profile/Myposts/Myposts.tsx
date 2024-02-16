@@ -5,6 +5,11 @@ import { InjectedFormProps, reduxForm } from "redux-form";
 
 import { GetStringKeys, Input, createField } from "../../../FormsControl/FormsControl";
 import { PostType } from "../../../types/types";
+import { useSelector } from "react-redux";
+import { AppStateType } from "../../../redux/reduxStore";
+import { useDispatch } from "react-redux";
+import { actions } from "../../../redux/profileReducer";
+import { Button } from "antd";
 
 
 const Posts: FC<PostType> = (props) => {
@@ -23,26 +28,27 @@ const Posts: FC<PostType> = (props) => {
 export type MyPostsPropsType = {
     posts: Array<PostType>
 }
-export type DispatchPropsType = {
-    addPost: (newPostText: string) => void
-}
-const Myposts: FC<MyPostsPropsType & DispatchPropsType> = React.memo(props => {
-    let postsElements = [...props.posts].reverse().map(p => <Posts massege={p.massege} likeCount={p.likeCount} id={0} />)
+const Myposts: FC = React.memo(() => {
+    const posts = useSelector((state: AppStateType) => state.profilePage.posts)
+    const dispatch = useDispatch<any>()
+    let postsElements = [...posts].reverse().map(p => <Posts massege={p.massege} likeCount={p.likeCount} id={0} />)
     let onAddPost = (values: AddPostFormValuesType) => {
-        props.addPost(values.newPostText)
+        dispatch(actions.addPostActionCreator(values.newPostText))
     }
     return (
-        <div className={s.postsBlock}>
-            <div>
-                <h3>My posts</h3>
+        <div  >
+            <h3 style={{ textAlign: 'center' }}>My posts</h3>
+            <div style={{ display: "flex", }}>
+                <div>
+                </div>
+                <div>
+                    <AddNewPostReduxForm onSubmit={onAddPost} />
+                </div>
             </div>
-            <div>
-                <AddNewPostReduxForm onSubmit={onAddPost} />
-            </div>
-            <div className={s.posts}>
+            <div className={s.posts} style={{ height: '300px', overflowY: 'auto' }}>
                 {postsElements}
             </div>
-        </div>
+        </div >
     )
 })
 type PropsType = {
@@ -54,9 +60,11 @@ export type AddPostFormValuesType = {
 type AddPostFormValuesKeysType = GetStringKeys<AddPostFormValuesType>
 const AddNewPostForm: FC<InjectedFormProps<AddPostFormValuesType, PropsType> & PropsType> = (props) => {
     return (
-        <form onSubmit={props.handleSubmit}>
-            {createField<AddPostFormValuesKeysType>("Yuor post", 'newPostText', [], Input)}
-            <button>Add posts</button>
+        <form >
+            <div style={{ display: 'flex' }}>
+                {createField<AddPostFormValuesKeysType>("Yuor post", 'newPostText', [], Input)}
+                <Button onClick={props.handleSubmit}>Add posts</Button>
+            </div>
         </form>
     )
 }
