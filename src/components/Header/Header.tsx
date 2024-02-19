@@ -1,52 +1,18 @@
-import React, { FC, useState } from "react";
+import React, { useState } from "react";
 import s from "./Header.module.css"
 import { Link } from "react-router-dom";
-import { Avatar, Button, Layout, theme } from "antd";
-import {
-    MenuFoldOutlined,
-    MenuUnfoldOutlined,
-    UserOutlined,
-} from '@ant-design/icons';
+import { theme } from "antd";
 import { useSelector } from "react-redux";
-import { selectIsAuth, selectLogin } from "../../redux/authSelectors";
-import { useDispatch } from "react-redux";
-import { logout } from "../../redux/authReducer";
+import { selectIsAuth } from "../../redux/authSelectors";
 import DropdownMenu from "../common/DropdownMenu/dropdownmenu";
+import { Header } from "antd/es/layout/layout";
 
 
 
-export const Header = () => {
-    const isAuth = useSelector(selectIsAuth)
-    const login = useSelector(selectLogin)
-    const dispatch = useDispatch<any>()
-    const logoutCallback = () => {
-        dispatch(logout())
-    }
-
-    const [collapsed, setCollapsed] = useState(false);
-    const {
-        token: { colorBgContainer },
-    } = theme.useToken();
-
-    const { Header } = Layout;
-
+export const HeaderContainer = () => {
     return (
         <Header style={{ padding: 0, backgroundColor: '#2B2D31', }}>
-            <Button
-                type="text"
-                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                onClick={() => setCollapsed(!collapsed)}
-                style={{
-                    fontSize: '16px',
-                    width: 64,
-                    height: 64,
-                }}
-            />
-            <div className={s.loginBlock} style={{ marginRight: '20px' }}>
-                {isAuth
-                    ? <DropdownMenu />
-                    : <Link to={'/login'}>Login</Link>}
-            </div>
+            
         </Header>
     )
 }

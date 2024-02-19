@@ -1,9 +1,11 @@
-import React, { FC } from "react"
+import React, { FC, useEffect } from "react"
 import { GetStringKeys, Input, Textarea, createField } from "../../../FormsControl/FormsControl"
 import { InjectedFormProps, reduxForm } from "redux-form"
 import style from "../../../FormsControl/FormsControl.module.css"
 import { ProfileType } from "../../../types/types"
 import { Button } from "antd"
+
+
 
 type PropsType = {
     profile: ProfileType
@@ -11,7 +13,7 @@ type PropsType = {
 type ProfileTypeKeys = GetStringKeys<ProfileType>
 
 const ProfileDataForm: FC<InjectedFormProps<ProfileType, PropsType> & PropsType> = ({ handleSubmit, profile, error }) => {
-    return <form onSubmit={handleSubmit}>
+    return <form onSubmit={handleSubmit}  >
         {error && <div className={style.formSummeryError}>{error}</div>}
         <div>
             <Button onClick={handleSubmit}>Save</Button>

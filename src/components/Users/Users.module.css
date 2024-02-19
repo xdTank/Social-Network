@@ -20,12 +20,12 @@
     border-radius: 50%;
 }
 
-.search i {
+.search button {
     position: absolute;
     transform: translateY(-50%);
     font-size: 20px;
     right: 10px;
-    top: 50%;
+    top: 40%;
 }
 
 .search {

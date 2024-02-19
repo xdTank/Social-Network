@@ -4,6 +4,8 @@ import React, { FC } from "react"
 import s from './Users.module.css'
 import { useSelector } from "react-redux"
 import { getUsersFilter } from "../../redux/usersSelectors"
+import { Button, Input, Tooltip } from "antd"
+import { SearchOutlined } from "@ant-design/icons"
 
 const usersSearchFormValidate = (values: any) => {
     const error = {}
@@ -43,14 +45,19 @@ export const UsersSearchForm: FC<PropsType> = React.memo((props) => {
                             <option value="false">Only unfollowed</option>
                         </Field>
                     </div>
-                    <div className={s.search}>
+                    <div className={s.search} >
                         <Field type="text" name="term" placeholder={'Search'} autocomplete="off" />
-                        <i className='bx bx-search'></i>
+                        <button type="submit" disabled={isSubmitting}>
+                            <Tooltip title="search">
+                                <Button title="search" type="text" shape="circle" icon={<SearchOutlined />} />
+                            </Tooltip>
+                        </button>
+
                     </div>
                     <div>
-                        <button type="submit" disabled={isSubmitting}>
-                            Find
-                        </button>
+
+
+
                     </div>
                 </Form>
             )}

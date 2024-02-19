@@ -33,7 +33,7 @@ const DropdownMenu: React.FC = () => {
     ]
     return <Dropdown menu={{ items }} trigger={['click']}>
         <a onClick={(e) => e.preventDefault()}>
-            <Space style={{ color: "#DBDEE1" }}>
+            <Space style={{ color: "#DBDEE1", marginRight: '20px'}}>
                 More
                 <DownOutlined />
             </Space>

@@ -41,9 +41,8 @@ const AvatarUploadButton: React.FC = () => {
         }
         if (info.file.status === 'done') {
             // Get this url from response in real world.
-            getBase64(info.file.originFileObj as FileType, (url) => {
+            getBase64(info.file.originFileObj as FileType, () => {
                 setLoading(false)
-                setImageUrl(url)
             })
         }
     };

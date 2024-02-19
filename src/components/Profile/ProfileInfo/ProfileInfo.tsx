@@ -10,6 +10,7 @@ import { selectProfile, selectStatus } from "../../../redux/profileSelector";
 import { useDispatch } from "react-redux";
 import { savePhoto, saveProfile } from "../../../redux/profileReducer";
 import { Button } from "antd";
+import AvatarUploadButton from "../../common/UploadButton/uploadButton";
 
 type PropsType = {
     isOwner: boolean
@@ -42,7 +43,7 @@ const ProfileInfo: FC<PropsType> = ({ isOwner, }) => {
         <div className={s.profileBlock}>
             <div className={s.ava}>
                 <img src={profile.photos.large || userPhoto} alt="!" />
-                {isOwner && <input id="input" type={'file'} onChange={onPhotoSelected} />}
+                {isOwner && editMode && <AvatarUploadButton />}
                 {editMode ? <ProfileDataForm initialValues={profile} profile={profile} onSubmit={onSubmit} /> :
                     <div> <ProfileData profile={profile} isOwner={isOwner} onEditMode={() => { setEditMode(true) }} /> </div>}
             </div>

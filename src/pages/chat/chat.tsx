@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 import { sendMessage, startChating, stopChating } from "../../redux/chatReducer";
 import { useSelector } from "react-redux";
 import { AppStateType } from "../../redux/reduxStore";
+import { selectIsAuth } from "../../redux/authSelectors";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -24,12 +26,19 @@ export const ChatPage: React.FC = () => {
 export const Chat: React.FC = () => {
     const dispatch = useDispatch<any>()
     const status = useSelector((state: AppStateType) => state.chat.status)
+    const isAuth = useSelector(selectIsAuth)
+    const navigate = useNavigate()
     useEffect(() => {
         dispatch(startChating())
         return () => {
             dispatch(stopChating())
         }
     }, [])
+    useEffect(() => {
+        if (!isAuth) {
+            navigate('/login');
+        }
+    }, [isAuth, navigate])
     return (
         <div>
             {status === 'error' && <div> Some error occured. Please refresh the page</div>}
@@ -39,6 +48,7 @@ export const Chat: React.FC = () => {
 
     )
 }
+
 export const Messages: React.FC = () => {
     const messages = useSelector((state: AppStateType) => state.chat.messages)
     const messagesAnchorRef = useRef<HTMLDivElement>(null)
@@ -52,14 +62,15 @@ export const Messages: React.FC = () => {
             isAutoScroll && setIsAutoScroll(false)
         }
     }
+
     useEffect(() => {
         if (isAutoScroll) {
-            messagesAnchorRef.current?.scrollIntoView({ inline: 'end', behavior: 'smooth' })
+            messagesAnchorRef.current?.scrollIntoView({ behavior: 'smooth' })
         }
     }, [])
     return (
         <div style={{ height: '600px', overflowY: 'auto' }} onScroll={scrollHandler}>
-            {messages.map((m: any, index) => <Message message={m} key={m.id} />
+            {messages.map((m: any, index) => <Message key={m.id} message={m} />
             )}
             <div ref={messagesAnchorRef}></div>
         </div>
@@ -68,7 +79,7 @@ export const Messages: React.FC = () => {
 export const Message: React.FC<{ message: ChatMessageType }> = React.memo(({ message }) => {
     return (
         <div >
-            <Avatar icon={<UserOutlined />} />
+            <Avatar icon={<UserOutlined />} src={message.photo} style={{ width: '30px' }} />
             <b>{message.userName}</b>
             <p>{message.message}</p>
             <hr />
@@ -82,7 +93,9 @@ export const AddMessageForm: React.FC = () => {
     const status = useSelector((state: AppStateType) => state.chat.status)
 
 
+
     const sendMessageHandler = () => {
+
         if (!message) {
             return
         }
@@ -93,7 +106,7 @@ export const AddMessageForm: React.FC = () => {
     return (
         <div>
             <textarea onChange={(e) => setMessage(e.currentTarget.value)} value={message}></textarea>
-            <Button disabled={status !== 'ready'} onClick={sendMessageHandler}>Send</Button>
+            <Button disabled={status !== 'ready'} onClick={sendMessageHandler} >Send</Button>
         </div>
     )
 }
