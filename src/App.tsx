@@ -1,5 +1,5 @@
 import React, { FC, lazy, useEffect, useState } from 'react';
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Link, Route, Routes } from 'react-router-dom';
 import './App.css';
 import 'antd'
 import { LoginPage } from './components/Login/login';
@@ -61,6 +61,11 @@ const App: React.FC = () => {
   }
   return (
     <div>
+      <Routes>
+              <Route path='/' element={<LoginPage />} />
+              <Route path='/login' element={<LoginPage />} />
+              <Route path='/project' element={<LoginPage />} />
+      </Routes>
       <Layout style={{}} >
         <Sider trigger={null} collapsible collapsed={collapsed}>
           <div className="demo-logo-vertical" />
@@ -125,9 +130,6 @@ const App: React.FC = () => {
               borderRadius: borderRadiusLG,
             }}>
             <Routes>
-              <Route path='/' element={<LoginPage />} />
-              <Route path='/login' element={<LoginPage />} />
-              <Route path='/project' element={<LoginPage />} />
               <Route path='/profile/:userId?' Component={withSuspense(ProfileContainer)} />
               <Route path='/dialogs' element={<Dialogs />} />
               <Route path='/chat' Component={withSuspense(ChatPage)} />
