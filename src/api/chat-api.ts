@@ -63,7 +63,7 @@ export const chatAPI = {
             subscribers[eventName] = subscribers[eventName].filter(s => s !== callback)
         }
     },
-    unsuscribe(eventName: EventsNameTypes, callback: SubscriberType | StatusChangedSubscriberType) {
+    unsubscribe(eventName: EventsNameTypes, callback: SubscriberType | StatusChangedSubscriberType) {
         //@ts-ignore
         subscribers[eventName] = subscribers[eventName].filter(s => s !== callback)
     },
@@ -72,7 +72,7 @@ export const chatAPI = {
     }
 }
 
-export type ChatMessageType = {
+export type ChatMessageAPIType = {
     message: string
     photo: string
     userId: number
@@ -80,5 +80,5 @@ export type ChatMessageType = {
 }
 export type StatusType = 'pending' | 'ready' | 'error'
 
-type SubscriberType = (messages: ChatMessageType[]) => void
+type SubscriberType = (messages: ChatMessageAPIType[]) => void
 type StatusChangedSubscriberType = (status: StatusType) => void
