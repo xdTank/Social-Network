@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
 import styles from "./Users.module.css";
 import userPhoto from "../../assets/img/44884218_345707102882519_2446069589734326272_n.jpg";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { UserType } from '../../types/types';
+import { Button } from 'antd';
 
 type PropsType = {
     user: UserType
@@ -13,36 +14,29 @@ type PropsType = {
 
 let User: FC<PropsType> = ({ user, followingInProgress, unfollow, follow }) => {
     return (
-        <div>
-            <span>
-                <div className={styles.userBlock}>
-                    <NavLink to={'/profile/' + user.id}>
-                        <img src={user.photos.small != null ? user.photos.small : userPhoto} alt='!'
-                            className={styles.userPhoto} />
-                    </NavLink>
-                </div>
+        <div >
+            <div className={styles.userBlock}>
+                <Link to={'/profile/' + user.id}>
+                    <img src={user.photos.small != null ? user.photos.small : userPhoto} alt='!'
+                        className={styles.userPhoto} />
+                </Link>
+            </div>
+            <div>
+                {user.followed
+                    ? <Button disabled={followingInProgress
+                        .some(id => id === user.id)}
+                        onClick={() => { unfollow(user.id) }}>
+                        Unfollow</Button>
+                    : <Button disabled={followingInProgress.some(id => id === user.id)}
+                        onClick={() => { follow(user.id) }}>
+                        Follow</Button>}
                 <div>
-                    {user.followed
-                        ? <button disabled={followingInProgress
-                            .some(id => id === user.id)}
-                            onClick={() => { unfollow(user.id) }}>
-                            Unfollow</button>
-                        : <button disabled={followingInProgress.some(id => id === user.id)}
-                            onClick={() => { follow(user.id) }}>
-                            Follow</button>}
-
-                </div>
-            </span>
-            <span>
-                <span>
                     <div>{user.name}</div>
                     <div>{user.status}</div>
-                </span>
-                <span>
                     <div>{"user.location.country"}</div>
                     <div>{"user.location.city"}</div>
-                </span>
-            </span>
+                </div>
+            </div>
         </div>)
 }
 

@@ -1,4 +1,4 @@
-import { Avatar, Button } from "antd";
+import { Avatar, Button, Form, Input } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import {
     UserOutlined,
@@ -10,18 +10,12 @@ import { useSelector } from "react-redux";
 import { AppStateType } from "../../redux/reduxStore";
 import { selectIsAuth } from "../../redux/authSelectors";
 import { useNavigate } from "react-router-dom";
+import { Formik, FormikHelpers, FormikValues } from "formik";
 
 
 
 
 
-export const ChatPage: React.FC = () => {
-    return (
-        <div>
-            <Chat />
-        </div>
-    )
-}
 
 export const Chat: React.FC = () => {
     const dispatch = useDispatch<any>()
@@ -70,7 +64,7 @@ export const Messages: React.FC = () => {
         }
     }, [isAutoScroll])
     return (
-        <div style={{ height: '600px', overflowY: 'auto' }} onScroll={scrollHandler}>
+        <div style={{ height: '750px', overflowY: 'auto' }} onScroll={scrollHandler}>
             {messages.map((m: ChatMessageAPIType) => <Message key={m.userId} message={m} />
             )}
             <div ref={messagesAnchorRef}></div>
@@ -79,7 +73,7 @@ export const Messages: React.FC = () => {
 }
 export const Message: React.FC<{ message: ChatMessageAPIType }> = React.memo(({ message }) => {
     return (
-        <div >
+        <div style={{ margin: '20px' }}>
             <Avatar icon={<UserOutlined />} src={message.photo} style={{ width: '30px' }} />
             <b>{message.userName}</b>
             <p>{message.message}</p>
@@ -94,18 +88,19 @@ export const AddMessageForm: React.FC = () => {
     const status = useSelector((state: AppStateType) => state.chat.status)
 
 
-
     const sendMessageHandler = () => {
+        console.log(status)
         if (!message) {
             return
         }
+        console.log(message)
         dispatch(sendMessage(message))
         setMessage('')
     }
     return (
-        <div>
-            <textarea onChange={(e) => setMessage(e.currentTarget.value)} value={message}></textarea>
-            <Button disabled={status !== 'ready'} onClick={sendMessageHandler} >Send</Button>
-        </div>
+        <div style={{ display: 'flex' }}>
+            <Input onClick={sendMessageHandler} disabled={status !== 'ready'} style={{ backgroundColor: '#383A40', border: 'none', color: '#C7CACE' }} placeholder="Write" onChange={(e) => setMessage(e.currentTarget.value)} value={message}></Input>
+            <Button style={{ backgroundColor: '#fff' }} onClick={sendMessageHandler} >Send</Button>
+        </div >
     )
 }

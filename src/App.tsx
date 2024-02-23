@@ -29,9 +29,9 @@ import DropdownMenu from './components/common/DropdownMenu/dropdownmenu';
 const { Sider, Content } = Layout;
 
 
-const ChatPage = lazy(() =>
+const Chat = lazy(() =>
   import('./pages/chat/chat')
-    .then(({ ChatPage }) => ({ default: ChatPage })),
+    .then(({ Chat }) => ({ default: Chat })),
 )
 const ProfileContainer = lazy(() =>
   import('./components/Profile/ProfileContainer')
@@ -47,7 +47,7 @@ const App: React.FC = () => {
 
 
   const {
-    token: {  borderRadiusLG },
+    token: { borderRadiusLG },
   } = theme.useToken()
 
   useEffect(() => {
@@ -61,18 +61,19 @@ const App: React.FC = () => {
   return (
     <div>
       <Routes>
-              <Route path='/' element={<LoginPage />} />
-              <Route path='/login' element={<LoginPage />} />
-              <Route path='/project' element={<LoginPage />} />
+        <Route path='/' element={<LoginPage />} />
+        <Route path='/login' element={<LoginPage />} />
+        <Route path='/project' element={<LoginPage />} />
       </Routes>
-      <Layout  >
-        <Sider trigger={null} collapsible collapsed={collapsed} >
+      <Layout>
+        <Sider trigger={null} collapsible collapsed={collapsed} style={{ height: '100vh' }} >
           <div className="demo-logo-vertical" />
           <Menu
             style={{
               backgroundColor: '#1E1F22',
               height: '100%',
               fontSize: '18px',
+
             }}
             theme="dark"
             mode="inline"
@@ -80,7 +81,7 @@ const App: React.FC = () => {
               {
                 key: '1',
                 icon: <HomeOutlined />,
-                label: <Link  to="/profile" >Profile</Link>,
+                label: <Link to="/profile" >Profile</Link>,
               },
               {
                 key: '2',
@@ -104,7 +105,7 @@ const App: React.FC = () => {
           backgroundColor: '#2B2D31',
         }
         }>
-          <Header style={{ padding: 0, backgroundColor: '#313338', display: 'flex', justifyContent: 'space-between',  }}>
+          <Header style={{ padding: 0, backgroundColor: '#313338', display: 'flex', justifyContent: 'space-between', }}>
             <Button
               type="text"
               icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
@@ -124,20 +125,19 @@ const App: React.FC = () => {
               margin: '24px 16px',
               backgroundColor: '#313338',
               padding: 24,
-              minHeight: 710,
               borderRadius: borderRadiusLG,
             }}>
             <Routes>
               <Route path='/profile/:userId?' Component={withSuspense(ProfileContainer)} />
               <Route path='/dialogs' element={<Dialogs />} />
-              <Route path='/chat' Component={withSuspense(ChatPage)} />
+              <Route path='/chat' Component={withSuspense(Chat)} />
               <Route path='/users' element={<UsersPage />} />
               <Route path='*' element={<div><h1>404 not found</h1></div>} />
             </Routes>
           </Content>
         </Layout>
       </Layout >
-    </div>
+    </div >
   )
 }
 

@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { getCurrentPage, getFollowingInProgress, getPageSize, getTotalUsersCount, getUsers, getUsersFilter } from "../../redux/usersSelectors";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Pagination } from "antd";
+import { follow, unfollow } from "../../redux/usersReducer";
 
 
 type PropsType = {
@@ -17,7 +17,7 @@ type QueryParamsType = {
 }
 
 
-export const Users: FC<PropsType> = (props) => {
+export const Users: FC<PropsType> = () => {
 
     const users = useSelector(getUsers)
     const totalUsersCount = useSelector(getTotalUsersCount)
@@ -77,10 +77,10 @@ export const Users: FC<PropsType> = (props) => {
     const onFilterChanged = (filter: FilterType) => {
         dispatch(requestUsers(1, pageSize, filter))
     }
-    const unfollow = (userId: number) => {
+    const onUnfollow = (userId: number) => {
         dispatch(unfollow(userId))
     }
-    const follow = (userId: number) => {
+    const onFollow = (userId: number) => {
         dispatch(follow(userId))
     }
 
@@ -88,20 +88,20 @@ export const Users: FC<PropsType> = (props) => {
         <div>
             <UsersSearchForm onFilterChanged={onFilterChanged} />
         </div>
-        <div style={{ overflowY: 'auto', height: '750px' }}>
+        <div style={{ overflowY: 'auto', height: '650px' }}>
             {
                 users.map(u => <User user={u}
                     followingInProgress={followingInProgress}
                     key={u.id}
-                    unfollow={unfollow}
-                    follow={follow}
+                    unfollow={onUnfollow}
+                    follow={onFollow}
                 />
 
                 )
 
             }
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center'}}>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
             <Paginator totalItemsCount={totalUsersCount} pageSize={pageSize} currentPage={currentPage} onPageChanged={onPageChanged} />
         </div>
     </div>

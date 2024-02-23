@@ -14,9 +14,9 @@ const Dialogs = () => {
         }
     }, [isAuth, navigate])
     return (
-        <Flex align="center" vertical>
-            <Empty  image={Empty.PRESENTED_IMAGE_SIMPLE} description={'Currently there are no messages'} style={{opacity: 0.7}} /> 
-            </Flex>            
+        <Flex align="center" vertical style={{ paddingTop: '300px' }}>
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={<span style={{color:'#fff'}}>Currently there are no messages</span>} style={{ opacity: 0.7, }} />
+        </Flex>
     )
 }
 

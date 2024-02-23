@@ -3,6 +3,7 @@ import { ChatMessageAPIType, StatusType, chatAPI } from "../api/chat-api";
 import { BaseThunkType, InferActionsTypes } from "./reduxStore";
 import { Dispatch } from "redux";
 import { v1 } from "uuid";
+import { useSelector } from "react-redux";
 
 
 type ChatMessageType = ChatMessageAPIType & { id: string }
@@ -20,7 +21,7 @@ const chatReducer = (state = initialState, action: ActionsTypes): InitialStateTy
             return {
                 ...state,
                 messages: [...state.messages, ...action.payload.messages.map(m => ({ ...m, id: v1() }))]
-                .filter((m, index, array) => index >= array.length - 10)
+                    .filter((m, index, array) => index >= array.length - 100)
             }
         }
         case 'chat/STATUS_CHANGED': {
@@ -63,10 +64,13 @@ const newMessageHandler = (dispatch: Dispatch) => {
     return _newMessageHandler
 }
 
-export const startChating = (): ThunkType => async (dispatch) => {
-    chatAPI.start()
-    chatAPI.subscribe('messages-received', newMessageHandler(dispatch))
-    chatAPI.subscribe('status-changed', statusChangedHandler(dispatch))
+export const startChating = (): ThunkType => async (dispatch, getState) => {
+    const { chat: { status } } = getState();
+    if (status !== 'ready') {
+        chatAPI.start()
+        chatAPI.subscribe('messages-received', newMessageHandler(dispatch))
+        chatAPI.subscribe('status-changed', statusChangedHandler(dispatch))
+    }
 }
 export const stopChating = (): ThunkType => async (dispatch) => {
     chatAPI.unsubscribe('messages-received', newMessageHandler(dispatch))
@@ -74,7 +78,11 @@ export const stopChating = (): ThunkType => async (dispatch) => {
     chatAPI.stop()
 }
 export const sendMessage = (message: string): ThunkType => async (dispatch) => {
-    chatAPI.sendMessage(message)
+    try {
+        chatAPI.sendMessage(message)
+    } catch (error) {
+        console.error('Error while sending message:', error)
+    }
 }
 
 

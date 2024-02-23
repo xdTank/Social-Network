@@ -54,11 +54,6 @@ export const UsersSearchForm: FC<PropsType> = React.memo((props) => {
                         </button>
 
                     </div>
-                    <div>
-
-
-
-                    </div>
                 </Form>
             )}
         </Formik>

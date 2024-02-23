@@ -36,16 +36,13 @@ const Myposts: FC = React.memo(() => {
         dispatch(actions.addPostActionCreator(values.newPostText))
     }
     return (
-        <div  >
-            <h3 style={{ textAlign: 'center' }}>My posts</h3>
-            <div style={{ display: "flex", }}>
-                <div>
-                </div>
-                <div>
+        <div style={{}}  >
+            <div style={{ display: "flex", borderTop: '1px solid grey' , }}>
+                <div style={{paddingTop: '20px' ,  }}>
                     <AddNewPostReduxForm onSubmit={onAddPost} />
                 </div>
             </div>
-            <div className={s.posts} style={{ height: '300px', overflowY: 'auto' }}>
+            <div className={s.posts} style={{ height: '500px', overflowY: 'auto' }}>
                 {postsElements}
             </div>
         </div >
@@ -60,8 +57,8 @@ export type AddPostFormValuesType = {
 type AddPostFormValuesKeysType = GetStringKeys<AddPostFormValuesType>
 const AddNewPostForm: FC<InjectedFormProps<AddPostFormValuesType, PropsType> & PropsType> = (props) => {
     return (
-        <form >
-            <div style={{ display: 'flex' }}>
+        <form>
+            <div style={{ display: 'flex'  , alignItems: 'center' , gap: '20px'}}>
                 {createField<AddPostFormValuesKeysType>("Yuor post", 'newPostText', [], Input)}
                 <Button onClick={props.handleSubmit}>Add posts</Button>
             </div>
