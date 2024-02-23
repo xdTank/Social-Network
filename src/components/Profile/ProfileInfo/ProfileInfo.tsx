@@ -3,7 +3,7 @@ import s from "./ProfileInfo.module.css"
 import Preloader from '../../common/Preloader/Preloader'
 import StatusWithHooks from "./ProfileStatusWithHooks";
 import userPhoto from "../../../assets/img/44884218_345707102882519_2446069589734326272_n.jpg"
-import ProfileDataForm from "./ProfileDataForm";
+import ProfileDataForm from "./ProfileDataFormFormik";
 import { ContactsType, ProfileType } from "../../../types/types";
 import { useSelector } from "react-redux";
 import { selectProfile, selectStatus } from "../../../redux/profileSelector";
@@ -32,19 +32,13 @@ const ProfileInfo: FC<PropsType> = ({ isOwner, }) => {
             dispatch(savePhoto(e.target.files[0]))
         }
     }
-    const onSubmit = (formData: ProfileType) => {
-        dispatch(saveProfile(formData)).then(
-            () => {
-                setEditMode(false)
-            }
-        )
-    }
+  
     return (
         <div className={s.profileBlock}>
             <div className={s.ava}>
                 <img src={profile.photos.large || userPhoto} alt="!" />
                 {isOwner && editMode && <AvatarUploadButton />}
-                {editMode ? <ProfileDataForm initialValues={profile} profile={profile} onSubmit={onSubmit} /> :
+                {editMode ? <ProfileDataForm setEditMode={setEditMode} profile={profile} /> :
                     <div> <ProfileData profile={profile} isOwner={isOwner} onEditMode={() => { setEditMode(true) }} /> </div>}
             </div>
             <div className={s.descriptionBlock}>
