@@ -1,5 +1,5 @@
 import React, { FC, lazy, useEffect, useState } from 'react';
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Link, Route, Routes } from 'react-router-dom';
 import './App.css';
 import 'antd'
 import { LoginPage } from './components/Login/login';
@@ -16,13 +16,12 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined
 } from '@ant-design/icons';
-import { Button, Layout, Menu, theme } from 'antd';
+import { Button, Layout, Menu, Select, theme } from 'antd';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import Dialogs from './components/Dialogs/Dialogs';
 import { selectIsAuth } from './redux/authSelectors';
 import { Header } from 'antd/es/layout/layout';
-import s from "./Header.module.css"
 import DropdownMenu from './components/common/DropdownMenu/dropdownmenu';
 
 
@@ -48,7 +47,7 @@ const App: React.FC = () => {
 
 
   const {
-    token: { colorBgContainer, borderRadiusLG },
+    token: {  borderRadiusLG },
   } = theme.useToken()
 
   useEffect(() => {
@@ -61,23 +60,27 @@ const App: React.FC = () => {
   }
   return (
     <div>
-      <Layout style={{}} >
-        <Sider trigger={null} collapsible collapsed={collapsed}>
+      <Routes>
+              <Route path='/' element={<LoginPage />} />
+              <Route path='/login' element={<LoginPage />} />
+              <Route path='/project' element={<LoginPage />} />
+      </Routes>
+      <Layout  >
+        <Sider trigger={null} collapsible collapsed={collapsed} >
           <div className="demo-logo-vertical" />
           <Menu
             style={{
               backgroundColor: '#1E1F22',
-              height: '100%'
-              
+              height: '100%',
+              fontSize: '18px',
             }}
             theme="dark"
             mode="inline"
-            defaultSelectedKeys={['1']}
             items={[
               {
                 key: '1',
                 icon: <HomeOutlined />,
-                label: <Link to="/profile" >Profile</Link>,
+                label: <Link  to="/profile" >Profile</Link>,
               },
               {
                 key: '2',
@@ -121,13 +124,10 @@ const App: React.FC = () => {
               margin: '24px 16px',
               backgroundColor: '#313338',
               padding: 24,
-              minHeight: 280,
+              minHeight: 710,
               borderRadius: borderRadiusLG,
             }}>
             <Routes>
-              <Route path='/' element={<LoginPage />} />
-              <Route path='/login' element={<LoginPage />} />
-              <Route path='/project' element={<LoginPage />} />
               <Route path='/profile/:userId?' Component={withSuspense(ProfileContainer)} />
               <Route path='/dialogs' element={<Dialogs />} />
               <Route path='/chat' Component={withSuspense(ChatPage)} />
