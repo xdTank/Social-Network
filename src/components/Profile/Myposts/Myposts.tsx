@@ -1,45 +1,29 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import s from "./Myposts.module.css"
 import icon from "../../../assets/img/44884218_345707102882519_2446069589734326272_n.jpg"
-import { InjectedFormProps, reduxForm } from "redux-form";
-
-import { GetStringKeys, Input, createField } from "../../../FormsControl/FormsControl";
 import { PostType } from "../../../types/types";
 import { useSelector } from "react-redux";
 import { AppStateType } from "../../../redux/reduxStore";
 import { useDispatch } from "react-redux";
 import { actions } from "../../../redux/profileReducer";
-import { Button } from "antd";
+import { Button, Form, Input } from "antd";
+import { LikeOutlined } from "@ant-design/icons";
+import { selectProfile } from "../../../redux/profileSelector";
 
 
-const Posts: FC<PostType> = (props) => {
-    return (
-        <div className={s.likeCountBlock}>
-            <img src={icon} alt="!" />
-            <div className={s.massegeBlock}>
-                {props.massege}
-            </div>
-            <div className="likeCount">
-                {props.likeCount}
-            </div>
-        </div>
-    )
-}
 export type MyPostsPropsType = {
     posts: Array<PostType>
+
 }
 const Myposts: FC = React.memo(() => {
     const posts = useSelector((state: AppStateType) => state.profilePage.posts)
-    const dispatch = useDispatch<any>()
     let postsElements = [...posts].reverse().map(p => <Posts massege={p.massege} likeCount={p.likeCount} id={0} />)
-    let onAddPost = (values: AddPostFormValuesType) => {
-        dispatch(actions.addPostActionCreator(values.newPostText))
-    }
+
     return (
-        <div style={{}}  >
-            <div style={{ display: "flex", borderTop: '1px solid grey' , }}>
-                <div style={{paddingTop: '20px' ,  }}>
-                    <AddNewPostReduxForm onSubmit={onAddPost} />
+        <div>
+            <div style={{ display: "flex", borderTop: '1px solid grey', }}>
+                <div style={{ paddingTop: '20px', marginLeft: '50px' }}>
+                    <AddNewPostForm />
                 </div>
             </div>
             <div className={s.posts} style={{ height: '500px', overflowY: 'auto' }}>
@@ -48,24 +32,50 @@ const Myposts: FC = React.memo(() => {
         </div >
     )
 })
-type PropsType = {
 
-}
-export type AddPostFormValuesType = {
-    newPostText: string
-}
-type AddPostFormValuesKeysType = GetStringKeys<AddPostFormValuesType>
-const AddNewPostForm: FC<InjectedFormProps<AddPostFormValuesType, PropsType> & PropsType> = (props) => {
+const Posts: FC<PostType> = (props) => {
+    const profile = useSelector(selectProfile)
     return (
-        <form>
-            <div style={{ display: 'flex'  , alignItems: 'center' , gap: '20px'}}>
-                {createField<AddPostFormValuesKeysType>("Yuor post", 'newPostText', [], Input)}
-                <Button onClick={props.handleSubmit}>Add posts</Button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', margin: '25px' }}>
+            <img src={profile?.photos.large || icon} alt="!" style={{ width: '50px', borderRadius: '50%' }} />
+            <div style={{ height: '40px', textAlign: 'center', alignItems: 'center', display: 'flex', padding: '5px', color: '#fff' }}>
+                {props.massege}
             </div>
-        </form>
+            <div style={{ color: '#fff', }}>
+                <LikeOutlined />
+                {props.likeCount}
+            </div>
+        </div>
     )
 }
 
-const AddNewPostReduxForm = reduxForm<AddPostFormValuesType, PropsType>({ form: "ProfileAddNewPostForm" })(AddNewPostForm)
+
+const AddNewPostForm = () => {
+    const dispatch = useDispatch<any>()
+    const [form] = Form.useForm()
+
+    const onFinish = (values: any) => {
+        dispatch(actions.addPostActionCreator(values.newPostText))
+        form.resetFields()
+    }
+    return (
+        <Form
+            form={form}
+            name="myPost_form"
+            onFinish={onFinish}
+            autoComplete="off"
+        >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <Form.Item name="newPostText">
+                    <Input placeholder="Yuor post" size="small" allowClear />
+                </Form.Item>
+                <Form.Item>
+                    <Button style={{ backgroundColor: '#fff' }} size="small" htmlType="submit" >Add posts</Button>
+                </Form.Item>
+            </div>
+        </Form >
+    )
+}
+
 
 export default Myposts

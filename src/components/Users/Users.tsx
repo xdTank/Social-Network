@@ -1,13 +1,13 @@
 import React, { FC, useEffect } from "react";
 import User from "./User";
 import Paginator from '../common/Paginator/Paginator'
-import { UsersSearchForm } from "./UsersSearchForm"
 import { FilterType, requestUsers } from "../../redux/usersReducer";
 import { useSelector } from "react-redux";
 import { getCurrentPage, getFollowingInProgress, getPageSize, getTotalUsersCount, getUsers, getUsersFilter } from "../../redux/usersSelectors";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { follow, unfollow } from "../../redux/usersReducer";
+import UsersSearchForm from "./UsersSearchForm";
 
 
 type PropsType = {
@@ -74,9 +74,7 @@ export const Users: FC<PropsType> = () => {
     const onPageChanged = (pageNumber: number) => {
         dispatch(requestUsers(pageNumber, pageSize, filter))
     }
-    const onFilterChanged = (filter: FilterType) => {
-        dispatch(requestUsers(1, pageSize, filter))
-    }
+
     const onUnfollow = (userId: number) => {
         dispatch(unfollow(userId))
     }
@@ -84,11 +82,11 @@ export const Users: FC<PropsType> = () => {
         dispatch(follow(userId))
     }
 
-    return <div>
+    return <div style={{ width: '1200px'}}>
         <div>
-            <UsersSearchForm onFilterChanged={onFilterChanged} />
+            <UsersSearchForm pageSize={pageSize} />
         </div>
-        <div style={{ overflowY: 'auto', height: '650px' }}>
+        <div style={{ overflowY: 'auto', height: '660px' }}>
             {
                 users.map(u => <User user={u}
                     followingInProgress={followingInProgress}
@@ -101,7 +99,7 @@ export const Users: FC<PropsType> = () => {
 
             }
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '25px' }}>
             <Paginator totalItemsCount={totalUsersCount} pageSize={pageSize} currentPage={currentPage} onPageChanged={onPageChanged} />
         </div>
     </div>

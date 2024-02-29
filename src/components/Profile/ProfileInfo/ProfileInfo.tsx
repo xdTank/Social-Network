@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useState } from "react";
+import React, { FC, useState } from "react";
 import s from "./ProfileInfo.module.css"
 import Preloader from '../../common/Preloader/Preloader'
 import StatusWithHooks from "./ProfileStatusWithHooks";
@@ -7,10 +7,7 @@ import ProfileDataForm from "./ProfileDataForm";
 import { ContactsType, ProfileType } from "../../../types/types";
 import { useSelector } from "react-redux";
 import { selectProfile, selectStatus } from "../../../redux/profileSelector";
-import { useDispatch } from "react-redux";
-import { savePhoto, saveProfile } from "../../../redux/profileReducer";
 import { Button } from "antd";
-import AvatarUploadButton from "../../common/UploadButton/uploadButton";
 
 type PropsType = {
     isOwner: boolean
@@ -29,16 +26,15 @@ const ProfileInfo: FC<PropsType> = ({ isOwner, }) => {
     return (
         <div className={s.profileBlock}>
 
-            <div className={s.ava} style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center' }}>
+            <div className={s.ava} style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: '50px' }}>
                 <div>
-                    <img src={profile.photos.large || userPhoto} alt="!" />
+                    {!editMode && <img src={profile.photos.large || userPhoto} alt="!" />}
                     <div style={{ textAlign: 'center' }}>
-                        <StatusWithHooks status={status} />
+                        {!editMode && <StatusWithHooks status={status} />}
                     </div>
                 </div>
                 <div>
-                    {isOwner && editMode && <AvatarUploadButton />}
-                    {editMode ? <ProfileDataForm setEditMode={setEditMode} profile={profile} /> :
+                    {editMode ? <ProfileDataForm setEditMode={setEditMode} profile={profile} isOwner={isOwner} /> :
                         <div> <ProfileData profile={profile} isOwner={isOwner} onEditMode={() => { setEditMode(true) }} /> </div>}
                 </div>
             </div>
@@ -54,11 +50,9 @@ type ProfileDataPropsType = {
 }
 const ProfileData: FC<ProfileDataPropsType> = ({ profile, isOwner, onEditMode }) => {
     return <div style={{ color: '#DBDEE1' }}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
             {profile.fullName}
-            <div>
-                {isOwner && <Button onClick={onEditMode} style={{ width: '100px', backgroundColor: '#fff', }} size="small" >Edit profile</Button>}
-            </div>
         </div>
         <div style={{}}>
             <b>Looking for a job</b>:  {profile.lookingForAJob ? "yes" : "no"}
@@ -84,7 +78,9 @@ const ProfileData: FC<ProfileDataPropsType> = ({ profile, isOwner, onEditMode })
                     })}
                 </div>
             )}
-
+        <div style={{ margin: '20px' }}>
+            {isOwner && <Button onClick={onEditMode} style={{ width: '100px', backgroundColor: '#fff', }} size="small" >Edit profile</Button>}
+        </div>
     </div >
 }
 

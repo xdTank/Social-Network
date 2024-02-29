@@ -29,7 +29,7 @@ export const Textarea: FC<WrappedFieldProps> = (props) => {
 
 export const Input: FC<WrappedFieldProps> = (props) => {
     const { input, meta, ...restProps } = props;
-    return <FormControl {...props}><input {...input} {...restProps} /></FormControl>
+    return <FormControl {...props}><input   {...input} {...restProps} /></FormControl>
 }
 
 export function createField<FormKeysType extends string>(placeholder: string | undefined, name: FormKeysType, validators: Array<FieldValidatorsType>, component: FC<WrappedFieldProps>, props = {}, text = "") {

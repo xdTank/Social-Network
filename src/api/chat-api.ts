@@ -48,12 +48,16 @@ function createChannel() {
 export const chatAPI = {
     start() {
         createChannel()
+
     },
     stop() {
-        subscribers["messages-received"] = []
-        subscribers['status-changed'] = []
-        cleanUp()
-        ws?.close()
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            subscribers["messages-received"] = []
+            subscribers['status-changed'] = []
+            cleanUp()
+            ws?.close()
+
+        }
     },
     subscribe(eventName: EventsNameTypes, callback: SubscriberType | StatusChangedSubscriberType) {
         //@ts-ignore
@@ -73,6 +77,7 @@ export const chatAPI = {
 }
 
 export type ChatMessageAPIType = {
+    timestamp: any
     message: string
     photo: string
     userId: number

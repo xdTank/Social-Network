@@ -1,61 +1,58 @@
-import { Field, Form, Formik } from "formik"
-import { FilterType } from "../../redux/usersReducer"
-import React, { FC } from "react"
-import s from './Users.module.css'
-import { useSelector } from "react-redux"
-import { getUsersFilter } from "../../redux/usersSelectors"
-import { Button, Input, Tooltip } from "antd"
-import { SearchOutlined } from "@ant-design/icons"
+import { Button, Select } from "antd";
+import React from 'react';
+import { Form, Input } from 'antd';
+import { useSelector } from "react-redux";
+import { getUsersFilter } from "../../redux/usersSelectors";
+import { FilterType, requestUsers } from "../../redux/usersReducer";
+import { useDispatch } from "react-redux";
+import { SearchOutlined } from "@ant-design/icons";
 
-const usersSearchFormValidate = (values: any) => {
-    const error = {}
-    return error
-}
+
 type PropsType = {
-    onFilterChanged: (filter: FilterType) => void
+    pageSize: number
 }
-// type FormType = {
-//     term: string,
-//     friend: 'true' | 'false' | 'null'
-// }
-
-export const UsersSearchForm: FC<PropsType> = React.memo((props) => {
+const UsersSearchForm: React.FC<PropsType> = ({ pageSize }) => {
+    const dispatch = useDispatch<any>()
     const filter = useSelector(getUsersFilter)
-    let submit = (values: FilterType, { setSubmitting }: { setSubmitting: (setSubmitting: boolean) => void }) => {
-        // let filter: FilterType = {
-        //     term: values.term,
-        //     friend: values.friend === "null" ? null : values.friend === "true" ? true : false
-        // }
-        props.onFilterChanged(values)
-        setSubmitting(false)
+    const onFinish = (values: FilterType) => {
+        dispatch(requestUsers(1, pageSize, values))
     }
-    return <div>
-        <Formik
-            initialValues={{ term: filter.term, friend: filter.friend }}
-            enableReinitialize={true}
-            validate={usersSearchFormValidate}
-            onSubmit={submit}
-        >
-            {({ isSubmitting }) => (
-                <Form className={s.searchBox}>
-                    <div className={s.selectBox}>
-                        <Field className={s.select} name="friend" as="select">
-                            <option value="null">All</option>
-                            <option value="true">Only followed</option>
-                            <option value="false">Only unfollowed</option>
-                        </Field>
-                    </div>
-                    <div className={s.search} >
-                        <Field type="text" name="term" placeholder={'Search'} autocomplete="off" />
-                        <button type="submit" disabled={isSubmitting}>
-                            <Tooltip title="search">
-                                <Button title="search" type="text" shape="circle" icon={<SearchOutlined />} />
-                            </Tooltip>
-                        </button>
+    return (
+        <>
+            <Form layout="vertical"
+                style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+                onFinish={onFinish}
+                autoComplete="off"
+                initialValues={{ term: filter.term, friend: filter.friend }}>
+                <Form.Item name='friend'>
+                    <Select
+                        defaultValue={null}
+                        style={{ width: 110 }}
+                        size="small"
+                        options={[
+                            { value: null, label: 'All' },
+                            { value: 'true', label: 'Only followed' },
+                            { value: 'false', label: 'Only unfollowed' },
+                            { value: 'disabled', label: 'Disabled', disabled: true },
+                        ]}
+                    />
+                </Form.Item>
+                <Form.Item name="term" style={{ width: '100%' }} >
+                    <Input placeholder="Search"
+                        suffix={
+                            <Button type='text' style={{ backgroundColor: 'transparent', display: 'flex', alignItems: 'center', textAlign: 'center', width: "1px" }} htmlType="submit" ><SearchOutlined /></Button>
+                        }
+                    />
+                </Form.Item>
+                <Form.Item>
+                </Form.Item>
+            </Form>
+        </>
+    );
+}
 
-                    </div>
-                </Form>
-            )}
-        </Formik>
-    </div>
-})
+
+export default UsersSearchForm;
+
+
+

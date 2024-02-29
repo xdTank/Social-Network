@@ -1,68 +1,91 @@
-import React, { FC } from "react";
-import { InjectedFormProps, reduxForm } from "redux-form";
-import { GetStringKeys, Input, createField } from "../../FormsControl/FormsControl";
-import { required } from "../../utils/validators/validators";
-import { login } from "../../redux/authReducer";
-import { Navigate, Route, Routes } from "react-router-dom";
-import style from "../../FormsControl/FormsControl.module.css"
+import React, { FC, useState } from 'react';
+import { Button, Checkbox, Form, Input } from 'antd';
+import { login } from '../../redux/authReducer';
+import { useDispatch } from 'react-redux';
 import s from './login.module.css'
-import { AppStateType } from "../../redux/reduxStore";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { AppStateType } from '../../redux/reduxStore';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
 
 
-type LoginFormOwnProps = {
-    captchaUrl: string | null
-}
-type LoginFormType = {
-    email: string
-    password: string
-    rememberMe: boolean
-    captcha: string
-}
+type FieldType = {
+    email?: string;
+    password?: string;
+    rememberMe?: string;
+    captcha?: string | null
+};
 
-type LoginFormValuesKeysType = GetStringKeys<LoginFormType>
+const LoginForm: React.FC = () => {
+    const captchaUrl = useSelector((state: AppStateType) => state.auth.captchaUrl)
+    const dispatch = useDispatch<any>()
+    const errorMessage = useSelector((state: AppStateType) => state.auth.errorMessage)
+    const onFinish = async (values: any) => {
+        dispatch(login(values.email, values.password, values.rememberMe, values.captcha))
+    }
+    const onFinishFailed = (errorInfo: any) => {
+        console.log('Failed:', errorInfo);
+    }
 
-const LoginForm: FC<InjectedFormProps<LoginFormType, LoginFormOwnProps> & LoginFormOwnProps> = ({ handleSubmit, error, captchaUrl }) => {
     return (
-        <div className={s.wrapper}>
-            <form onSubmit={handleSubmit}>
-                <h1>Login</h1>
-                <div className={s.inputBox}>{createField<LoginFormValuesKeysType>("Email", "email", [required], Input)} <i className='bx bxs-user'></i></div>
-                <div className={s.inputBox}>{createField<LoginFormValuesKeysType>("Password", "password", [required], Input, { type: "password" })} <i className='bx bxs-lock-alt'></i></div>
-                <div className={s.rememberForgot}>{createField<LoginFormValuesKeysType>(undefined, "rememberMe", [], Input, { type: "checkbox" }, "Remember me")}
+        <Form
+            name="basic"
+            style={{ maxWidth: 600 }}
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            className={s.wrapper}
+        >
+            <h1>Login</h1>
+            <Form.Item<FieldType>
+                name="email"
+                className={s.inputBox}
+                rules={[{ required: true, message: 'Please input your username!' }]}
+            >
+                <Input placeholder='Email' style={{ backgroundColor: 'transparent' }}  />
+            </Form.Item>
+            <Form.Item<FieldType>
+                name="password"
+                className={s.inputBox}
+                rules={[{ required: true, message: 'Please input your password!' }]}
+            >
+                <Input placeholder='Password' style={{ backgroundColor: 'transparent' }} type='password'  />
+            </Form.Item>
+            <Form.Item<FieldType>
+                name="rememberMe"
+                valuePropName="checked"
+            >
+                <div className={s.rememberForgot}>
+                    <Checkbox style={{ color: '#fff' }}>Remember me</Checkbox>
                     <a className="" href="#">Forgot password?</a>
                 </div>
-                {captchaUrl && <img src={captchaUrl} />}
-                {captchaUrl && createField<LoginFormValuesKeysType>("Symbols from image", "captcha", [required], Input)}
-
-                {error && <div className={style.formSummaryError}>{error}</div>}
-                <div>
-                    <button>Login</button>
-                </div>
-                <div className={s.registerLink}>
-                    <p>Don't have an account? <a href="https://social-network.samuraijs.com/signUp">Register</a></p>
-                </div>
-            </form>
-        </div>
+            </Form.Item>
+            {errorMessage && <div style={{ color: 'red', margin: '5px', textAlign: 'center' }}>{errorMessage}</div>}
+            {captchaUrl && <img src={captchaUrl} />}
+            {captchaUrl && <Form.Item<FieldType>
+                name='captcha'
+                rules={[{ required: true, message: 'Please input your symbols!' }]}>
+                <Input />
+            </Form.Item>
+            }
+            <Form.Item >
+                <Button type="primary" htmlType="submit">
+                    Login
+                </Button>
+            </Form.Item>
+            <Form.Item
+                className={s.registerLink}
+            >
+                <p>Don't have an account? <a href="https://social-network.samuraijs.com/signUp">Register</a></p>
+            </Form.Item>
+        </Form >
     )
 }
 
+export const LoginPage = () => {
 
-
-const LoginReduxForm = reduxForm<LoginFormType, LoginFormOwnProps>({
-    form: 'Login'
-})(LoginForm)
-
-export const LoginPage: FC = () => {
-
-    const captchaUrl = useSelector((state: AppStateType) => state.auth.captchaUrl)
     const isAuth = useSelector((state: AppStateType) => state.auth.isAuth)
-    const dispatch = useDispatch<any>()
 
-    const onSubmit = (formData: any) => {
-        dispatch(login(formData.email, formData.password, formData.rememberMe, formData.captcha))
-    }
 
     if (isAuth) {
         return <Routes>
@@ -71,6 +94,8 @@ export const LoginPage: FC = () => {
         </Routes>
     }
     return <div className={s.login}>
-        <LoginReduxForm onSubmit={onSubmit} captchaUrl={captchaUrl} />
+        <LoginForm />
     </div>
 }
+
+export default LoginForm;

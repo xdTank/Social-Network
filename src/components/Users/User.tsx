@@ -3,7 +3,7 @@ import styles from "./Users.module.css";
 import userPhoto from "../../assets/img/44884218_345707102882519_2446069589734326272_n.jpg";
 import { Link, NavLink } from "react-router-dom";
 import { UserType } from '../../types/types';
-import { Button } from 'antd';
+import { Button, Flex } from 'antd';
 
 type PropsType = {
     user: UserType
@@ -14,7 +14,7 @@ type PropsType = {
 
 let User: FC<PropsType> = ({ user, followingInProgress, unfollow, follow }) => {
     return (
-        <div >
+        <div style={{ display: 'flex', margin: '10px', alignItems: 'center', gap: '10px' }}>
             <div className={styles.userBlock}>
                 <Link to={'/profile/' + user.id}>
                     <img src={user.photos.small != null ? user.photos.small : userPhoto} alt='!'
@@ -23,14 +23,14 @@ let User: FC<PropsType> = ({ user, followingInProgress, unfollow, follow }) => {
             </div>
             <div>
                 {user.followed
-                    ? <Button disabled={followingInProgress
+                    ? <Button style={{ backgroundColor: '#fff', width: '100px' }} size='small' disabled={followingInProgress
                         .some(id => id === user.id)}
                         onClick={() => { unfollow(user.id) }}>
                         Unfollow</Button>
-                    : <Button disabled={followingInProgress.some(id => id === user.id)}
+                    : <Button style={{ backgroundColor: '#fff', width: '100px' }} size='small' disabled={followingInProgress.some(id => id === user.id)}
                         onClick={() => { follow(user.id) }}>
                         Follow</Button>}
-                <div>
+                <div style={{ color: '#fff'}}>
                     <div>{user.name}</div>
                     <div>{user.status}</div>
                     <div>{"user.location.country"}</div>

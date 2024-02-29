@@ -16,7 +16,7 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined
 } from '@ant-design/icons';
-import { Button, Layout, Menu, Select, theme } from 'antd';
+import { Button, Layout, Menu, theme } from 'antd';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import Dialogs from './components/Dialogs/Dialogs';
