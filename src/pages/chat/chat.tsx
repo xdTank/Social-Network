@@ -98,8 +98,9 @@ export const AddMessageForm: React.FC = () => {
         <Form
             onFinish={sendMessageHandler}
             layout="inline"
+            style={{paddingTop: '10px'}}
         >
-            <Form.Item style={{ width: '100%' }} >
+            <Form.Item style={{ width: '100%'}} >
                 <Input suffix={
                     <Button type="text" style={{ backgroundColor: 'transparent', color: '#fff', textAlign: 'center', display: 'flex', alignItems: 'center', left: '15px' }}>
                         <SendOutlined />
