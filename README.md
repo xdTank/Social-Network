@@ -1,4 +1,4 @@
-https://xdtank.github.io/project/
+https://xdtank.github.io/Social-Network/
 
 Email: free@samuraijs.com
 
