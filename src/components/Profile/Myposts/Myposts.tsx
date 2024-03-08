@@ -26,7 +26,7 @@ const Myposts: FC = React.memo(() => {
                     <AddNewPostForm />
                 </div>
             </div>
-            <div className={s.posts} style={{ height: '60vh', overflowY: 'auto' }}>
+            <div className={s.posts} style={{ height: '55vh', overflowY: 'auto' }}>
                 {postsElements}
             </div>
         </div >
