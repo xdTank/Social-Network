@@ -1,5 +1,3 @@
-https://xdtank.github.io/Social-Network/
-
+https://xdtank.github.io/project/
 Email: free@samuraijs.com
-
 Password: free
