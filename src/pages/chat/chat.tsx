@@ -57,7 +57,7 @@ export const Messages: React.FC = () => {
         }
     }, [isAutoScroll])
     return (
-        <div style={{ height: '740px', overflowY: 'auto' }} onScroll={scrollHandler}>
+        <div style={{ height: '78vh', overflowY: 'auto' }} onScroll={scrollHandler}>
             {messages.map((m: ChatMessageAPIType) => <Message key={m.userId} message={m} />
             )}
             <div ref={messagesAnchorRef}></div>
@@ -98,9 +98,9 @@ export const AddMessageForm: React.FC = () => {
         <Form
             onFinish={sendMessageHandler}
             layout="inline"
-            style={{paddingTop: '10px'}}
+            style={{ paddingTop: '10px' }}
         >
-            <Form.Item style={{ width: '100%'}} >
+            <Form.Item style={{ width: '100%' }} >
                 <Input suffix={
                     <Button type="text" style={{ backgroundColor: 'transparent', color: '#fff', textAlign: 'center', display: 'flex', alignItems: 'center', left: '15px' }}>
                         <SendOutlined />

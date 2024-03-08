@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { follow, unfollow } from "../../redux/usersReducer";
 import UsersSearchForm from "./UsersSearchForm";
+import { Pagination } from "antd";
 
 
 type PropsType = {
@@ -82,11 +83,11 @@ export const Users: FC<PropsType> = () => {
         dispatch(follow(userId))
     }
 
-    return <div style={{ width: '1200px'}}>
+    return <div style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', flexDirection: 'column', }}>
         <div>
             <UsersSearchForm pageSize={pageSize} />
         </div>
-        <div style={{ overflowY: 'auto', height: '660px' }}>
+        <div style={{ overflowY: 'auto', height: '70vh' }}>
             {
                 users.map(u => <User user={u}
                     followingInProgress={followingInProgress}
@@ -99,7 +100,7 @@ export const Users: FC<PropsType> = () => {
 
             }
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '25px' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem', flexShrink: 0 }}>
             <Paginator totalItemsCount={totalUsersCount} pageSize={pageSize} currentPage={currentPage} onPageChanged={onPageChanged} />
         </div>
     </div>
