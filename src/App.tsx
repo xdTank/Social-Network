@@ -145,13 +145,13 @@ const App: React.FC = () => {
 
 const MainApp: FC = () => {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Provider store={store}>
         <React.Suspense fallback={<Preloader />}>
           <App />
         </React.Suspense>
       </Provider>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
