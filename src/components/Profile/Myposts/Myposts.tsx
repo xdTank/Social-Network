@@ -3,12 +3,12 @@ import s from "./Myposts.module.css"
 import icon from "../../../assets/img/44884218_345707102882519_2446069589734326272_n.jpg"
 import { PostType } from "../../../types/types";
 import { useSelector } from "react-redux";
-import { AppStateType } from "../../../redux/reduxStore";
+import { AppStateType } from "../../../store/store";
 import { useDispatch } from "react-redux";
-import { actions } from "../../../redux/profileReducer";
+import { actions } from "../../../store/reducers/profileReducer";
 import { Button, Form, Input } from "antd";
 import { LikeOutlined } from "@ant-design/icons";
-import { selectProfile } from "../../../redux/profileSelector";
+import { selectProfile } from "../../../store/selectors/profileSelector";
 
 
 export type MyPostsPropsType = {

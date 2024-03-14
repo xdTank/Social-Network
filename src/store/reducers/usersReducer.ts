@@ -1,8 +1,8 @@
 import { Dispatch } from "redux"
-import { usersAPI } from "../api/users-api"
-import { UserType } from "../types/types"
-import { updateObjectInArray } from "../utils/objectHelpers"
-import { BaseThunkType, InferActionsTypes } from "./reduxStore"
+import { usersAPI } from "../../api/users-api"
+import { UserType } from "../../types/types"
+import { updateObjectInArray } from "../../utils/objectHelpers"
+import { BaseThunkType, InferActionsTypes } from "../store"
 
 
 

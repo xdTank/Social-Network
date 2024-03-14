@@ -6,7 +6,7 @@ import userPhoto from "../../../assets/img/44884218_345707102882519_244606958973
 import ProfileDataForm from "./ProfileDataForm";
 import { ContactsType, ProfileType } from "../../../types/types";
 import { useSelector } from "react-redux";
-import { selectProfile, selectStatus } from "../../../redux/profileSelector";
+import { selectProfile, selectStatus } from "../../../store/selectors/profileSelector";
 import { Button } from "antd";
 
 type PropsType = {

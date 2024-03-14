@@ -2,8 +2,8 @@ import { Button, Select } from "antd";
 import React from 'react';
 import { Form, Input } from 'antd';
 import { useSelector } from "react-redux";
-import { getUsersFilter } from "../../redux/usersSelectors";
-import { FilterType, requestUsers } from "../../redux/usersReducer";
+import { getUsersFilter } from "../../store/selectors/usersSelectors";
+import { FilterType, requestUsers } from "../../store/reducers/usersReducer";
 import { useDispatch } from "react-redux";
 import { SearchOutlined } from "@ant-design/icons";
 

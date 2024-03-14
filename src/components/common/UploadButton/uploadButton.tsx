@@ -3,7 +3,7 @@ import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
 import type { GetProp, UploadProps } from 'antd';
 import { useDispatch } from 'react-redux';
-import { savePhoto } from '../../../redux/profileReducer';
+import { savePhoto } from '../../../store/reducers/profileReducer';
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 

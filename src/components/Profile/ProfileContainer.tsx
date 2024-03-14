@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import Profile from "./Profile";
-import { getUserProfile, getStatus } from "../../redux/profileReducer";
+import { getUserProfile, getStatus } from "../../store/reducers/profileReducer";
 import { Navigate, Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { selectAuthorizedUserId, selectIsAuth } from "../../redux/authSelectors";
+import { selectAuthorizedUserId, selectIsAuth } from "../../store/selectors/authSelectors";
 
 
 

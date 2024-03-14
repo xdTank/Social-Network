@@ -1,12 +1,12 @@
 import React, { FC, lazy, useEffect, useState } from 'react';
-import { BrowserRouter, HashRouter, Link, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import './App.css';
 import 'antd'
 import { LoginPage } from './components/Login/login';
 import { Provider } from 'react-redux';
-import { initializeApp } from './redux/appReducer';
+import { initializeApp } from './store/reducers/appReducer';
 import Preloader from './components/common/Preloader/Preloader';
-import store, { AppStateType } from './redux/reduxStore';
+import store, { AppStateType } from './store/store';
 import { withSuspense } from './hoc/withSuspense';
 import { UsersPage } from './components/Users/UsersContainer';
 import {
@@ -20,9 +20,10 @@ import { Button, Layout, Menu, theme } from 'antd';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import Dialogs from './components/Dialogs/Dialogs';
-import { selectIsAuth } from './redux/authSelectors';
+import { selectIsAuth } from './store/selectors/authSelectors';
 import { Header } from 'antd/es/layout/layout';
 import DropdownMenu from './components/common/DropdownMenu/dropdownmenu';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 
 
@@ -144,12 +145,15 @@ const App: React.FC = () => {
 
 
 const MainApp: FC = () => {
+  const queryClient = new QueryClient
   return (
     <BrowserRouter>
       <Provider store={store}>
-        <React.Suspense fallback={<Preloader />}>
-          <App />
-        </React.Suspense>
+        <QueryClientProvider client={queryClient}>
+          <React.Suspense fallback={<Preloader />}>
+            <App />
+          </React.Suspense>
+        </QueryClientProvider>
       </Provider>
     </BrowserRouter>
   )

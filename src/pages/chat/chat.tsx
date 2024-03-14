@@ -6,10 +6,10 @@ import {
 } from '@ant-design/icons';
 import { ChatMessageAPIType } from "../../api/chat-api";
 import { useDispatch } from "react-redux";
-import { sendMessage, startChating, stopChating, } from "../../redux/chatReducer";
+import { sendMessage, startChating, stopChating, } from "../../store/reducers/chatReducer";
 import { useSelector } from "react-redux";
-import { AppStateType } from "../../redux/reduxStore";
-import { selectIsAuth } from "../../redux/authSelectors";
+import { AppStateType } from "../../store/store";
+import { selectIsAuth } from "../../store/selectors/authSelectors";
 import { useNavigate } from "react-router-dom";
 
 

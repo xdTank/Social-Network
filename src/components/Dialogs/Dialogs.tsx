@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Empty, Flex } from "antd";
 import { useSelector } from "react-redux";
-import { selectIsAuth } from "../../redux/authSelectors";
+import { selectIsAuth } from "../../store/selectors/authSelectors";
 import { useNavigate } from "react-router-dom";
 
 

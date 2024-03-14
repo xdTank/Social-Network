@@ -1,6 +1,6 @@
 import { FormAction } from "redux-form";
-import { ChatMessageAPIType, StatusType, chatAPI } from "../api/chat-api";
-import { BaseThunkType, InferActionsTypes } from "./reduxStore";
+import { ChatMessageAPIType, StatusType, chatAPI } from "../../api/chat-api";
+import { BaseThunkType, InferActionsTypes } from "../store";
 import { Dispatch } from "redux";
 import { v1 } from "uuid";
 import { useSelector } from "react-redux";

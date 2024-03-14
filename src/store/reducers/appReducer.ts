@@ -1,5 +1,5 @@
 import { getAuthUserData } from "./authReducer"
-import { InferActionsTypes } from "./reduxStore"
+import { InferActionsTypes } from "../store"
 
 
 

@@ -1,13 +1,13 @@
 import { FormAction, stopSubmit } from "redux-form"
-import { ResultCodeForCaptcha, ResultCodes, } from "../api/api"
-import { authAPI } from "../api/auth-api"
-import { securityAPI } from "../api/security-api"
-import { BaseThunkType, InferActionsTypes } from "./reduxStore"
+import { ResultCodeForCaptcha, ResultCodes, } from "../../api/api"
+import { authAPI } from "../../api/auth-api"
+import { securityAPI } from "../../api/security-api"
+import { BaseThunkType, InferActionsTypes } from "../store"
 
 
 
 
-let initialState = {
+const initialState = {
     id: null as number | null,
     email: null as string | null,
     login: null as string | null,

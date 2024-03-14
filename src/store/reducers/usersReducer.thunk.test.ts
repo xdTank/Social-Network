@@ -1,5 +1,5 @@
-import { ResponseType, ResultCodes } from "../api/api"
-import { usersAPI } from "../api/users-api"
+import { ResponseType, ResultCodes } from "../../api/api"
+import { usersAPI } from "../../api/users-api"
 import { actions, follow, unfollow } from "./usersReducer"
 
 jest.mock('../api/users-api')

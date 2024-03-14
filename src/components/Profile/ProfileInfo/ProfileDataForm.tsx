@@ -2,7 +2,7 @@ import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { ProfileType } from '../../../types/types';
 import { useDispatch } from 'react-redux';
-import { saveProfile } from '../../../redux/profileReducer';
+import { saveProfile } from '../../../store/reducers/profileReducer';
 import AvatarUploadButton from '../../common/UploadButton/uploadButton';
 import userPhoto from "../../../assets/img/44884218_345707102882519_2446069589734326272_n.jpg"
 

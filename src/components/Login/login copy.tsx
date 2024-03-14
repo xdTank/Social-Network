@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { FC, useState } from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
-import { login } from '../../store/reducers/authReducer';
-import { useDispatch } from 'react-redux';
+
 import s from './login.module.css'
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { AppStateType } from '../../store/store';
-import { useAppSelector } from '../../hooks/redux';
-
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { authAPI } from '../../api/auth-api';
+import { ResultCodes } from '../../api/api';
+import { useDispatch } from 'react-redux';
+import { actions } from '../../store/reducers/authReducer';
 
 
 type FieldType = {
@@ -18,16 +20,28 @@ type FieldType = {
 };
 
 const LoginForm: React.FC = () => {
-    const captchaUrl = useAppSelector(state => state.auth.captchaUrl)
-    const dispatch = useDispatch<any>()
+    const queryClient = useQueryClient()
+    const { data, isError, isLoading } = useQuery('auth/me', authAPI.me, {
+        keepPreviousData: true,
+        refetchOnWindowFocus: false
+    })
+    console.log(data)
+
+    const mutation = useMutation((values: any) => authAPI.login(values.email, values.password, values.rememberMe, values.captcha), {
+        onSuccess: () => queryClient.invalidateQueries(['auth/login'])
+    })
+
+
+    const captchaUrl = useSelector((state: AppStateType) => state.auth.captchaUrl)
     const errorMessage = useSelector((state: AppStateType) => state.auth.errorMessage)
-    const onFinish = async (values: any) => {
-        dispatch(login(values.email, values.password, values.rememberMe, values.captcha))
+    const onFinish = (values: any) => {
+        mutation.mutate(values)
     }
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     }
-
+    if (isLoading) return <div>Идет загрузка...</div>;
+    if (isError) return <div><h3>Ошибка при получении данных</h3></div>
     return (
         <Form
             name="basic"

@@ -1,12 +1,12 @@
 import React, { FC, useEffect } from "react";
 import User from "./User";
 import Paginator from '../common/Paginator/Paginator'
-import { FilterType, requestUsers } from "../../redux/usersReducer";
+import { FilterType, requestUsers } from "../../store/reducers/usersReducer";
 import { useSelector } from "react-redux";
-import { getCurrentPage, getFollowingInProgress, getPageSize, getTotalUsersCount, getUsers, getUsersFilter } from "../../redux/usersSelectors";
+import { getCurrentPage, getFollowingInProgress, getPageSize, getTotalUsersCount, getUsers, getUsersFilter } from "../../store/selectors/usersSelectors";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { follow, unfollow } from "../../redux/usersReducer";
+import { follow, unfollow } from "../../store/reducers/usersReducer";
 import UsersSearchForm from "./UsersSearchForm";
 import { Pagination } from "antd";
 

@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { connect } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { AppStateType } from "../redux/reduxStore";
+import { AppStateType } from "../store/store";
 
 function mapStateToPropsforRedirect(state: AppStateType) {
     return {

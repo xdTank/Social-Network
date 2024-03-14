@@ -1,4 +1,4 @@
-import { InferActionsTypes } from "./reduxStore"
+import { InferActionsTypes } from "../store"
 
 
 type DialogType = {

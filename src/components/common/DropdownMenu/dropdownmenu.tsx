@@ -4,9 +4,9 @@ import type { MenuProps } from 'antd';
 import { Avatar, Button, Dropdown, Flex, Space } from 'antd';
 import { UserOutlined } from '@ant-design/icons'
 import { useSelector } from 'react-redux';
-import { selectLogin } from '../../../redux/authSelectors';
+import { selectLogin } from '../../../store/selectors/authSelectors';
 import { useDispatch } from 'react-redux';
-import { logout } from '../../../redux/authReducer';
+import { logout } from '../../../store/reducers/authReducer';
 
 
 
