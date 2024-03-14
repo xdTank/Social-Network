@@ -57,7 +57,7 @@ export const Messages: React.FC = () => {
         }
     }, [isAutoScroll])
     return (
-        <div style={{ height: '78vh', overflowY: 'auto' }} onScroll={scrollHandler}>
+        <div style={{ height: '74vh', overflowY: 'auto' }} onScroll={scrollHandler}>
             {messages.map((m: ChatMessageAPIType) => <Message key={m.userId} message={m} />
             )}
             <div ref={messagesAnchorRef}></div>
