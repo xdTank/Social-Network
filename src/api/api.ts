@@ -1,7 +1,15 @@
 import axios from "axios";
 
 import { UserType } from "../types/types";
+import { fetchBaseQuery } from "@reduxjs/toolkit/query";
 
+export const baseQuery = fetchBaseQuery({
+    baseUrl: 'https://social-network.samuraijs.com/api/1.0/',
+    prepareHeaders: (headers) => {
+        headers.set('api-key', '0b65aef7-6501-45ae-a51f-b39acf0522de')
+        return headers
+    }
+})
 export const instance = axios.create({
     withCredentials: true,
     baseURL: 'https://social-network.samuraijs.com/api/1.0/',
@@ -16,9 +24,11 @@ export type ResponseType<D = {}, RC = ResultCodes> = {
     resultCode: RC
 }
 
+
 export enum ResultCodes {
     Success = 0,
     Error = 1,
+    CaptchaIsRequired = 10
 }
 export enum ResultCodeForCaptcha {
     CaptchaIsRequired = 10
@@ -27,6 +37,7 @@ export enum ResultCodeForCaptcha {
 
 
 export type GetItemsType = {
+    map(arg0: (u: any) => import("react").JSX.Element): import("react").ReactNode;
     items: Array<UserType>
     totalCount: number
     error: string | null

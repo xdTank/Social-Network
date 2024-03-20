@@ -2,11 +2,11 @@ import React, { FC, lazy, useEffect, useState } from 'react';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import './App.css';
 import 'antd'
-import { LoginPage } from './components/Login/login';
+import { LoginPage } from './components/Login/login copy';
 import { Provider } from 'react-redux';
 import { initializeApp } from './store/reducers/appReducer';
 import Preloader from './components/common/Preloader/Preloader';
-import store, { AppStateType } from './store/store';
+import { AppStateType, setupStore } from './store/store';
 import { withSuspense } from './hoc/withSuspense';
 import { UsersPage } from './components/Users/UsersContainer';
 import {
@@ -24,6 +24,7 @@ import { selectIsAuth } from './store/selectors/authSelectors';
 import { Header } from 'antd/es/layout/layout';
 import DropdownMenu from './components/common/DropdownMenu/dropdownmenu';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { useAppSelector } from './hooks/redux';
 
 
 
@@ -44,7 +45,7 @@ const App: React.FC = () => {
   const initialiazed = useSelector((state: AppStateType) => state.app.initialiazed)
   const dispatch = useDispatch<any>()
   const [collapsed, setCollapsed] = useState(false)
-  const isAuth = useSelector(selectIsAuth)
+  const isAuth = useAppSelector(state => state.authSlice.isAuth)
 
 
   const {
@@ -146,6 +147,7 @@ const App: React.FC = () => {
 
 const MainApp: FC = () => {
   const queryClient = new QueryClient
+  const store = setupStore()
   return (
     <BrowserRouter>
       <Provider store={store}>

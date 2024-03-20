@@ -3,18 +3,16 @@ import { DownOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Avatar, Button, Dropdown, Flex, Space } from 'antd';
 import { UserOutlined } from '@ant-design/icons'
-import { useSelector } from 'react-redux';
-import { selectLogin } from '../../../store/selectors/authSelectors';
-import { useDispatch } from 'react-redux';
-import { logout } from '../../../store/reducers/authReducer';
+import { useActions } from '../../../hooks/useActions';
+import { useAppSelector } from '../../../hooks/redux';
 
 
 
 const DropdownMenu: React.FC = () => {
-    const login = useSelector(selectLogin)
-    const dispatch = useDispatch<any>()
+    const login = useAppSelector(state => state.authSlice.login)
+    const { logout } = useActions()
     const logoutCallback = () => {
-        dispatch(logout())
+        logout()
     }
 
     const items: MenuProps['items'] = [
@@ -33,7 +31,7 @@ const DropdownMenu: React.FC = () => {
     ]
     return <Dropdown menu={{ items }} trigger={['click']}>
         <a onClick={(e) => e.preventDefault()}>
-            <Space style={{ color: "#DBDEE1", marginRight: '20px'}}>
+            <Space style={{ color: "#DBDEE1", marginRight: '20px' }}>
                 More
                 <DownOutlined />
             </Space>

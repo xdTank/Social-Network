@@ -9,8 +9,9 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { authAPI } from '../../api/auth-api';
 import { ResultCodes } from '../../api/api';
 import { useDispatch } from 'react-redux';
-import { actions } from '../../store/reducers/authReducer';
-
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { actions } from '../../store/reducers/auth-slice';
+import { useActions } from '../../hooks/useActions';
 
 type FieldType = {
     email?: string;
@@ -20,26 +21,13 @@ type FieldType = {
 };
 
 const LoginForm: React.FC = () => {
-    const queryClient = useQueryClient()
-    const { data, isError, isLoading } = useQuery('auth/me', authAPI.me, {
-        keepPreviousData: true,
-        refetchOnWindowFocus: false
-    })
-    console.log(data)
 
-    const mutation = useMutation((values: any) => authAPI.login(values.email, values.password, values.rememberMe, values.captcha), {
-        onSuccess: () => queryClient.invalidateQueries(['auth/login'])
-    })
-
-
-    const captchaUrl = useSelector((state: AppStateType) => state.auth.captchaUrl)
-    const errorMessage = useSelector((state: AppStateType) => state.auth.errorMessage)
+    const { isLoading, errorMessage, captchaUrl, isError, } = useAppSelector(state => state.authSlice)
+    const { login } = useActions()
     const onFinish = (values: any) => {
-        mutation.mutate(values)
+        login(values)
     }
-    const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
-    }
+
     if (isLoading) return <div>Идет загрузка...</div>;
     if (isError) return <div><h3>Ошибка при получении данных</h3></div>
     return (
@@ -48,7 +36,6 @@ const LoginForm: React.FC = () => {
             style={{ maxWidth: 600 }}
             initialValues={{ remember: true }}
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
             className={s.wrapper}
         >
             <h1>Login</h1>
@@ -99,8 +86,7 @@ const LoginForm: React.FC = () => {
 
 export const LoginPage = () => {
 
-    const isAuth = useSelector((state: AppStateType) => state.auth.isAuth)
-
+    const isAuth = useAppSelector(state => state.authSlice.isAuth)
 
     if (isAuth) {
         return <Routes>

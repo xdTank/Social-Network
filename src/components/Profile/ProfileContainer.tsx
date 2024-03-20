@@ -5,6 +5,7 @@ import { Navigate, Route, Routes, useNavigate, useParams } from "react-router-do
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { selectAuthorizedUserId, selectIsAuth } from "../../store/selectors/authSelectors";
+import { useAppSelector } from "../../hooks/redux";
 
 
 
@@ -14,7 +15,7 @@ type ParamsType = {
 
 export const ProfileContainer: React.FC = () => {
     const authorizedUserId = useSelector(selectAuthorizedUserId)
-    const isAuth = useSelector(selectIsAuth)
+    const isAuth = useAppSelector(state => state.authSlice.isAuth)
     const navigate = useNavigate();
     const dispatch = useDispatch<any>()
     const { userId } = useParams<ParamsType>();

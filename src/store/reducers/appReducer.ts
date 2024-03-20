@@ -1,5 +1,6 @@
-import { getAuthUserData } from "./authReducer"
 import { InferActionsTypes } from "../store"
+import { useActions } from "../../hooks/useActions"
+import { getAuthUserData } from "./auth-actions"
 
 
 

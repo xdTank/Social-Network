@@ -8,6 +8,8 @@ type MeResponseDataType = {
 type LoginResponseDataType = {
     userId: number
 }
+type LogoutType = {
+}
 
 export const authAPI = {
     async me() {
@@ -19,6 +21,6 @@ export const authAPI = {
         return res.data;
     },
     logout() {
-        return instance.delete(`auth/login`);
+        return instance.delete<ResponseType<LogoutType, ResultCodes>>(`auth/login`);
     }
 }

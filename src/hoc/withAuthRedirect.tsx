@@ -5,7 +5,7 @@ import { AppStateType } from "../store/store";
 
 function mapStateToPropsforRedirect(state: AppStateType) {
     return {
-        isAuth: state.auth.isAuth
+        isAuth: state.authSlice.isAuth
     }
 }
 type MapPropsType = {
