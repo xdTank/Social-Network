@@ -1,110 +1,67 @@
 import React, { FC, useEffect } from "react";
 import User from "./User";
-import Paginator from '../common/Paginator/Paginator'
-import { FilterType, requestUsers } from "../../store/reducers/usersReducer";
-import { useSelector } from "react-redux";
-import { getCurrentPage, getFollowingInProgress, getPageSize, getTotalUsersCount, getUsers, getUsersFilter } from "../../store/selectors/usersSelectors";
-import { useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
-import { follow, unfollow } from "../../store/reducers/usersReducer";
-import UsersSearchForm from "./UsersSearchForm";
+import { usersAPI } from "../../api/users-api";
 import { Pagination } from "antd";
+import UsersSearchForm, { FilterType } from "./UsersSearchForm";
+import { useQueryParams } from "use-query-params";
+import { useNavigate } from "react-router-dom";
 
 
 type PropsType = {
 }
-type QueryParamsType = {
-    entries(): Iterable<readonly [PropertyKey, any]>; term?: string; page?: string; friend?: string
-}
+
 
 
 export const Users: FC<PropsType> = () => {
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const [searchTerm, setSearchTerm] = React.useState('')
+    const [friend, setFriend] = React.useState<boolean | null>(null)
+    const [pageSize, setPageSize] = React.useState(10)
+    const [queryParams, setQueryParams] = useQueryParams()
+    const navigate = useNavigate()
+    const { data: users, error, isLoading, refetch } = usersAPI.useGetUsersQuery({ currentPage: currentPage, pageSize: pageSize, term: searchTerm, friend: friend }, {
+        refetchOnMountOrArgChange: true
+    })
 
-    const users = useSelector(getUsers)
-    const totalUsersCount = useSelector(getTotalUsersCount)
-    const currentPage = useSelector(getCurrentPage)
-    const pageSize = useSelector(getPageSize)
-    const filter = useSelector(getUsersFilter)
-    const followingInProgress = useSelector(getFollowingInProgress)
-
-    const dispatch = useDispatch<any>()
-    const { search } = useLocation();
-    const navigate = useNavigate();
-
-
-    // useQueryParams
-    useEffect(() => {
-        const searchParams = new URLSearchParams(search.substring(1)) as QueryParamsType
-        const parsed = Object.fromEntries(searchParams.entries())
-
-        let actualPage = currentPage
-        let actualFilter = filter
-
-        if (!!parsed.page) actualPage = Number(parsed.page)
-
-
-        if (!!parsed.term) actualFilter = { ...actualFilter, term: parsed.term as string }
-
-        switch (parsed.friend) {
-            case "null":
-                actualFilter = { ...actualFilter, friend: null }
-                break;
-            case "true":
-                actualFilter = { ...actualFilter, friend: true }
-                break;
-            case "false":
-                actualFilter = { ...actualFilter, friend: false }
-                break;
-        }
-        dispatch(requestUsers(currentPage, pageSize, filter))
-    }, [search, dispatch, currentPage, pageSize, filter])
+    const onSearch = (values: FilterType) => {
+        setSearchTerm(values.term)
+        setFriend(values.friend)
+        refetch && refetch()
+    }
+    const handlePageChange = (page: number, pageSize: number) => {
+        setCurrentPage(page)
+        setPageSize(pageSize)
+    }
 
 
     useEffect(() => {
         const searchParams = new URLSearchParams();
+        if (currentPage !== 1) searchParams.append('page', String(currentPage));
+        if (searchTerm) searchParams.append('term', searchTerm);
+        if (friend !== null) searchParams.append('friend', String(friend))
+        if (pageSize !== 10) searchParams.append('pageSize', String(pageSize))
+        navigate({ search: searchParams.toString() });
+    }, [currentPage, searchTerm, friend, navigate]);
 
-        if (!!filter.term) searchParams.append('term', filter.term)
-        if (filter.friend !== null) searchParams.append('friend', String(filter.friend))
-        if (currentPage !== 1) searchParams.append('page', String(currentPage))
-
-        navigate({
-            search: searchParams.toString()
-        })
-    }, [filter, currentPage, navigate]);
-
-    const onPageChanged = (pageNumber: number) => {
-        dispatch(requestUsers(pageNumber, pageSize, filter))
-    }
-
-    const onUnfollow = (userId: number) => {
-        dispatch(unfollow(userId))
-    }
-    const onFollow = (userId: number) => {
-        dispatch(follow(userId))
-    }
 
     return <div style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', flexDirection: 'column', }}>
         <div>
-            <UsersSearchForm pageSize={pageSize} />
+            <UsersSearchForm
+                onSearch={onSearch}
+                searchTerm={searchTerm}
+                friend={friend} />
         </div>
         <div style={{ overflowY: 'auto', height: '70vh' }}>
-            {
-                users.map(u => <User user={u}
-                    followingInProgress={followingInProgress}
-                    key={u.id}
-                    unfollow={onUnfollow}
-                    follow={onFollow}
-                />
-
-                )
-
-            }
+            {isLoading ? <div>Загрузка...</div> : error ? <div>{JSON.stringify(error)}</div> : users ? users.items.map(u => <User user={u}
+                key={u.id}
+            />) : <div>Пользователи не найдены</div>}
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem', flexShrink: 0 }}>
-            <Paginator totalItemsCount={totalUsersCount} pageSize={pageSize} currentPage={currentPage} onPageChanged={onPageChanged} />
+            <Pagination defaultCurrent={1} total={users?.totalCount} defaultPageSize={pageSize} onChange={setCurrentPage} showSizeChanger onShowSizeChange={handlePageChange} />
         </div>
     </div>
 }
+
 
 
 

@@ -1,4 +1,4 @@
-import { InferActionsTypes } from "../store"
+import { AppDispatch, InferActionsTypes } from "../store"
 import { useActions } from "../../hooks/useActions"
 import { getAuthUserData } from "./auth-actions"
 
@@ -29,7 +29,7 @@ export const actions = {
 }
 
 
-export const initializeApp = () => (dispatch: any) => {
+export const initializeApp = () => (dispatch: AppDispatch) => {
     let promise = dispatch(getAuthUserData())
     Promise.all([promise]).then(() => {
         dispatch(actions.initialiazedSuccess())

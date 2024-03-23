@@ -1,18 +1,44 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styles from "./Users.module.css";
 import userPhoto from "../../assets/img/44884218_345707102882519_2446069589734326272_n.jpg";
 import { Link, NavLink } from "react-router-dom";
 import { UserType } from '../../types/types';
 import { Button, Flex } from 'antd';
+import { usersAPI } from '../../api/users-api';
 
 type PropsType = {
     user: UserType
-    followingInProgress: Array<number>
-    unfollow: (userId: number) => void,
-    follow: (userId: number) => void,
 }
 
-let User: FC<PropsType> = ({ user, followingInProgress, unfollow, follow }) => {
+let User: FC<PropsType> = ({ user }) => {
+
+    const [loading, setLoading] = useState(false)
+    const [follow] = usersAPI.useFollowMutation()
+    const [unfollow] = usersAPI.useUnfollowMutation()
+
+    const onPageChanged = (pageNumber: number) => {
+        // dispatch(requestUsers(pageNumber, pageSize, filter));
+    }
+    const onFollow = async (userId: number) => {
+        setLoading(true)
+        try {
+            const response = await follow(userId)
+        } catch (e) {
+            console.log(e)
+        } finally {
+            setLoading(false)
+        }
+    }
+    const onUnfollow = async (userId: number) => {
+        setLoading(true)
+        try {
+            const response = await unfollow(userId)
+        } catch (e) {
+            console.log(e)
+        } finally {
+            setLoading(false)
+        }
+    }
     return (
         <div style={{ display: 'flex', margin: '10px', alignItems: 'center', gap: '10px' }}>
             <div className={styles.userBlock}>
@@ -23,14 +49,15 @@ let User: FC<PropsType> = ({ user, followingInProgress, unfollow, follow }) => {
             </div>
             <div>
                 {user.followed
-                    ? <Button style={{ backgroundColor: '#fff', width: '100px' }} size='small' disabled={followingInProgress
-                        .some(id => id === user.id)}
-                        onClick={() => { unfollow(user.id) }}>
+                    ? <Button style={{ backgroundColor: '#fff', width: '100px' }} size='small'
+                        disabled={loading || !user.followed}
+                        onClick={() => { onFollow(user.id) }}>
                         Unfollow</Button>
-                    : <Button style={{ backgroundColor: '#fff', width: '100px' }} size='small' disabled={followingInProgress.some(id => id === user.id)}
-                        onClick={() => { follow(user.id) }}>
+                    : <Button style={{ backgroundColor: '#fff', width: '100px' }} size='small'
+                        disabled={loading || user.followed}
+                        onClick={() => { onUnfollow(user.id) }}>
                         Follow</Button>}
-                <div style={{ color: '#fff'}}>
+                <div style={{ color: '#fff' }}>
                     <div>{user.name}</div>
                     <div>{user.status}</div>
                     <div>{"user.location.country"}</div>

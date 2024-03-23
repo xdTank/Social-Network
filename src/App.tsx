@@ -2,13 +2,13 @@ import React, { FC, lazy, useEffect, useState } from 'react';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import './App.css';
 import 'antd'
-import { LoginPage } from './components/Login/login copy';
+import { LoginPage } from './components/Login/login';
 import { Provider } from 'react-redux';
 import { initializeApp } from './store/reducers/appReducer';
 import Preloader from './components/common/Preloader/Preloader';
 import { AppStateType, setupStore } from './store/store';
 import { withSuspense } from './hoc/withSuspense';
-import { UsersPage } from './components/Users/UsersContainer';
+import { Users } from './components/Users/Users';
 import {
   UserOutlined,
   HomeOutlined,
@@ -25,6 +25,8 @@ import { Header } from 'antd/es/layout/layout';
 import DropdownMenu from './components/common/DropdownMenu/dropdownmenu';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { useAppSelector } from './hooks/redux';
+import { QueryParamProvider } from 'use-query-params';
+import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6'
 
 
 
@@ -133,7 +135,7 @@ const App: React.FC = () => {
               <Route path='/profile/:userId?' Component={withSuspense(ProfileContainer)} />
               <Route path='/dialogs' element={<Dialogs />} />
               <Route path='/chat' Component={withSuspense(Chat)} />
-              <Route path='/users' element={<UsersPage />} />
+              <Route path='/users' element={<Users />} />
               <Route path='*' element={<div><h1>404 not found</h1></div>} />
             </Routes>
           </Content>
@@ -151,13 +153,16 @@ const MainApp: FC = () => {
   return (
     <BrowserRouter>
       <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          <React.Suspense fallback={<Preloader />}>
-            <App />
-          </React.Suspense>
-        </QueryClientProvider>
+        <QueryParamProvider adapter={ReactRouter6Adapter} >
+          <QueryClientProvider client={queryClient}>
+            <React.Suspense fallback={<Preloader />}>
+              <App />
+            </React.Suspense>
+          </QueryClientProvider>
+        </QueryParamProvider>
       </Provider>
-    </BrowserRouter>
+
+    </BrowserRouter >
   )
 }
 

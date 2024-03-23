@@ -3,31 +3,33 @@ import { combineReducers } from "@reduxjs/toolkit"
 import profileReducer from "./reducers/profileReducer"
 import dialogsReducer from "./reducers/dialogsReducer"
 import sidebarReducer from "./reducers/sidebarReducer"
-import usersReducer from "./reducers/usersReducer";
 import appReducer from "./reducers/appReducer";
 import { ThunkAction } from "redux-thunk";
 import chatReducer from "./reducers/chatReducer";
-import { usersAPI } from "../api/users-api copy";
 import { authSlice } from "./reducers/auth-slice";
+import { api } from "../api/api";
+import { createLogger } from "redux-logger";
 
+const logger = createLogger({
+    collapsed: true
+})
 const rootReducer = combineReducers({
     profilePage: profileReducer,
     dialogsPage: dialogsReducer,
     sideBar: sidebarReducer,
-    usersPage: usersReducer,
     app: appReducer,
     chat: chatReducer,
     authSlice: authSlice.reducer,
-    [usersAPI.reducerPath]: usersAPI.reducer,
+    [api.reducerPath]: api.reducer
 })
 
 export const setupStore = () => {
     return configureStore({
         reducer: rootReducer,
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(
-            usersAPI.middleware,
+            api.middleware,
+            logger as any,
         ),
-
     })
 }
 

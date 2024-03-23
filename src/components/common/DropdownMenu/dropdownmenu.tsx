@@ -1,5 +1,5 @@
 import React from 'react';
-import { DownOutlined } from '@ant-design/icons';
+import { DownOutlined, LoginOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Avatar, Button, Dropdown, Flex, Space } from 'antd';
 import { UserOutlined } from '@ant-design/icons'
@@ -25,7 +25,7 @@ const DropdownMenu: React.FC = () => {
             type: 'divider',
         },
         {
-            label: <Button onClick={logoutCallback}>Log out</Button>,
+            label: <Button onClick={logoutCallback}><LoginOutlined />Log out</Button>,
             key: '2',
         },
     ]

@@ -1,16 +1,8 @@
-import React, { FC, useState } from 'react';
+import React, {  } from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
-
 import s from './login.module.css'
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { AppStateType } from '../../store/store';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { authAPI } from '../../api/auth-api';
-import { ResultCodes } from '../../api/api';
-import { useDispatch } from 'react-redux';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { actions } from '../../store/reducers/auth-slice';
+import { useAppSelector } from '../../hooks/redux';
 import { useActions } from '../../hooks/useActions';
 
 type FieldType = {
@@ -21,7 +13,6 @@ type FieldType = {
 };
 
 const LoginForm: React.FC = () => {
-
     const { isLoading, errorMessage, captchaUrl, isError, } = useAppSelector(state => state.authSlice)
     const { login } = useActions()
     const onFinish = (values: any) => {

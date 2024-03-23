@@ -1,21 +1,22 @@
+import React, { useEffect } from 'react';
 import { Button, Select } from "antd";
-import React from 'react';
 import { Form, Input } from 'antd';
-import { useSelector } from "react-redux";
-import { getUsersFilter } from "../../store/selectors/usersSelectors";
-import { FilterType, requestUsers } from "../../store/reducers/usersReducer";
-import { useDispatch } from "react-redux";
 import { SearchOutlined } from "@ant-design/icons";
+import { BooleanParam, NumberParam, StringParam, useQueryParams } from 'use-query-params';
 
 
 type PropsType = {
-    pageSize: number
+    searchTerm: string
+    friend: boolean | null
+    onSearch: (values: FilterType) => void
 }
-const UsersSearchForm: React.FC<PropsType> = ({ pageSize }) => {
-    const dispatch = useDispatch<any>()
-    const filter = useSelector(getUsersFilter)
+export type FilterType = {
+    term: string
+    friend: boolean | null
+}
+const UsersSearchForm: React.FC<PropsType> = ({ searchTerm, friend, onSearch }) => {
     const onFinish = (values: FilterType) => {
-        dispatch(requestUsers(1, pageSize, values))
+        onSearch(values)
     }
     return (
         <>
@@ -23,7 +24,7 @@ const UsersSearchForm: React.FC<PropsType> = ({ pageSize }) => {
                 style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
                 onFinish={onFinish}
                 autoComplete="off"
-                initialValues={{ term: filter.term, friend: filter.friend }}>
+                initialValues={{ term: searchTerm, friend: friend }}>
                 <Form.Item name='friend'>
                     <Select
                         defaultValue={null}
@@ -31,8 +32,8 @@ const UsersSearchForm: React.FC<PropsType> = ({ pageSize }) => {
                         size="small"
                         options={[
                             { value: null, label: 'All' },
-                            { value: 'true', label: 'Only followed' },
-                            { value: 'false', label: 'Only unfollowed' },
+                            { value: true, label: 'Only followed' },
+                            { value: false, label: 'Only unfollowed' },
                             { value: 'disabled', label: 'Disabled', disabled: true },
                         ]}
                     />
