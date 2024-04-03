@@ -79,7 +79,7 @@ export const savePhoto = (files: File): ThunkType => async (dispatch) => {
     }
 }
 export const saveProfile = (profile: ProfileType): ThunkType => async (dispatch, getState) => {
-    const userId = getState().authSlice.id
+    const userId = getState().auth.id
     let data = await profileAPI.saveProfile(profile)
     if (data.resultCode === 0) {
         if (userId != null) {

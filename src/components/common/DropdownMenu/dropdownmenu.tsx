@@ -5,14 +5,15 @@ import { Avatar, Button, Dropdown, Flex, Space } from 'antd';
 import { UserOutlined } from '@ant-design/icons'
 import { useActions } from '../../../hooks/useActions';
 import { useAppSelector } from '../../../hooks/redux';
+import { authApi } from '../../../api/auth-api';
 
 
 
 const DropdownMenu: React.FC = () => {
-    const login = useAppSelector(state => state.authSlice.login)
-    const { logout } = useActions()
+    const login = useAppSelector(state => state.auth.login)
+    const [logout] = authApi.useLogoutMutation()
     const logoutCallback = () => {
-        logout()
+        logout(null)
     }
 
     const items: MenuProps['items'] = [

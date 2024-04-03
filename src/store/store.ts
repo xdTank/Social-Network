@@ -19,7 +19,7 @@ const rootReducer = combineReducers({
     sideBar: sidebarReducer,
     app: appReducer,
     chat: chatReducer,
-    authSlice: authSlice.reducer,
+    auth: authSlice.reducer,
     [api.reducerPath]: api.reducer
 })
 

@@ -1,8 +1,9 @@
-import React, {  } from 'react';
+import React, { useEffect } from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
 import s from './login.module.css'
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/redux';
+import { authApi } from '../../api/auth-api';
 import { useActions } from '../../hooks/useActions';
 
 type FieldType = {
@@ -10,17 +11,32 @@ type FieldType = {
     password?: string;
     rememberMe?: string;
     captcha?: string | null
-};
+}
+interface LoginForm {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha: string | null
+}
+
 
 const LoginForm: React.FC = () => {
-    const { isLoading, errorMessage, captchaUrl, isError, } = useAppSelector(state => state.authSlice)
-    const { login } = useActions()
-    const onFinish = (values: any) => {
-        login(values)
+    const { errorMessage, captchaUrl,  } = useAppSelector(state => state.auth)
+    const [login, { isLoading, isError, error, isSuccess,reset }] = authApi.useLoginMutation()
+    const navigate = useNavigate()
+    const location = useLocation()
+    const from = location.state?.from?.pathname || '/'
+
+    useEffect(() => {
+        if (isSuccess) {
+            navigate(from, { replace: true })
+        }
+    }, [isLoading])
+
+    const onFinish = (values: LoginForm) => {
+         login(values)
     }
 
-    if (isLoading) return <div>Идет загрузка...</div>;
-    if (isError) return <div><h3>Ошибка при получении данных</h3></div>
     return (
         <Form
             name="basic"
@@ -76,15 +92,6 @@ const LoginForm: React.FC = () => {
 }
 
 export const LoginPage = () => {
-
-    const isAuth = useAppSelector(state => state.authSlice.isAuth)
-
-    if (isAuth) {
-        return <Routes>
-            <Route path="*" element={<Navigate to={"/profile"} />
-            } />
-        </Routes>
-    }
     return <div className={s.login}>
         <LoginForm />
     </div>

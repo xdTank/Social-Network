@@ -2,11 +2,11 @@ import { createSelector } from "reselect"
 import { AppStateType } from "../store";
 
 export const selectIsAuth = (state: AppStateType) => {
-    return state.authSlice.isAuth
+    return state.auth.isAuth
 }
 export const selectLogin = (state: AppStateType) => {
-    return state.authSlice.login
+    return state.auth.login
 }
 export const selectAuthorizedUserId = (state: AppStateType) => {
-    return state.authSlice.id?.toString()
+    return state.auth.id?.toString()
 }

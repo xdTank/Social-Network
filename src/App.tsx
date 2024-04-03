@@ -47,7 +47,7 @@ const App: React.FC = () => {
   const initialiazed = useSelector((state: AppStateType) => state.app.initialiazed)
   const dispatch = useDispatch<any>()
   const [collapsed, setCollapsed] = useState(false)
-  const isAuth = useAppSelector(state => state.authSlice.isAuth)
+  const isAuth = useAppSelector(state => state.auth.isAuth)
 
 
   const {

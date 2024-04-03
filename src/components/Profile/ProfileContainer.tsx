@@ -15,7 +15,7 @@ type ParamsType = {
 
 export const ProfileContainer: React.FC = () => {
     const authorizedUserId = useSelector(selectAuthorizedUserId)
-    const isAuth = useAppSelector(state => state.authSlice.isAuth)
+    const isAuth = useAppSelector(state => state.auth.isAuth)
     const navigate = useNavigate();
     const dispatch = useDispatch<any>()
     const { userId } = useParams<ParamsType>();

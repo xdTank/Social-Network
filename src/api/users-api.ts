@@ -16,6 +16,7 @@ export const usersAPI = api.injectEndpoints({
                 method: 'POST',
             }),
             invalidatesTags: [{ type: 'User', id: 'LIST' }],
+            
         }),
         unfollow: build.mutation<ResponseType, number>({
             query: (userId) => ({

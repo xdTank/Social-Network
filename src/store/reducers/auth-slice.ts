@@ -9,7 +9,7 @@ const initrialState = {
     errorMessage: null as string | null | undefined,
     isLoading: false,
     isError: false,
-
+    token: null as string | null
 }
 
 export const authSlice = createSlice({
@@ -30,20 +30,6 @@ export const authSlice = createSlice({
             state.errorMessage = action.payload
         },
     },
-    // extraReducers: builder => {
-    //     builder.addCase(login.pending, (state) => {
-    //         state.isLoading = true
-    //     })
-    //     builder.addCase(login.fulfilled, (state, action) => {
-    //         state.isLoading = false
-    //         state.isAuth = true
-    //         state.errorMessage = null
-    //     })
-    //     builder.addCase(login.rejected, (state, action) => {
-    //         state.isLoading = false
-    //         state.errorMessage = action.error.message
-    //     })
-    // }
 })
 
 
