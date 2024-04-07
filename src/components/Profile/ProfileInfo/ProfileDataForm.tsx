@@ -1,10 +1,9 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { ProfileType } from '../../../types/types';
-import { useDispatch } from 'react-redux';
-import { saveProfile } from '../../../store/reducers/profileReducer';
-import AvatarUploadButton from '../../common/UploadButton/uploadButton';
 import userPhoto from "../../../assets/img/44884218_345707102882519_2446069589734326272_n.jpg"
+import { profileApi } from '../../../api/profile-api';
+import AvatarUploadButton from './UploadButton';
 
 type PropsType = {
     setEditMode: Dispatch<SetStateAction<boolean>>
@@ -15,15 +14,11 @@ type PropsType = {
 const { TextArea } = Input;
 
 const ProfileDataForm: FC<PropsType> = ({ profile, setEditMode, isOwner }) => {
-
-    const dispatch = useDispatch<any>()
+    const [saveProfile] = profileApi.useSaveProfileMutation()
 
     const onSubmit = (formData: ProfileType) => {
-        dispatch(saveProfile(formData)).then(
-            () => {
-                setEditMode(false)
-            }
-        )
+        saveProfile(formData)
+        setEditMode(false)
     }
 
     return (
@@ -64,7 +59,7 @@ const ProfileDataForm: FC<PropsType> = ({ profile, setEditMode, isOwner }) => {
                 </div>
             </Form.Item>
             <Form.Item>
-                <Button  htmlType="submit" style={{ backgroundColor: '#fff' }}>
+                <Button htmlType="submit" style={{ backgroundColor: '#fff' }}>
                     Save
                 </Button>
             </Form.Item>

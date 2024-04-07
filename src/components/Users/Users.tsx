@@ -3,52 +3,52 @@ import User from "./User";
 import { usersAPI } from "../../api/users-api";
 import { Pagination } from "antd";
 import UsersSearchForm, { FilterType } from "./UsersSearchForm";
-import { useQueryParams } from "use-query-params";
-import { useNavigate } from "react-router-dom";
-
-
-type PropsType = {
-}
+import { BooleanParam, NumberParam, StringParam, useQueryParams } from "use-query-params";
+import { useActions } from "../../hooks/useActions";
+import { useAppSelector } from "../../hooks/redux";
 
 
 
-export const Users: FC<PropsType> = () => {
-    const [currentPage, setCurrentPage] = React.useState(1);
-    const [searchTerm, setSearchTerm] = React.useState('')
-    const [friend, setFriend] = React.useState<boolean | null>(null)
-    const [pageSize, setPageSize] = React.useState(10)
-    const [queryParams, setQueryParams] = useQueryParams()
-    const navigate = useNavigate()
-    const { data: users, error, isLoading, refetch } = usersAPI.useGetUsersQuery({ currentPage: currentPage, pageSize: pageSize, term: searchTerm, friend: friend }, {
-        refetchOnMountOrArgChange: true
+
+
+
+export const Users: FC = () => {
+    const { setQueryParams } = useActions()
+    const [query, setQuery] = useQueryParams({
+        page: NumberParam,
+        count: NumberParam,
+        term: StringParam,
+        friend: BooleanParam || null,
+    })
+    const { page, count, term, friend } = useAppSelector(state => state.user)
+    const { data: users, error, isLoading } = usersAPI.useGetUsersQuery({
+        page: query.page || 1,
+        count: query.count || 10,
+        term: query.term || '',
+        friend: query.friend
     })
 
-    const onSearch = (values: FilterType) => {
-        setSearchTerm(values.term)
-        setFriend(values.friend)
-        refetch && refetch()
-    }
-    const handlePageChange = (page: number, pageSize: number) => {
-        setCurrentPage(page)
-        setPageSize(pageSize)
-    }
-
-
     useEffect(() => {
-        const searchParams = new URLSearchParams();
-        if (currentPage !== 1) searchParams.append('page', String(currentPage));
-        if (searchTerm) searchParams.append('term', searchTerm);
-        if (friend !== null) searchParams.append('friend', String(friend))
-        if (pageSize !== 10) searchParams.append('pageSize', String(pageSize))
-        navigate({ search: searchParams.toString() });
-    }, [currentPage, searchTerm, friend, navigate]);
+        if (query.page !== undefined) setQueryParams(String(query.page));
+        if (query.count !== undefined) setQueryParams(String(query.count));
+        if (query.term !== undefined) setQueryParams(String(query.term));
+        if (query.friend !== undefined) setQueryParams(String(query.friend));
 
+
+    }, [query, setQueryParams])
+
+    const onSearch = (values: FilterType) => {
+        setQuery({ ...query, ...values })
+    }
+    const handlePageChange = (page: number, count: number) => {
+        setQuery({ page, count })
+    }
 
     return <div style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', flexDirection: 'column', }}>
         <div>
             <UsersSearchForm
                 onSearch={onSearch}
-                searchTerm={searchTerm}
+                searchTerm={term}
                 friend={friend} />
         </div>
         <div style={{ overflowY: 'auto', height: '70vh' }}>
@@ -57,7 +57,7 @@ export const Users: FC<PropsType> = () => {
             />) : <div>Пользователи не найдены</div>}
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem', flexShrink: 0 }}>
-            <Pagination defaultCurrent={1} total={users?.totalCount} defaultPageSize={pageSize} onChange={setCurrentPage} showSizeChanger onShowSizeChange={handlePageChange} />
+            <Pagination defaultCurrent={page} total={users?.totalCount} defaultPageSize={count} onChange={handlePageChange} showSizeChanger onShowSizeChange={handlePageChange} />
         </div>
     </div>
 }

@@ -1,34 +1,55 @@
 import { Action, configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "@reduxjs/toolkit"
-import profileReducer from "./reducers/profileReducer"
 import dialogsReducer from "./reducers/dialogsReducer"
-import sidebarReducer from "./reducers/sidebarReducer"
-import appReducer from "./reducers/appReducer";
 import { ThunkAction } from "redux-thunk";
 import chatReducer from "./reducers/chatReducer";
 import { authSlice } from "./reducers/auth-slice";
 import { api } from "../api/api";
-import { createLogger } from "redux-logger";
+import { createLogger } from "redux-logger"
+import storage from "redux-persist/lib/storage"
+import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer, persistStore } from "redux-persist"
+import { reducer as toastrReducer } from "react-redux-toastr";
+import { profileSlice } from "./reducers/profile-slice";
+import { userSLice } from "./reducers/user-slice";
+
 
 const logger = createLogger({
     collapsed: true
 })
 const rootReducer = combineReducers({
-    profilePage: profileReducer,
     dialogsPage: dialogsReducer,
-    sideBar: sidebarReducer,
-    app: appReducer,
     chat: chatReducer,
     auth: authSlice.reducer,
-    [api.reducerPath]: api.reducer
+    profile: profileSlice.reducer,
+    user: userSLice.reducer,
+    [api.reducerPath]: api.reducer,
+    toastr: toastrReducer
 })
+
+const persistConfig = {
+    key: 'root',
+    storage,
+    whitelist: ['Auth']
+}
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+const tokenMiddleware = (store: any) => (next: any) => (action: any) => {
+    if (action.type === 'auth/setAuthUserData') {
+        storage.setItem('token', action.payload.token)
+    }
+    return next(action)
+}
 
 export const setupStore = () => {
     return configureStore({
-        reducer: rootReducer,
-        middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(
+        reducer: persistedReducer,
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+            }
+        }).concat(
             api.middleware,
             logger as any,
+            tokenMiddleware
         ),
     })
 }
@@ -45,6 +66,12 @@ export type BaseThunkType<A extends Action, R = Promise<void>> = ThunkAction<R, 
 
 
 const store = setupStore()
-export default store
+export const persistor = persistStore(store)
+
+
+
+
+
+
 // @ts-ignore
 window.store = store

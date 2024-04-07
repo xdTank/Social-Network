@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { message, Upload } from 'antd';
-import type { GetProp, UploadProps } from 'antd';
-import { useDispatch } from 'react-redux';
-import { savePhoto } from '../../../store/reducers/profileReducer';
+import { profileApi } from '../../../api/profile-api';
+import { toast } from 'react-toastify';
+import { GetProp, Upload, UploadProps } from 'antd';
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
@@ -18,18 +17,18 @@ const getBase64 = (img: FileType, callback: (url: string) => void) => {
 const AvatarUploadButton: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState<string>()
-    const dispatch = useDispatch<any>()
+    const [savePhoto] = profileApi.useSavePhotoMutation()
     const beforeUpload = (file: FileType) => {
         const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
         if (!isJpgOrPng) {
-            message.error('You can only upload JPG/PNG file!');
+            toast.error('You can only upload JPG/PNG file!');
         }
         const isLt2M = file.size / 1024 / 1024 < 2;
         if (!isLt2M) {
-            message.error('Image must smaller than 2MB!');
+            toast.error('Image must smaller than 2MB!')
         }
         if (file) {
-            dispatch(savePhoto(file))
+            savePhoto(file)
         }
         return isJpgOrPng && isLt2M
     }
@@ -40,12 +39,11 @@ const AvatarUploadButton: React.FC = () => {
             return
         }
         if (info.file.status === 'done') {
-            // Get this url from response in real world.
             getBase64(info.file.originFileObj as FileType, () => {
                 setLoading(false)
             })
         }
-    };
+    }
 
     const uploadButton = (
         <button style={{ border: 0, background: 'none', }} type="button">

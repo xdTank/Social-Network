@@ -9,20 +9,14 @@ import { useDispatch } from "react-redux";
 import { sendMessage, startChating, stopChating, } from "../../store/reducers/chatReducer";
 import { useSelector } from "react-redux";
 import { AppStateType } from "../../store/store";
-import { selectIsAuth } from "../../store/selectors/authSelectors";
 import { useNavigate } from "react-router-dom";
+import { useAuthGuard } from "../../hooks/useAuthGuard";
 
 
 export const Chat: React.FC = () => {
     const dispatch = useDispatch<any>()
     const status = useSelector((state: AppStateType) => state.chat.status)
-    const isAuth = useSelector(selectIsAuth)
-    const navigate = useNavigate()
-    useEffect(() => {
-        if (!isAuth) {
-            navigate('/login');
-        }
-    }, [isAuth, navigate])
+
 
     useEffect(() => {
         dispatch(startChating())
@@ -30,6 +24,7 @@ export const Chat: React.FC = () => {
             dispatch(stopChating())
         }
     }, [dispatch])
+    useAuthGuard()
     return (
         <div >
             {status === 'error' && <div> Some error occured. Please refresh the page</div>}

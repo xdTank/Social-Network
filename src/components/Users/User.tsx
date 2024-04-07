@@ -3,41 +3,23 @@ import styles from "./Users.module.css";
 import userPhoto from "../../assets/img/44884218_345707102882519_2446069589734326272_n.jpg";
 import { Link, NavLink } from "react-router-dom";
 import { UserType } from '../../types/types';
-import { Button, Flex } from 'antd';
+import { Button } from 'antd';
 import { usersAPI } from '../../api/users-api';
 
 type PropsType = {
     user: UserType
 }
 
-let User: FC<PropsType> = ({ user }) => {
+const User: FC<PropsType> = ({ user }) => {
+    const [follow, { isLoading: isFollowLoading }] = usersAPI.useFollowMutation()
+    const [unfollow, { isLoading: isUnfollowLoading }] = usersAPI.useUnfollowMutation()
 
-    const [loading, setLoading] = useState(false)
-    const [follow] = usersAPI.useFollowMutation()
-    const [unfollow] = usersAPI.useUnfollowMutation()
 
-    const onPageChanged = (pageNumber: number) => {
-        // dispatch(requestUsers(pageNumber, pageSize, filter));
-    }
     const onFollow = async (userId: number) => {
-        setLoading(true)
-        try {
-            const response = await follow(userId)
-        } catch (e) {
-            console.log(e)
-        } finally {
-            setLoading(false)
-        }
+        await follow(userId)
     }
     const onUnfollow = async (userId: number) => {
-        setLoading(true)
-        try {
-            const response = await unfollow(userId)
-        } catch (e) {
-            console.log(e)
-        } finally {
-            setLoading(false)
-        }
+        await unfollow(userId)
     }
     return (
         <div style={{ display: 'flex', margin: '10px', alignItems: 'center', gap: '10px' }}>
@@ -50,12 +32,12 @@ let User: FC<PropsType> = ({ user }) => {
             <div>
                 {user.followed
                     ? <Button style={{ backgroundColor: '#fff', width: '100px' }} size='small'
-                        disabled={loading || !user.followed}
-                        onClick={() => { onFollow(user.id) }}>
+                        disabled={isUnfollowLoading}
+                        onClick={() => { onUnfollow(user.id) }}>
                         Unfollow</Button>
                     : <Button style={{ backgroundColor: '#fff', width: '100px' }} size='small'
-                        disabled={loading || user.followed}
-                        onClick={() => { onUnfollow(user.id) }}>
+                        disabled={isFollowLoading}
+                        onClick={() => { onFollow(user.id) }}>
                         Follow</Button>}
                 <div style={{ color: '#fff' }}>
                     <div>{user.name}</div>

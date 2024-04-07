@@ -2,11 +2,10 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { authAPI } from "../../api/auth-api";
 import { ResultCodes } from "../../api/api";
 import { actions } from "./auth-slice";
-import { securityAPI } from "../../api/security-api";
 
 export const login = createAsyncThunk(
     'auth/login',
-    async (data: { email: string, password: string, rememberMe: boolean, captcha: string }, thunkAPI) => {
+    async (data: { email: string, password: string, rememberMe: boolean, captcha: string | null }, thunkAPI) => {
         try {
             const res = await authAPI.login(data.email, data.password, data.rememberMe, data.captcha)
             if (res.resultCode === ResultCodes.Success) {
@@ -41,7 +40,7 @@ export const getCaptchaUrl = createAsyncThunk(
     'auth/getCaptchaUrl',
     async (_, thunkAPI) => {
         try {
-            const res = await securityAPI.getCaptchaUrl()
+            const res = await authAPI.getCaptchaUrl()
             thunkAPI.dispatch(actions.getCaptchaUrlSuccess(res.url))
         } catch (e) {
             return thunkAPI.rejectWithValue(e)

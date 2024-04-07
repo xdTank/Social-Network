@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Button, Select } from "antd";
 import { Form, Input } from 'antd';
 import { SearchOutlined } from "@ant-design/icons";
-import { BooleanParam, NumberParam, StringParam, useQueryParams } from 'use-query-params';
 
 
 type PropsType = {

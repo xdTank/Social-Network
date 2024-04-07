@@ -1,16 +1,13 @@
 import React, { FC } from "react";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
-import { ProfileType } from "../../types/types";
 import Myposts from "./Myposts/Myposts";
-import { MemoryRouterProps, NavigateOptions, Navigator, Router, To } from "react-router-dom";
+import { useAuthGuard } from "../../hooks/useAuthGuard";
 
-type PropsType = {
-    isOwner: boolean
-}
-const Profile: FC<PropsType> = (props) => {
+const Profile: FC = () => {
+    useAuthGuard()
     return (
         <div>
-            <ProfileInfo isOwner={props.isOwner} />
+            <ProfileInfo  />
             <Myposts />
         </div>
     )

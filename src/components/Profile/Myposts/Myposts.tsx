@@ -5,10 +5,10 @@ import { PostType } from "../../../types/types";
 import { useSelector } from "react-redux";
 import { AppStateType } from "../../../store/store";
 import { useDispatch } from "react-redux";
-import { actions } from "../../../store/reducers/profileReducer";
 import { Button, Form, Input } from "antd";
 import { LikeOutlined } from "@ant-design/icons";
-import { selectProfile } from "../../../store/selectors/profileSelector";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { profileSlice } from "../../../store/reducers/profile-slice";
 
 
 export type MyPostsPropsType = {
@@ -16,8 +16,8 @@ export type MyPostsPropsType = {
 
 }
 const Myposts: FC = React.memo(() => {
-    const posts = useSelector((state: AppStateType) => state.profilePage.posts)
-    let postsElements = [...posts].reverse().map(p => <Posts massege={p.massege} likeCount={p.likeCount} id={0} />)
+    const posts = useAppSelector(state => state.profile.posts)
+    const postsElements = [...posts].reverse().map(p => <Posts massege={p.massege} likeCount={p.likeCount} id={0} />)
 
     return (
         <div>
@@ -34,10 +34,10 @@ const Myposts: FC = React.memo(() => {
 })
 
 const Posts: FC<PostType> = (props) => {
-    const profile = useSelector(selectProfile)
+    const photos = useAppSelector(state => state.profile.profile?.photos?.small)
     return (
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', margin: '25px' }}>
-            <img src={profile?.photos.large || icon} alt="!" style={{ width: '50px', borderRadius: '50%' }} />
+            <img src={photos || icon} alt="!" style={{ width: '50px', borderRadius: '50%' }} />
             <div style={{ height: '40px', textAlign: 'center', alignItems: 'center', display: 'flex', padding: '5px', color: '#fff' }}>
                 {props.massege}
             </div>
@@ -51,11 +51,11 @@ const Posts: FC<PostType> = (props) => {
 
 
 const AddNewPostForm = () => {
-    const dispatch = useDispatch<any>()
+    const dispatch = useAppDispatch()
     const [form] = Form.useForm()
 
     const onFinish = (values: any) => {
-        dispatch(actions.addPostActionCreator(values.newPostText))
+        dispatch(profileSlice.actions.addPost(values))
         form.resetFields()
     }
     return (

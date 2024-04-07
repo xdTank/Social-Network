@@ -1,41 +1,54 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import s from "./ProfileInfo.module.css"
 import Preloader from '../../common/Preloader/Preloader'
-import StatusWithHooks from "./ProfileStatusWithHooks";
+import Status from "./Status";
 import userPhoto from "../../../assets/img/44884218_345707102882519_2446069589734326272_n.jpg"
 import ProfileDataForm from "./ProfileDataForm";
 import { ContactsType, ProfileType } from "../../../types/types";
-import { useSelector } from "react-redux";
-import { selectProfile, selectStatus } from "../../../store/selectors/profileSelector";
 import { Button } from "antd";
+import { profileApi } from "../../../api/profile-api";
+import { useAppSelector } from "../../../hooks/redux";
+import { useParams } from "react-router-dom";
 
-type PropsType = {
-    isOwner: boolean
-}
 
-const ProfileInfo: FC<PropsType> = ({ isOwner, }) => {
 
-    const profile = useSelector(selectProfile)
-    const status = useSelector(selectStatus)
+const ProfileInfo: FC = () => {
+    const id = useAppSelector(state => state.auth.id?.toString())
+    const { userId } = useParams<{ userId: string }>()
+    const [editMode, setEditMode] = useState(false)
 
-    let [editMode, setEditMode] = useState(false)
+    const parsedUserId = userId ? parseInt(userId) : null
+    const parsedId = id ? parseInt(id) : null
+
+
+    const { data: profile, refetch: refetchProfile } = profileApi.useGetProfileQuery(parsedUserId || parsedId)
+    const { data: status, refetch: refetchStatus } = profileApi.useGetStatusQuery(parsedUserId || parsedId)
+
+
+    useEffect(() => {
+
+        if (parsedUserId && parsedId && parsedUserId !== parsedId) {
+            refetchProfile()
+            refetchStatus()
+        }
+    }, [parsedUserId, parsedId])
+
+
     if (!profile) {
         return <Preloader />
     }
-
     return (
         <div className={s.profileBlock}>
-
             <div className={s.ava} style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: '50px' }}>
                 <div>
                     {!editMode && <img src={profile.photos.large || userPhoto} alt="!" />}
                     <div style={{ textAlign: 'center' }}>
-                        {!editMode && <StatusWithHooks status={status} />}
+                        {!editMode && <Status status={status} />}
                     </div>
                 </div>
                 <div>
-                    {editMode ? <ProfileDataForm setEditMode={setEditMode} profile={profile} isOwner={isOwner} /> :
-                        <div> <ProfileData profile={profile} isOwner={isOwner} onEditMode={() => { setEditMode(true) }} /> </div>}
+                    {editMode ? <ProfileDataForm setEditMode={setEditMode} profile={profile} isOwner={!userId} /> :
+                        <div> <ProfileData profile={profile} isOwner={!userId} onEditMode={() => { setEditMode(true) }} /> </div>}
                 </div>
             </div>
 
@@ -50,7 +63,6 @@ type ProfileDataPropsType = {
 }
 const ProfileData: FC<ProfileDataPropsType> = ({ profile, isOwner, onEditMode }) => {
     return <div style={{ color: '#DBDEE1' }}>
-
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
             {profile.fullName}
         </div>
