@@ -13,29 +13,20 @@ import { useAppSelector } from "../../hooks/redux";
 
 
 export const Users: FC = () => {
-    const { setQueryParams } = useActions()
     const [query, setQuery] = useQueryParams({
         page: NumberParam,
         count: NumberParam,
         term: StringParam,
         friend: BooleanParam || null,
     })
-    const { page, count, term, friend } = useAppSelector(state => state.user)
     const { data: users, error, isLoading } = usersAPI.useGetUsersQuery({
         page: query.page || 1,
         count: query.count || 10,
         term: query.term || '',
         friend: query.friend
     })
+    const {term, friend, page, count} = useAppSelector(state => state.user)
 
-    useEffect(() => {
-        if (query.page !== undefined) setQueryParams(String(query.page));
-        if (query.count !== undefined) setQueryParams(String(query.count));
-        if (query.term !== undefined) setQueryParams(String(query.term));
-        if (query.friend !== undefined) setQueryParams(String(query.friend));
-
-
-    }, [query, setQueryParams])
 
     const onSearch = (values: FilterType) => {
         setQuery({ ...query, ...values })

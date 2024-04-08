@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 
 
@@ -11,11 +11,11 @@ export const userSLice = createSlice({
         friend: null as null | boolean
     },
     reducers: {
-        setQueryParams: (state, { payload }) => {
-            state.page = payload
-            state.count = payload
-            state.term = payload
-            state.friend = payload
+        setQueryParams: (state, action: PayloadAction<{ page: number, count: number, term: string, friend: null | boolean }>) => {
+            state.page = action.payload.page
+            state.count = action.payload.count
+            state.term = action.payload.term
+            state.friend = action.payload.friend
         }
     }
 })
