@@ -10,7 +10,6 @@ import storage from "redux-persist/lib/storage"
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer, persistStore } from "redux-persist"
 import { reducer as toastrReducer } from "react-redux-toastr";
 import { profileSlice } from "./reducers/profile-slice";
-import { userSLice } from "./reducers/user-slice";
 
 
 const logger = createLogger({
@@ -21,7 +20,6 @@ const rootReducer = combineReducers({
     chat: chatReducer,
     auth: authSlice.reducer,
     profile: profileSlice.reducer,
-    user: userSLice.reducer,
     [api.reducerPath]: api.reducer,
     toastr: toastrReducer
 })

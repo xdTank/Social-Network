@@ -26,8 +26,7 @@ const ProfileInfo: FC = () => {
 
 
     useEffect(() => {
-
-        if (parsedUserId && parsedId && parsedUserId !== parsedId) {
+        if (parsedUserId && parsedId  !== parsedId) {
             refetchProfile()
             refetchStatus()
         }

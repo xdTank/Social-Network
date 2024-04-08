@@ -23,9 +23,8 @@ export const Users: FC = () => {
         page: query.page || 1,
         count: query.count || 10,
         term: query.term || '',
-        friend: query.friend
+        friend: query.friend || null
     })
-    const {term, friend, page, count} = useAppSelector(state => state.user)
 
 
     const onSearch = (values: FilterType) => {
@@ -39,8 +38,8 @@ export const Users: FC = () => {
         <div>
             <UsersSearchForm
                 onSearch={onSearch}
-                searchTerm={term}
-                friend={friend} />
+                searchTerm={query.term || ''}
+                friend={query.friend || null} />
         </div>
         <div style={{ overflowY: 'auto', height: '70vh' }}>
             {isLoading ? <div>Загрузка...</div> : error ? <div>{JSON.stringify(error)}</div> : users ? users.items.map(u => <User user={u}
@@ -48,7 +47,7 @@ export const Users: FC = () => {
             />) : <div>Пользователи не найдены</div>}
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem', flexShrink: 0 }}>
-            <Pagination defaultCurrent={page} total={users?.totalCount} defaultPageSize={count} onChange={handlePageChange} showSizeChanger onShowSizeChange={handlePageChange} />
+            <Pagination defaultCurrent={1} total={users?.totalCount} defaultPageSize={10} onChange={handlePageChange} showSizeChanger onShowSizeChange={handlePageChange} />
         </div>
     </div>
 }
