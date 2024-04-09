@@ -25,9 +25,9 @@ const rootReducer = combineReducers({
 })
 
 const persistConfig = {
-    key: 'root',
+    key: 'auth',
     storage,
-    whitelist: ['Auth']
+    whitelist: ['auth',]
 }
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 const tokenMiddleware = (store: any) => (next: any) => (action: any) => {

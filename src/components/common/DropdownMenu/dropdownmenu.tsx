@@ -1,18 +1,17 @@
 import React from 'react';
-import { DownOutlined, LoginOutlined } from '@ant-design/icons';
+import { DownOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Avatar, Button, Dropdown, Flex, Space } from 'antd';
 import { UserOutlined } from '@ant-design/icons'
 import { useAppSelector } from '../../../hooks/redux';
-import { useActions } from '../../../hooks/useActions';
 import { CiLogout } from "react-icons/ci";
+import { authApi } from '../../../api/auth-api';
 
 
 
 const DropdownMenu: React.FC = () => {
     const login = useAppSelector(state => state.auth.login)
-    const { logout } = useActions()
-
+    const [logout] = authApi.useLogoutMutation()      
 
 
     const items: MenuProps['items'] = [
@@ -31,7 +30,6 @@ const DropdownMenu: React.FC = () => {
     return <Dropdown menu={{ items }} trigger={['click']}>
         <a onClick={(e) => e.preventDefault()}>
             <Space style={{ color: "#DBDEE1", marginRight: '20px' }}>
-                <UserOutlined style={{ fontSize: '20px', borderRadius: '50%' }} />
                 {login}
                 <DownOutlined />
             </Space>

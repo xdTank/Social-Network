@@ -4,12 +4,6 @@ import { usersAPI } from "../../api/users-api";
 import { Pagination } from "antd";
 import UsersSearchForm, { FilterType } from "./UsersSearchForm";
 import { BooleanParam, NumberParam, StringParam, useQueryParams } from "use-query-params";
-import { useActions } from "../../hooks/useActions";
-import { useAppSelector } from "../../hooks/redux";
-
-
-
-
 
 
 export const Users: FC = () => {

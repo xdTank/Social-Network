@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import { authApi } from "../../api/auth-api"
 
 const initrialState = {
     id: null as number | null,
@@ -6,30 +7,37 @@ const initrialState = {
     login: null as string | null,
     isAuth: false,
     captchaUrl: null as string | null,
-    errorMessage: null as string | null | undefined,
-    isLoading: false,
-    isError: false,
-    token: null as string | null
+    errorMessage: null as string | null,
 }
 
 export const authSlice = createSlice({
     name: 'auth',
     initialState: initrialState,
     reducers: {
-        setAuthUserData(state, action: PayloadAction<{ id: number | null, email: string | null, login: string | null, isAuth: boolean }>) {
-            state.id = action.payload.id
-            state.email = action.payload.email
-            state.login = action.payload.login
-            state.isAuth = action.payload.isAuth
-        },
-        getCaptchaUrlSuccess(state, action: PayloadAction<string>) {
-            state.captchaUrl = action.payload
-
-        },
         loginFailure(state, action: PayloadAction<string>) {
             state.errorMessage = action.payload
-        },
+        }
     },
+    extraReducers: (builder) => {
+        builder.addMatcher(
+            authApi.endpoints.me.matchFulfilled,
+            (state, { payload }) => {
+                state.id = payload.data.id
+                state.email = payload.data.email
+                state.login = payload.data.login
+                state.isAuth = true
+            })
+        builder.addMatcher(
+            authApi.endpoints.getCaptchaUrl.matchFulfilled,
+            (state, { payload }) => {
+                state.captchaUrl = payload.url
+            }
+        )
+        builder.addMatcher(
+            authApi.endpoints.logout.matchFulfilled,
+            (state, { payload }) => initrialState
+        )
+    }
 })
 
 

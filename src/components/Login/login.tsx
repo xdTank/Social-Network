@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
 import s from './login.module.css'
 import { useAppSelector } from '../../hooks/redux';
-import { useActions } from '../../hooks/useActions';
 import { useNavigate } from 'react-router-dom';
+import { authApi } from '../../api/auth-api';
 
 type FieldType = {
     email?: string;
@@ -21,7 +21,7 @@ interface LoginForm {
 
 const LoginForm: React.FC = () => {
     const { errorMessage, captchaUrl, } = useAppSelector(state => state.auth)
-    const { login } = useActions()
+    const [login] = authApi.useLoginMutation()
     const isAuth = useAppSelector(state => state.auth.isAuth)
     const navigate = useNavigate()
     const onFinish = (values: LoginForm) => {
