@@ -5,7 +5,7 @@ import 'antd'
 import { LoginPage } from './components/Login/login';
 import { Provider } from 'react-redux';
 import Preloader from './components/common/Preloader/Preloader';
-import { AppStateType, persistor, setupStore } from './store/store';
+import {  persistor,  store } from './store/store';
 import { Users } from './components/Users/Users';
 import {
   UserOutlined,
@@ -132,12 +132,11 @@ const App: React.FC = () => {
 
 const MainApp: FC = () => {
   const queryClient = new QueryClient
-  const store = setupStore()
   return (
     <>
       <BrowserRouter>
         <Provider store={store}>
-          <PersistGate persistor={persistor} loading={null}>
+          <PersistGate loading={null} persistor={persistor}>
             <QueryParamProvider adapter={ReactRouter6Adapter} >
               <QueryClientProvider client={queryClient}>
                 <React.Suspense fallback={<Preloader />}>

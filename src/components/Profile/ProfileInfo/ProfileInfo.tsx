@@ -13,12 +13,12 @@ import { useParams } from "react-router-dom";
 
 
 const ProfileInfo: FC = () => {
-    const id = useAppSelector(state => state.auth.id?.toString())
+    const {id} = useAppSelector(state => state.auth)
     const { userId } = useParams<{ userId: string }>()
     const [editMode, setEditMode] = useState(false)
 
     const parsedUserId = userId ? parseInt(userId) : null
-    const parsedId = id ? parseInt(id) : null
+    const parsedId = id ? parseInt(id.toString()) : null
 
 
     const { data: profile, refetch: refetchProfile } = profileApi.useGetProfileQuery(parsedUserId || parsedId)

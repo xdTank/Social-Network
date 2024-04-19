@@ -34,7 +34,7 @@ export const authApi = api.injectEndpoints({
                     } else {
                         if (data.resultCode === ResultCodeForCaptcha.CaptchaIsRequired) {
                             await dispatch(authApi.endpoints.getCaptchaUrl.initiate())
-                        }  
+                        } 
                         let message = data.messages.length > 0 ? data.messages[0] : "Some error"
                         dispatch(actions.loginFailure(message))
                     } 
@@ -56,7 +56,6 @@ export const authApi = api.injectEndpoints({
         }),
         me: build.query<ResponseType<MeResponseDataType>, void>({
             query: () => `auth/me`,
-            providesTags: ['Auth'],
         })
     })
 })

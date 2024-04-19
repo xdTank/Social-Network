@@ -1,5 +1,5 @@
 import axios from "axios";
-import { UserType } from "../types/types";
+import { UserType } from "../types/types"
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 
