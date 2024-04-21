@@ -3,8 +3,9 @@ import { profileApi } from "../../../api/profile-api";
 import { Input } from "antd";
 type PropsType = {
     status: string | undefined
+    isOwner: boolean
 }
-const Status: FC<PropsType>= ({ status }) => {
+const Status: FC<PropsType>= ({ status, isOwner }) => {
     const [updateStatus] = profileApi.useUpdateStatusMutation()
    
 
@@ -15,7 +16,9 @@ const Status: FC<PropsType>= ({ status }) => {
     }, [status])
 
     const activateEditMode = () => {
-        setIsEditMede(true)
+        if (isOwner) {
+            setIsEditMede(true)
+        }
     }
     const deactivateEditMode = () => {
         setIsEditMede(false)

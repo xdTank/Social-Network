@@ -77,7 +77,6 @@ export const chatAPI = {
 }
 
 export type ChatMessageAPIType = {
-    timestamp: any
     message: string
     photo: string
     userId: number

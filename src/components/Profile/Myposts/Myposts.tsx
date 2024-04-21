@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import s from "./Myposts.module.css"
 import icon from "../../../assets/img/44884218_345707102882519_2446069589734326272_n.jpg"
-import { PostType } from "../../../types/types";
+import { PostType, ProfileType } from "../../../types/types";
 import { useSelector } from "react-redux";
 import { AppStateType } from "../../../store/store";
 import { useDispatch } from "react-redux";
@@ -11,10 +11,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { profileSlice } from "../../../store/reducers/profile-slice";
 
 
-export type MyPostsPropsType = {
-    posts: Array<PostType>
 
-}
 const Myposts: FC = React.memo(() => {
     const posts = useAppSelector(state => state.profile.posts)
     const postsElements = [...posts].reverse().map(p => <Posts massege={p.massege} likeCount={p.likeCount} id={0} />)
@@ -33,11 +30,9 @@ const Myposts: FC = React.memo(() => {
     )
 })
 
-const Posts: FC<PostType> = (props) => {
-    const photos = useAppSelector(state => state.profile.profile?.photos?.small)
+const Posts: FC<PostType> = ({ ...props }) => {
     return (
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', margin: '25px' }}>
-            <img src={photos || icon} alt="!" style={{ width: '50px', borderRadius: '50%' }} />
             <div style={{ height: '40px', textAlign: 'center', alignItems: 'center', display: 'flex', padding: '5px', color: '#fff' }}>
                 {props.massege}
             </div>

@@ -3,7 +3,6 @@ import { ChatMessageAPIType, StatusType, chatAPI } from "../../api/chat-api";
 import { BaseThunkType, InferActionsTypes } from "../store";
 import { Dispatch } from "redux";
 import { v1 } from "uuid";
-import { useSelector } from "react-redux";
 
 
 type ChatMessageType = ChatMessageAPIType & { id: string }

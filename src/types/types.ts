@@ -1,7 +1,7 @@
 export type PostType = {
     id: number,
     massege: string,
-    likeCount: number
+    likeCount: number,
 }
 export type ContactsType = {
     github: string

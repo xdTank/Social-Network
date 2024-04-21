@@ -16,7 +16,7 @@ export const authSlice = createSlice({
     reducers: {
         loginFailure(state, action: PayloadAction<string>) {
             state.errorMessage = action.payload
-        }
+        },
     },
     extraReducers: (builder) => {
         builder.addMatcher(
@@ -35,7 +35,7 @@ export const authSlice = createSlice({
         )
         builder.addMatcher(
             authApi.endpoints.logout.matchFulfilled,
-            (state, { payload }) => initrialState
+            () => initrialState
         )
     }
 })

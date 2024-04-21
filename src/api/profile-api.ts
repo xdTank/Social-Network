@@ -1,5 +1,6 @@
+import { actions } from "../store/reducers/profile-slice";
 import { PhotosType, ProfileType } from "../types/types";
-import { ResponseType, api, instance } from "./api";
+import { ResponseType, api } from "./api";
 
 type SavePhotoType = {
     photos: PhotosType
@@ -13,29 +14,31 @@ export const profileApi = api.injectEndpoints({
             query: (userId) => ({
                 url: `profile/` + userId
             }),
-            providesTags: ['Profile']
+            providesTags: ['Profile'],
         }),
         getStatus: build.query<string, number | null>({
             query: (userId) => ({
                 url: `profile/status/` + userId
             }),
-            providesTags: ['Profile']
+            providesTags: ['Profile'],
         }),
         updateStatus: build.mutation<string, string | undefined>({
             query: (status) => ({
                 url: `profile/status`,
                 method: 'PUT',
-                body: { status }
+                body: status
             }),
             invalidatesTags: ['Profile']
         }),
-        savePhoto: build.mutation<PhotosType,  File>({
-            query: (photoFile) => ({
+        savePhoto: build.mutation<ResponseType<SavePhotoType>, FormData>({
+            query: (formData) => ({
                 url: `profile/photo`,
                 method: 'PUT',
-                body: photoFile
+                body: formData,
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
             }),
-            invalidatesTags: ['Profile']
         }),
         saveProfile: build.mutation<ProfileType, ProfileType>({
             query: (profile) => ({

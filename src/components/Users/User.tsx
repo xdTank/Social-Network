@@ -14,13 +14,6 @@ const User: FC<PropsType> = ({ user }) => {
     const [follow, { isLoading: isFollowLoading }] = usersAPI.useFollowMutation()
     const [unfollow, { isLoading: isUnfollowLoading }] = usersAPI.useUnfollowMutation()
 
-
-    const onFollow = async (userId: number) => {
-        await follow(userId)
-    }
-    const onUnfollow = async (userId: number) => {
-        await unfollow(userId)
-    }
     return (
         <div style={{ display: 'flex', margin: '10px', alignItems: 'center', gap: '10px' }}>
             <div className={styles.userBlock}>
@@ -33,11 +26,11 @@ const User: FC<PropsType> = ({ user }) => {
                 {user.followed
                     ? <Button style={{ backgroundColor: '#fff', width: '100px' }} size='small'
                         disabled={isUnfollowLoading}
-                        onClick={() => { onUnfollow(user.id) }}>
+                        onClick={() => unfollow(user.id)}>
                         Unfollow</Button>
                     : <Button style={{ backgroundColor: '#fff', width: '100px' }} size='small'
                         disabled={isFollowLoading}
-                        onClick={() => { onFollow(user.id) }}>
+                        onClick={() => follow(user.id)}>
                         Follow</Button>}
                 <div style={{ color: '#fff' }}>
                     <div>{user.name}</div>

@@ -39,16 +39,20 @@ const ProfileDataForm: FC<PropsType> = ({ profile, setEditMode, isOwner }) => {
             <Form.Item>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '20px', maxWidth: '400px' }}>
                     <div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                            <img src={profile.photos.large || userPhoto} alt="!" style={{ width: '120px', height: '120px' }} />
-                            {isOwner && <AvatarUploadButton />}
+                        <div style={{ display: 'flex', gap: '20px', flexDirection: 'column', }}>
+                            <div>
+                                <img src={profile.photos.large || userPhoto} alt="!" style={{ width: '120px', height: '120px' }} />
+                            </div>
+                            <div>
+                                {isOwner && <AvatarUploadButton />}
+                            </div>
                         </div>
                         <b>Full Name</b>: <Form.Item name="fullName" noStyle><Input placeholder="Full name" /></Form.Item>
                         <b>Looking for a job</b>: <Form.Item name="lookingForAJob" valuePropName="checked" noStyle><Checkbox /></Form.Item>
                         <div>
-                            <b>Description</b>: <Form.Item name="lookingForAJobDescription"><TextArea rows={4} /></Form.Item>
+                            <b>Description</b>: <Form.Item name="lookingForAJobDescription" noStyle ><TextArea /></Form.Item>
                         </div>
-                        <b>About me</b>: <Form.Item name="aboutMe" noStyle><TextArea rows={4} placeholder="About me" /></Form.Item>
+                        <b>About me</b>: <Form.Item name="aboutMe" noStyle><TextArea placeholder="About me" /></Form.Item>
                         <b>Contacts</b>:
                         {Object.keys(profile.contacts).map((key) => (
                             <Form.Item key={key} name={['contacts', key]} noStyle>

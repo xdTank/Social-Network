@@ -1,4 +1,4 @@
-import axios from "axios";
+import { RootState } from "../store/store";
 import { UserType } from "../types/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -11,24 +11,21 @@ export const api = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: API_URL,
         credentials: 'include',
+        headers: {
+            "API-KEY": '595ce6e4-ce57-457f-a46a-f85e47d02e4d'
+        },
     }),
-    tagTypes: ['User','Auth', 'Profile'],
-    endpoints: (build) => ({
-
-    }),
+    tagTypes: ['User', 'Auth', 'Profile'],
+    endpoints: (build) => ({}),
 })
 
-export const instance = axios.create({
-    withCredentials: true,
-    baseURL: API_URL,
-});
+
 
 export type ResponseType<D = {}, RC = ResultCodes> = {
     data: D
     messages: Array<string>
     resultCode: RC
 }
-
 
 export enum ResultCodes {
     Success = 0,
@@ -38,8 +35,6 @@ export enum ResultCodes {
 export enum ResultCodeForCaptcha {
     CaptchaIsRequired = 10
 }
-
-
 
 export type GetItemsType = {
     items: Array<UserType>

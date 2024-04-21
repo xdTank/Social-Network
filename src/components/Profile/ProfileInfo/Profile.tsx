@@ -9,30 +9,25 @@ import { Button } from "antd";
 import { profileApi } from "../../../api/profile-api";
 import { useAppSelector } from "../../../hooks/redux";
 import { useParams } from "react-router-dom";
+import Myposts from "../Myposts/Myposts";
+import { useAuthGuard } from "../../../hooks/useAuthGuard";
 
 
 
-const ProfileInfo: FC = () => {
-    const id = useAppSelector(state => state.auth.id?.toString())
-    const { userId } = useParams<{ userId: string }>()
+const Profile: FC = () => {
     const [editMode, setEditMode] = useState(false)
+    const id = useAppSelector(state => state.auth.id)
+    const { userId } = useParams<{ userId: string }>()
 
-    const parsedUserId = userId ? parseInt(userId) : null
-    const parsedId = id ? parseInt(id) : null
+    const { data: profile, } = profileApi.useGetProfileQuery(Number(userId) || id, {
+        skip: !userId && !id,
+    })
 
+    const { data: status, } = profileApi.useGetStatusQuery(Number(userId) || id, {
+        skip: !userId && !id,
+    })
 
-    const { data: profile, refetch: refetchProfile } = profileApi.useGetProfileQuery(parsedUserId || parsedId)
-    const { data: status, refetch: refetchStatus } = profileApi.useGetStatusQuery(parsedUserId || parsedId)
-
-
-    useEffect(() => {
-        if (parsedUserId && parsedId  !== parsedId) {
-            refetchProfile()
-            refetchStatus()
-        }
-    }, [parsedUserId, parsedId])
-
-
+    useAuthGuard()
     if (!profile) {
         return <Preloader />
     }
@@ -42,7 +37,7 @@ const ProfileInfo: FC = () => {
                 <div>
                     {!editMode && <img src={profile.photos.large || userPhoto} alt="!" />}
                     <div style={{ textAlign: 'center' }}>
-                        {!editMode && <Status status={status} />}
+                        {!editMode && <Status status={status} isOwner={!userId} />}
                     </div>
                 </div>
                 <div>
@@ -50,7 +45,9 @@ const ProfileInfo: FC = () => {
                         <div> <ProfileData profile={profile} isOwner={!userId} onEditMode={() => { setEditMode(true) }} /> </div>}
                 </div>
             </div>
-
+            <div>
+                {!editMode && <Myposts />}
+            </div>
         </div>
     )
 }
@@ -105,4 +102,4 @@ const Contact: FC<ContactPropsType> = ({ contactTitle, contactValue }) => {
     </div>
 }
 
-export default ProfileInfo
+export default Profile

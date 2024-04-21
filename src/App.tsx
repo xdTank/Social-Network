@@ -27,7 +27,7 @@ import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6'
 import { PersistGate } from 'redux-persist/integration/react';
 import ReduxToastr from 'react-redux-toastr';
 import { Chat } from './pages/chat/chat';
-import Profile from './components/Profile/Profile';
+import Profile from './components/Profile/ProfileInfo/Profile';
 
 const { Sider, Content } = Layout;
 
@@ -104,7 +104,7 @@ const App: React.FC = () => {
             />
             {isAuth
               ? <DropdownMenu />
-              : <Link style={{paddingRight:'10px'}} to={'/login'}>Login</Link>}
+              : <Link style={{ paddingRight: '10px' }} to={'/login'}>Login</Link>}
           </Header>
           <Content
             style={{
@@ -131,7 +131,6 @@ const App: React.FC = () => {
 
 
 const MainApp: FC = () => {
-  const queryClient = new QueryClient
   const store = setupStore()
   return (
     <>
@@ -139,20 +138,18 @@ const MainApp: FC = () => {
         <Provider store={store}>
           <PersistGate persistor={persistor} loading={null}>
             <QueryParamProvider adapter={ReactRouter6Adapter} >
-              <QueryClientProvider client={queryClient}>
-                <React.Suspense fallback={<Preloader />}>
-                  <App />
-                  <ReduxToastr
-                    newestOnTop={false}
-                    preventDuplicates
-                    progressBar
-                    closeOnToastrClick
-                    timeOut={4000}
-                    transitionIn="fadeIn"
-                    transitionOut='fadeOut'
-                  />
-                </React.Suspense>
-              </QueryClientProvider>
+              <React.Suspense fallback={<Preloader />}>
+                <App />
+                <ReduxToastr
+                  newestOnTop={false}
+                  preventDuplicates
+                  progressBar
+                  closeOnToastrClick
+                  timeOut={4000}
+                  transitionIn="fadeIn"
+                  transitionOut='fadeOut'
+                />
+              </React.Suspense>
             </QueryParamProvider>
           </PersistGate>
         </Provider>
