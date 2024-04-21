@@ -14,14 +14,37 @@ import { useAuthGuard } from "../../../hooks/useAuthGuard";
 
 
 
+<<<<<<< HEAD:src/components/Profile/ProfileInfo/Profile.tsx
 const Profile: FC = () => {
+=======
+const ProfileInfo: FC = () => {
+    const {id} = useAppSelector(state => state.auth)
+    const { userId } = useParams<{ userId: string }>()
+>>>>>>> 9d614f74d1f2aeefa3c8c0d1b355ece1895b4c3b:src/components/Profile/ProfileInfo/ProfileInfo.tsx
     const [editMode, setEditMode] = useState(false)
     const id = useAppSelector(state => state.auth.id)
     const { userId } = useParams<{ userId: string }>()
 
+<<<<<<< HEAD:src/components/Profile/ProfileInfo/Profile.tsx
     const { data: profile, } = profileApi.useGetProfileQuery(Number(userId) || id, {
         skip: !userId && !id,
     })
+=======
+    const parsedUserId = userId ? parseInt(userId) : null
+    const parsedId = id ? parseInt(id.toString()) : null
+
+
+    const { data: profile, refetch: refetchProfile } = profileApi.useGetProfileQuery(parsedUserId || parsedId)
+    const { data: status, refetch: refetchStatus } = profileApi.useGetStatusQuery(parsedUserId || parsedId)
+
+
+    useEffect(() => {
+        if (parsedUserId && parsedId  !== parsedId) {
+            refetchProfile()
+            refetchStatus()
+        }
+    }, [parsedUserId, parsedId])
+>>>>>>> 9d614f74d1f2aeefa3c8c0d1b355ece1895b4c3b:src/components/Profile/ProfileInfo/ProfileInfo.tsx
 
     const { data: status, } = profileApi.useGetStatusQuery(Number(userId) || id, {
         skip: !userId && !id,

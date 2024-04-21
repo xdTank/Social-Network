@@ -1,22 +1,23 @@
 import { Action, configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "@reduxjs/toolkit"
-import dialogsReducer from "./reducers/dialogsReducer"
 import { ThunkAction } from "redux-thunk";
 import chatReducer from "./reducers/chatReducer";
 import { authSlice } from "./reducers/auth-slice";
 import { api } from "../api/api";
 import { createLogger } from "redux-logger"
-import storage from "redux-persist/lib/storage"
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer, persistStore } from "redux-persist"
 import { reducer as toastrReducer } from "react-redux-toastr";
 import { profileSlice } from "./reducers/profile-slice";
+import sessionStorage from "redux-persist/es/storage/session";
+import storage from "redux-persist/lib/storage";
 
 
 const logger = createLogger({
     collapsed: true
 })
+
+ 
 const rootReducer = combineReducers({
-    dialogsPage: dialogsReducer,
     chat: chatReducer,
     auth: authSlice.reducer,
     profile: profileSlice.reducer,
@@ -25,50 +26,39 @@ const rootReducer = combineReducers({
 })
 
 const persistConfig = {
-    key: 'auth',
+    key: "root",
     storage,
-    whitelist: ['auth',]
+    whitelist: ["auth"],
 }
 const persistedReducer = persistReducer(persistConfig, rootReducer)
-const tokenMiddleware = (store: any) => (next: any) => (action: any) => {
-    if (action.type === 'auth/setAuthUserData') {
-        storage.setItem('token', action.payload.token)
-    }
-    return next(action)
-}
 
-export const setupStore = () => {
-    return configureStore({
+export const store = configureStore({
         reducer: persistedReducer,
         middleware: (getDefaultMiddleware) => getDefaultMiddleware({
             serializableCheck: {
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-            }
+            },
         }).concat(
             api.middleware,
             logger as any,
-            tokenMiddleware
         ),
     })
-}
+
+
+export const persistor = persistStore(store)
+
 
 export type RootState = ReturnType<typeof rootReducer>
-export type AppStore = ReturnType<typeof setupStore>
-export type AppDispatch = AppStore['dispatch']
+export type AppStore = {
+    store: typeof store
+    persistor: typeof persistor
+}
+export type AppDispatch = typeof store.dispatch
 
 type ReducerType = typeof rootReducer
 export type AppStateType = ReturnType<ReducerType>
 export type InferActionsTypes<T> = T extends { [keys: string]: (...args: any[]) => infer U } ? U : never
 export type BaseThunkType<A extends Action, R = Promise<void>> = ThunkAction<R, AppStateType, unknown, A>
-
-
-
-const store = setupStore()
-export const persistor = persistStore(store)
-
-
-
-
 
 
 // @ts-ignore

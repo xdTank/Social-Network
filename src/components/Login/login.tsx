@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
 import s from './login.module.css'
-import { useAppSelector } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { useNavigate } from 'react-router-dom';
 import { authApi } from '../../api/auth-api';
+import { useDispatch } from 'react-redux';
 
 type FieldType = {
     email?: string;
@@ -24,7 +25,7 @@ const LoginForm: React.FC = () => {
     const [login] = authApi.useLoginMutation()
     const isAuth = useAppSelector(state => state.auth.isAuth)
     const navigate = useNavigate()
-    const onFinish = (values: LoginForm) => {
+    const onFinish =  (values: LoginForm) => {
         login(values)
     }
 
@@ -32,7 +33,7 @@ const LoginForm: React.FC = () => {
         if (isAuth) {
             navigate('/profile')
         }
-    })
+    },[isAuth, navigate])
     return (
         <Form
             name="basic"
