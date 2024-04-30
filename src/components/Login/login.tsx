@@ -21,7 +21,7 @@ interface LoginForm {
 
 
 const LoginForm: React.FC = () => {
-    const { errorMessage, captchaUrl, } = useAppSelector(state => state.auth)
+    const { error, captchaUrl, } = useAppSelector(state => state.auth)
     const [login] = authApi.useLoginMutation()
     const isAuth = useAppSelector(state => state.auth.isAuth)
     const navigate = useNavigate()
@@ -66,7 +66,7 @@ const LoginForm: React.FC = () => {
                     <a className="" href="#">Forgot password?</a>
                 </div>
             </Form.Item>
-            {errorMessage && <div style={{ color: 'red', margin: '5px', textAlign: 'center' }}>{errorMessage}</div>}
+            {error && <div style={{ color: 'red', margin: '5px', textAlign: 'center' }}>{error}</div>}
             {captchaUrl && <img src={captchaUrl} />}
             {captchaUrl && <Form.Item<FieldType>
                 name='captcha'

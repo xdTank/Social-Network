@@ -45,7 +45,6 @@ const AvatarUploadButton: React.FC = () => {
     }
 
     return (
-        <>
             <Upload
                 name="image"
                 beforeUpload={beforeUpload}
@@ -53,7 +52,6 @@ const AvatarUploadButton: React.FC = () => {
             >
                 <Button style={{ background: 'white', }} icon={<UploadOutlined />}>{loading ? <LoadingOutlined /> : 'Click to Upload'}</Button>
             </Upload>
-        </>
     )
 }
 

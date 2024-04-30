@@ -1,5 +1,5 @@
 import { actions } from "../store/reducers/auth-slice";
-import { ResponseType, ResultCodeForCaptcha, ResultCodes, api, instance } from "./api";
+import { ResponseType, ResultCodeForCaptcha, ResultCodes, api } from "./api";
 
 type MeResponseDataType = {
     id: number

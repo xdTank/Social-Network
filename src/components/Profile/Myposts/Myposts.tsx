@@ -1,46 +1,63 @@
 import React, { FC, useState } from "react";
 import s from "./Myposts.module.css"
-import icon from "../../../assets/img/44884218_345707102882519_2446069589734326272_n.jpg"
-import { PostType, ProfileType } from "../../../types/types";
-import { useSelector } from "react-redux";
-import { AppStateType } from "../../../store/store";
-import { useDispatch } from "react-redux";
 import { Button, Form, Input } from "antd";
-import { LikeOutlined } from "@ant-design/icons";
+import { DeleteOutlined, LikeOutlined, UserOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import { profileSlice } from "../../../store/reducers/profile-slice";
+import { PostType, profileSlice } from "../../../store/reducers/profile-slice";
+import { ProfileType } from "../../../api/profile-api";
+import { FaPlus } from "react-icons/fa"
+import { FcLike } from "react-icons/fc"
 
 
-
-const Myposts: FC = React.memo(() => {
+const Myposts: FC<{ isOwner: boolean, profile: ProfileType }> = React.memo(({ isOwner }) => {
     const posts = useAppSelector(state => state.profile.posts)
-    const postsElements = [...posts].reverse().map(p => <Posts massege={p.massege} likeCount={p.likeCount} id={0} />)
+    const postsElements = [...posts].reverse().map(p => <Posts message={p.message} likeCount={p.likeCount} id={p.id} />)
 
     return (
         <div>
             <div style={{ display: "flex", borderTop: '1px solid grey', }}>
                 <div style={{ paddingTop: '20px', marginLeft: '50px' }}>
-                    <AddNewPostForm />
+                    {isOwner && <AddNewPostForm />}
                 </div>
             </div>
-            <div className={s.posts} style={{ height: '55vh', overflowY: 'auto' }}>
+            <div className={s.posts} style={{ height: '55vh', overflowY: 'auto', }}>
                 {postsElements}
             </div>
         </div >
     )
 })
 
-const Posts: FC<PostType> = ({ ...props }) => {
+const Posts: FC<PostType> = ({ message, likeCount, id }) => {
+    const dispatch = useAppDispatch()
+    const [likes, setLikes] = useState(likeCount)
+    const [liked, setLiked] = useState(false)
+    const hadleLike = () => {
+        if (!liked) {
+            setLiked(true)
+            setLikes(prevLikes => prevLikes + 1)
+        } else {
+            setLiked(false)
+            setLikes(prevLikes => prevLikes - 1)
+        }
+    }
+
     return (
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', margin: '25px' }}>
-            <div style={{ height: '40px', textAlign: 'center', alignItems: 'center', display: 'flex', padding: '5px', color: '#fff' }}>
-                {props.massege}
+            <div style={{ height: '40px', textAlign: 'center', alignItems: 'center', display: 'flex', padding: '5px', color: '#fff', gap: '10px' }}>
+                {message}
             </div>
-            <div style={{ color: '#fff', }}>
-                <LikeOutlined />
-                {props.likeCount}
+            <div style={{ color: '#fff', display: 'flex', alignItems: 'center', gap: '5px', }}>
+                <FcLike onClick={hadleLike} style={{ cursor: 'pointer' }} />
+                {likes}
             </div>
-        </div>
+            <div >
+                <Button
+                    onClick={() => { dispatch(profileSlice.actions.removePost(id)) }}
+                    style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#fff' }} size="small" type="text">
+                    <DeleteOutlined />
+                </Button>
+            </div>
+        </div >
     )
 }
 
@@ -49,8 +66,8 @@ const AddNewPostForm = () => {
     const dispatch = useAppDispatch()
     const [form] = Form.useForm()
 
-    const onFinish = (values: any) => {
-        dispatch(profileSlice.actions.addPost(values))
+    const onFinish = (value: any) => {
+        dispatch(profileSlice.actions.addPost(value))
         form.resetFields()
     }
     return (
@@ -61,11 +78,11 @@ const AddNewPostForm = () => {
             autoComplete="off"
         >
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <Form.Item name="newPostText">
+                <Form.Item name="message">
                     <Input placeholder="Yuor post" size="small" allowClear />
                 </Form.Item>
                 <Form.Item>
-                    <Button style={{ backgroundColor: '#fff' }} size="small" htmlType="submit" >Add posts</Button>
+                    <Button style={{ backgroundColor: '#fff', display: 'flex', alignItems: 'center', gap: '5px' }} size="small" htmlType="submit" ><FaPlus />Add posts</Button>
                 </Form.Item>
             </div>
         </Form >

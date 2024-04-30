@@ -1,9 +1,10 @@
 import React, { FC, useEffect } from "react";
 import User from "./User";
 import { usersAPI } from "../../api/users-api";
-import { Pagination } from "antd";
+import { Pagination, Spin } from "antd";
 import UsersSearchForm, { FilterType } from "./UsersSearchForm";
 import { BooleanParam, NumberParam, StringParam, useQueryParams } from "use-query-params";
+import { LoadingOutlined } from "@ant-design/icons";
 
 
 export const Users: FC = () => {
@@ -36,7 +37,7 @@ export const Users: FC = () => {
                 friend={query.friend || null} />
         </div>
         <div style={{ overflowY: 'auto', height: '70vh' }}>
-            {isLoading ? <div>Загрузка...</div> : error ? <div>{JSON.stringify(error)}</div> : users ? users.items.map(u => <User user={u}
+            {isLoading ? <div><Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} /></div> : error ? <div>{JSON.stringify(error)}</div> : users ? users.items.map(u => <User user={u}
                 key={u.id}
             />) : <div>Пользователи не найдены</div>}
         </div>

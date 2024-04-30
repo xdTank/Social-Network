@@ -1,12 +1,33 @@
 import { actions } from "../store/reducers/profile-slice";
-import { PhotosType, ProfileType } from "../types/types";
 import { ResponseType, api } from "./api";
 
 type SavePhotoType = {
     photos: PhotosType
 }
+export type PhotosType = {
+    small: string | null,
+    large: string | null
+}
 
-
+export type ContactsType = {
+    github: string
+    vk: string
+    facebook: string
+    instagram: string
+    twitter: string
+    website: string
+    youtube: string
+    mainLink: string
+}
+export type ProfileType = {
+    userId: number,
+    lookingForAJob: boolean,
+    lookingForAJobDescription: string
+    fullName: string
+    contacts: ContactsType
+    photos: PhotosType
+    aboutMe: string
+}
 
 export const profileApi = api.injectEndpoints({
     endpoints: (build) => ({

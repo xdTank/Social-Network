@@ -1,10 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
 import styles from "./Users.module.css";
-import userPhoto from "../../assets/img/44884218_345707102882519_2446069589734326272_n.jpg";
 import { Link, NavLink } from "react-router-dom";
-import { UserType } from '../../types/types';
-import { Button } from 'antd';
-import { usersAPI } from '../../api/users-api';
+import { Avatar, Button } from 'antd';
+import { UserType, usersAPI } from '../../api/users-api';
+import { UserOutlined } from '@ant-design/icons';
 
 type PropsType = {
     user: UserType
@@ -16,10 +15,17 @@ const User: FC<PropsType> = ({ user }) => {
 
     return (
         <div style={{ display: 'flex', margin: '10px', alignItems: 'center', gap: '10px' }}>
-            <div className={styles.userBlock}>
+            <div>
                 <Link to={'/profile/' + user.id}>
-                    <img src={user.photos.small != null ? user.photos.small : userPhoto} alt='!'
-                        className={styles.userPhoto} />
+                    {!user.photos.large ? (
+                        <Avatar icon={<UserOutlined />} size={100} />
+                    ) : (
+                        <img
+                            src={user.photos.large}
+                            alt="!"
+                            style={{ width: '100px', height: '100px', borderRadius: '50%' }}
+                        />
+                    )}
                 </Link>
             </div>
             <div>

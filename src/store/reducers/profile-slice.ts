@@ -1,13 +1,16 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { PostType, ProfileType } from "../../types/types";
-import { profileApi } from "../../api/profile-api";
+import { ProfileType, profileApi } from "../../api/profile-api";
 import { v1 } from "uuid";
 
-
+export type PostType = {
+    id: number,
+    message: string,
+    likeCount: number,
+}
 
 const initialState = {
     posts: [
-        { id: 1, massege: 'Hi,how are you?', likeCount: 1 },
+        { id: 0, message: 'Hi,how are you?', likeCount: 0 },
     ] as Array<PostType>,
     profile: {} as ProfileType,
     status: undefined as string | undefined,
@@ -17,9 +20,16 @@ export const profileSlice = createSlice({
     name: 'profile',
     initialState,
     reducers: {
-        addPost(state, action: PayloadAction<{ massege: string }>) {
-            state.posts = [...state.posts, { id: Number(v1()), massege: action.payload.massege, likeCount: 0 }]
+        addPost(state, action: PayloadAction<{ message: string }>) {
+            state.posts.push({
+                id: Date.now(),
+                message: action.payload.message,
+                likeCount: 0
+            })
         },
+        removePost(state, action: PayloadAction<number>) {
+            state.posts = state.posts.filter(p => p.id !== action.payload)
+        }
     },
     extraReducers: (builder) => {
         builder.addMatcher(

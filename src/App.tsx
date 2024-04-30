@@ -4,19 +4,17 @@ import './App.css';
 import 'antd'
 import { LoginPage } from './components/Login/login';
 import { Provider } from 'react-redux';
-import Preloader from './components/common/Preloader/Preloader';
-import {  persistor,  store } from './store/store';
+import { persistor, store } from './store/store';
 import { Users } from './components/Users/Users';
 import {
   UserOutlined,
   HomeOutlined,
   MessageOutlined,
   MenuUnfoldOutlined,
-  MenuFoldOutlined
+  MenuFoldOutlined,
+  LoadingOutlined
 } from '@ant-design/icons';
-import { Button, Layout, Menu, theme } from 'antd';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { Button, Layout, Menu, Spin, theme } from 'antd';
 import Dialogs from './components/Dialogs/Dialogs';
 import { Header } from 'antd/es/layout/layout';
 import DropdownMenu from './components/common/DropdownMenu/dropdownmenu';
@@ -26,8 +24,8 @@ import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6'
 import { PersistGate } from 'redux-persist/integration/react';
 import ReduxToastr from 'react-redux-toastr';
-import { Chat } from './pages/chat/chat';
 import Profile from './components/Profile/ProfileInfo/Profile';
+import Chat from './pages/chat/chat';
 
 const { Sider, Content } = Layout;
 
@@ -131,31 +129,29 @@ const App: React.FC = () => {
 
 
 const MainApp: FC = () => {
-<<<<<<< HEAD
-  const store = setupStore()
-=======
-  const queryClient = new QueryClient
->>>>>>> 9d614f74d1f2aeefa3c8c0d1b355ece1895b4c3b
+  const queryClient = new QueryClient()
   return (
     <>
       <BrowserRouter>
         <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <QueryParamProvider adapter={ReactRouter6Adapter} >
-              <React.Suspense fallback={<Preloader />}>
-                <App />
-                <ReduxToastr
-                  newestOnTop={false}
-                  preventDuplicates
-                  progressBar
-                  closeOnToastrClick
-                  timeOut={4000}
-                  transitionIn="fadeIn"
-                  transitionOut='fadeOut'
-                />
-              </React.Suspense>
-            </QueryParamProvider>
-          </PersistGate>
+          <QueryClientProvider client={queryClient}>
+            <PersistGate loading={null} persistor={persistor}>
+              <QueryParamProvider adapter={ReactRouter6Adapter} >
+                <React.Suspense fallback={<Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />}>
+                  <App />
+                  <ReduxToastr
+                    newestOnTop={false}
+                    preventDuplicates
+                    progressBar
+                    closeOnToastrClick
+                    timeOut={4000}
+                    transitionIn="fadeIn"
+                    transitionOut='fadeOut'
+                  />
+                </React.Suspense>
+              </QueryParamProvider>
+            </PersistGate>
+          </QueryClientProvider>
         </Provider>
       </BrowserRouter >
     </>

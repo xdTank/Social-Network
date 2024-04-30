@@ -1,9 +1,8 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
-import { Button, Checkbox, Form, Input } from 'antd';
-import { ProfileType } from '../../../types/types';
-import userPhoto from "../../../assets/img/44884218_345707102882519_2446069589734326272_n.jpg"
-import { profileApi } from '../../../api/profile-api';
+import { Avatar, Button, Checkbox, Form, Input } from 'antd';
+import { ProfileType, profileApi } from '../../../api/profile-api';
 import AvatarUploadButton from './UploadButton';
+import { UserOutlined } from '@ant-design/icons';
 
 type PropsType = {
     setEditMode: Dispatch<SetStateAction<boolean>>
@@ -41,7 +40,15 @@ const ProfileDataForm: FC<PropsType> = ({ profile, setEditMode, isOwner }) => {
                     <div>
                         <div style={{ display: 'flex', gap: '20px', flexDirection: 'column', }}>
                             <div>
-                                <img src={profile.photos.large || userPhoto} alt="!" style={{ width: '120px', height: '120px' }} />
+                                {!profile.photos.large ? (
+                                    <Avatar icon={<UserOutlined />} size={120} />
+                                ) : (
+                                    <img
+                                        src={profile.photos.large}
+                                        alt="!"
+                                        style={{ width: '120px', height: '120px' }}
+                                    />
+                                )}
                             </div>
                             <div>
                                 {isOwner && <AvatarUploadButton />}

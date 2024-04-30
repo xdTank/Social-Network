@@ -1,50 +1,26 @@
 import React, { FC, useEffect, useState } from "react";
 import s from "./ProfileInfo.module.css"
-import Preloader from '../../common/Preloader/Preloader'
 import Status from "./Status";
-import userPhoto from "../../../assets/img/44884218_345707102882519_2446069589734326272_n.jpg"
 import ProfileDataForm from "./ProfileDataForm";
-import { ContactsType, ProfileType } from "../../../types/types";
-import { Button } from "antd";
-import { profileApi } from "../../../api/profile-api";
+import { Avatar, Button, Spin } from "antd";
+import { ContactsType, ProfileType, profileApi } from "../../../api/profile-api";
 import { useAppSelector } from "../../../hooks/redux";
 import { useParams } from "react-router-dom";
 import Myposts from "../Myposts/Myposts";
 import { useAuthGuard } from "../../../hooks/useAuthGuard";
+import { LoadingOutlined, UserOutlined } from "@ant-design/icons";
+import { MdEdit } from "react-icons/md";
 
 
 
-<<<<<<< HEAD:src/components/Profile/ProfileInfo/Profile.tsx
 const Profile: FC = () => {
-=======
-const ProfileInfo: FC = () => {
-    const {id} = useAppSelector(state => state.auth)
-    const { userId } = useParams<{ userId: string }>()
->>>>>>> 9d614f74d1f2aeefa3c8c0d1b355ece1895b4c3b:src/components/Profile/ProfileInfo/ProfileInfo.tsx
     const [editMode, setEditMode] = useState(false)
     const id = useAppSelector(state => state.auth.id)
     const { userId } = useParams<{ userId: string }>()
 
-<<<<<<< HEAD:src/components/Profile/ProfileInfo/Profile.tsx
     const { data: profile, } = profileApi.useGetProfileQuery(Number(userId) || id, {
         skip: !userId && !id,
     })
-=======
-    const parsedUserId = userId ? parseInt(userId) : null
-    const parsedId = id ? parseInt(id.toString()) : null
-
-
-    const { data: profile, refetch: refetchProfile } = profileApi.useGetProfileQuery(parsedUserId || parsedId)
-    const { data: status, refetch: refetchStatus } = profileApi.useGetStatusQuery(parsedUserId || parsedId)
-
-
-    useEffect(() => {
-        if (parsedUserId && parsedId  !== parsedId) {
-            refetchProfile()
-            refetchStatus()
-        }
-    }, [parsedUserId, parsedId])
->>>>>>> 9d614f74d1f2aeefa3c8c0d1b355ece1895b4c3b:src/components/Profile/ProfileInfo/ProfileInfo.tsx
 
     const { data: status, } = profileApi.useGetStatusQuery(Number(userId) || id, {
         skip: !userId && !id,
@@ -52,14 +28,24 @@ const ProfileInfo: FC = () => {
 
     useAuthGuard()
     if (!profile) {
-        return <Preloader />
+        return <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
     }
     return (
         <div className={s.profileBlock}>
             <div className={s.ava} style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: '50px' }}>
                 <div>
-                    {!editMode && <img src={profile.photos.large || userPhoto} alt="!" />}
-                    <div style={{ textAlign: 'center' }}>
+                    {!editMode && (
+                        !profile.photos.large ? (
+                            <Avatar icon={<UserOutlined />} size={140} />
+                        ) : (
+                            <img
+                                src={profile.photos.large}
+                                alt="!"
+                                style={{ width: '160px', height: '160px' }}
+                            />
+                        )
+                    )}
+                    <div style={{ textAlign: 'center', marginTop: '20px', marginBottom: '20px' }}>
                         {!editMode && <Status status={status} isOwner={!userId} />}
                     </div>
                 </div>
@@ -69,7 +55,7 @@ const ProfileInfo: FC = () => {
                 </div>
             </div>
             <div>
-                {!editMode && <Myposts />}
+                {!editMode && <Myposts isOwner={!userId} profile={profile} />}
             </div>
         </div>
     )
@@ -110,7 +96,7 @@ const ProfileData: FC<ProfileDataPropsType> = ({ profile, isOwner, onEditMode })
                 </div>
             )}
         <div style={{ margin: '20px' }}>
-            {isOwner && <Button onClick={onEditMode} style={{ width: '100px', backgroundColor: '#fff', }} size="small" >Edit profile</Button>}
+            {isOwner && <Button onClick={onEditMode} style={{ width: '100px', backgroundColor: '#fff', display: 'flex', alignItems: 'center', gap: '5px' }} size="small" ><MdEdit />Edit profile</Button>}
         </div>
     </div >
 }

@@ -1,15 +1,13 @@
 import { Action, configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "@reduxjs/toolkit"
 import { ThunkAction } from "redux-thunk";
-import chatReducer from "./reducers/chatReducer";
-import { authSlice } from "./reducers/auth-slice";
 import { api } from "../api/api";
 import { createLogger } from "redux-logger"
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer, persistStore } from "redux-persist"
 import { reducer as toastrReducer } from "react-redux-toastr";
 import { profileSlice } from "./reducers/profile-slice";
-import sessionStorage from "redux-persist/es/storage/session";
 import storage from "redux-persist/lib/storage";
+import { authSlice } from "./reducers/auth-slice";
 
 
 const logger = createLogger({
@@ -18,7 +16,6 @@ const logger = createLogger({
 
  
 const rootReducer = combineReducers({
-    chat: chatReducer,
     auth: authSlice.reducer,
     profile: profileSlice.reducer,
     [api.reducerPath]: api.reducer,
@@ -28,8 +25,9 @@ const rootReducer = combineReducers({
 const persistConfig = {
     key: "root",
     storage,
-    whitelist: ["auth"],
+    whitelist: ["auth",]
 }
+
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const store = configureStore({

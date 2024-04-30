@@ -1,5 +1,18 @@
-import { GetItemsType, ResponseType, api } from "./api";
+import { ResponseType, api } from "./api";
+import { PhotosType } from "./profile-api";
 
+export type GetItemsType = {
+    items: Array<UserType>
+    totalCount: number
+    error: string | null
+}
+export type UserType = {
+    id: number,
+    name: string
+    status: string
+    photos: PhotosType
+    followed: boolean
+}
 
 export const usersAPI = api.injectEndpoints({
     endpoints: (build) => ({
