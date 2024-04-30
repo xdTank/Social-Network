@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 import User from "./User";
 import { usersAPI } from "../../api/users-api";
 import { Pagination, Spin } from "antd";
