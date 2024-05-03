@@ -1,13 +1,13 @@
 import React, { FC, useEffect, useState } from "react";
-import s from "./ProfileInfo.module.css"
-import Status from "./Status";
-import ProfileDataForm from "./ProfileDataForm";
+import s from '../../components/Profile/ProfileInfo/ProfileInfo.module.css'
+import Status from "../../components/Profile/ProfileInfo/Status";
+import ProfileDataForm from "../../components/Profile/ProfileInfo/ProfileDataForm";
 import { Avatar, Button, Spin } from "antd";
-import { ContactsType, ProfileType, profileApi } from "../../../api/profile-api";
-import { useAppSelector } from "../../../hooks/redux";
+import { ContactsType, ProfileType, profileApi } from "../../api/profile-api";
+import { useAppSelector } from "../../hooks/redux";
 import { useParams } from "react-router-dom";
-import Myposts from "../Myposts/Myposts";
-import { useAuthGuard } from "../../../hooks/useAuthGuard";
+import Myposts from "../../components/Profile/Myposts/Myposts";
+import { useAuthGuard } from "../../hooks/useAuthGuard";
 import { LoadingOutlined, UserOutlined } from "@ant-design/icons";
 import { MdEdit } from "react-icons/md";
 
@@ -96,7 +96,7 @@ const ProfileData: FC<ProfileDataPropsType> = ({ profile, isOwner, onEditMode })
                 </div>
             )}
         <div style={{ margin: '20px' }}>
-            {isOwner && <Button onClick={onEditMode} style={{ width: '100px', backgroundColor: '#fff', display: 'flex', alignItems: 'center', gap: '5px' }} size="small" ><MdEdit />Edit profile</Button>}
+            {isOwner && <Button onClick={onEditMode} style={{ width: '100px', backgroundColor: '#fff', display: 'flex', alignItems: 'center',  textAlign: 'center', justifyContent: 'space-between', }} size="small" >Edit profile <MdEdit /></Button>}
         </div>
     </div >
 }

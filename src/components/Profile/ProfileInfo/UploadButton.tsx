@@ -45,13 +45,13 @@ const AvatarUploadButton: React.FC = () => {
     }
 
     return (
-            <Upload
-                name="image"
-                beforeUpload={beforeUpload}
-                onChange={handleChange}
-            >
-                <Button style={{ background: 'white', }} icon={<UploadOutlined />}>{loading ? <LoadingOutlined /> : 'Click to Upload'}</Button>
-            </Upload>
+        <Upload
+            name="image"
+            beforeUpload={beforeUpload}
+            onChange={handleChange}
+        >
+            <Button style={{ background: 'white', }} icon={<UploadOutlined />}>{loading ? <LoadingOutlined /> : 'Click to Upload'}</Button>
+        </Upload>
     )
 }
 

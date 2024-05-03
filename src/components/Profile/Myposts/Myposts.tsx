@@ -1,12 +1,14 @@
 import React, { FC, useState } from "react";
 import s from "./Myposts.module.css"
 import { Button, Form, Input } from "antd";
+import { Button as NextuiButton } from "@nextui-org/react";
 import { DeleteOutlined, LikeOutlined, UserOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { PostType, profileSlice } from "../../../store/reducers/profile-slice";
 import { ProfileType } from "../../../api/profile-api";
 import { FaPlus } from "react-icons/fa"
 import { FcLike } from "react-icons/fc"
+import { Textarea } from "@nextui-org/react";
 
 
 const Myposts: FC<{ isOwner: boolean, profile: ProfileType }> = React.memo(({ isOwner }) => {
@@ -14,7 +16,7 @@ const Myposts: FC<{ isOwner: boolean, profile: ProfileType }> = React.memo(({ is
     const postsElements = [...posts].reverse().map(p => <Posts message={p.message} likeCount={p.likeCount} id={p.id} />)
 
     return (
-        <div>
+        <div className="flex flex-col">
             <div style={{ display: "flex", borderTop: '1px solid grey', }}>
                 <div style={{ paddingTop: '20px', marginLeft: '50px' }}>
                     {isOwner && <AddNewPostForm />}
@@ -77,14 +79,17 @@ const AddNewPostForm = () => {
             onFinish={onFinish}
             autoComplete="off"
         >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <Form.Item name="message">
-                    <Input placeholder="Yuor post" size="small" allowClear />
-                </Form.Item>
-                <Form.Item>
-                    <Button style={{ backgroundColor: '#fff', display: 'flex', alignItems: 'center', gap: '5px' }} size="small" htmlType="submit" ><FaPlus />Add posts</Button>
-                </Form.Item>
-            </div>
+            <Form.Item name="message" className="flex-grow">
+                <Textarea placeholder="What are you thinking about?" labelPlacement="outside" isRequired />
+            </Form.Item>
+            <Form.Item>
+                <NextuiButton
+                    color="success"
+                    className=""
+                    endContent={<FaPlus />}
+                    type="submit"
+                >Add posts</NextuiButton>
+            </Form.Item>
         </Form >
     )
 }

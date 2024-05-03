@@ -1,8 +1,8 @@
 import React, { FC } from "react";
-import User from "./User";
+import User from "../../components/Users/User"
 import { usersAPI } from "../../api/users-api";
 import { Pagination, Spin } from "antd";
-import UsersSearchForm, { FilterType } from "./UsersSearchForm";
+import UsersSearchForm, { FilterType } from "../../components/Users/UsersSearchForm";
 import { BooleanParam, NumberParam, StringParam, useQueryParams } from "use-query-params";
 import { LoadingOutlined } from "@ant-design/icons";
 
@@ -23,7 +23,7 @@ export const Users: FC = () => {
 
 
     const onSearch = (values: FilterType) => {
-        setQuery({ term: values.term, friend: values.friend})
+        setQuery({ term: values.term, friend: values.friend })
     }
     const handlePageChange = (page: number, count: number) => {
         setQuery({ page, count })
@@ -42,7 +42,7 @@ export const Users: FC = () => {
             />) : <div>Пользователи не найдены</div>}
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem', flexShrink: 0 }}>
-            <Pagination defaultCurrent={1}  total={users?.totalCount} defaultPageSize={10} onChange={handlePageChange} showSizeChanger onShowSizeChange={handlePageChange} />
+            <Pagination  defaultCurrent={1} total={users?.totalCount} defaultPageSize={10} onChange={handlePageChange} showSizeChanger onShowSizeChange={handlePageChange} />
         </div>
     </div>
 }

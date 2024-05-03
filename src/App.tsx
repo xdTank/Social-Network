@@ -1,11 +1,11 @@
 import React, { FC, lazy, useEffect, useState } from 'react';
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Link, Route, Routes, createBrowserRouter } from 'react-router-dom';
 import './App.css';
 import 'antd'
 import { LoginPage } from './components/Login/login';
 import { Provider } from 'react-redux';
 import { persistor, store } from './store/store';
-import { Users } from './components/Users/Users';
+import { Users } from './pages/users/Users';
 import {
   UserOutlined,
   HomeOutlined,
@@ -24,8 +24,10 @@ import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6'
 import { PersistGate } from 'redux-persist/integration/react';
 import ReduxToastr from 'react-redux-toastr';
-import Profile from './components/Profile/ProfileInfo/Profile';
+import Profile from './pages/profile/Profile';
 import Chat from './pages/chat/chat';
+import { NextUIProvider } from "@nextui-org/react";
+import path from 'path';
 
 const { Sider, Content } = Layout;
 
@@ -126,7 +128,42 @@ const App: React.FC = () => {
   )
 }
 
-
+const router = createBrowserRouter([
+  {
+    path: '/login',
+    element: <LoginPage />,
+  },
+  {
+    path: '/',
+    element: '',
+    children: [
+      {
+        path: '/',
+        element: <Profile />,
+      },
+      {
+        path: '/profile/:userId?',
+        element: <Profile />,
+      },
+      {
+        path: '/dialogs',
+        element: <Dialogs />,
+      },
+      {
+        path: '/users',
+        element: <Users />,
+      },
+      {
+        path: '/chat',
+        element: <Chat />,
+      },
+      {
+        path: '*',
+        element: <div><h1>404 not found</h1></div>,
+      }
+    ]
+  }
+])
 
 const MainApp: FC = () => {
   const queryClient = new QueryClient()
@@ -138,7 +175,9 @@ const MainApp: FC = () => {
             <PersistGate loading={null} persistor={persistor}>
               <QueryParamProvider adapter={ReactRouter6Adapter} >
                 <React.Suspense fallback={<Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />}>
-                  <App />
+                  <NextUIProvider>
+                    <App />
+                  </NextUIProvider>
                   <ReduxToastr
                     newestOnTop={false}
                     preventDuplicates

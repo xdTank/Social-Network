@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react"
-import { MessageField } from "../../components/common/Chat/MessageField"
+import { MessageField } from "../../components/Chat/MessageField"
 import { useAuthGuard } from "../../hooks/useAuthGuard"
-import { Message } from "../../components/common/Chat/Message"
+import { Message } from "../../components/Chat/Message"
 import { Flex } from "antd"
 
 
@@ -46,12 +46,14 @@ const Chat = () => {
     }, [messages])
     useAuthGuard()
     return (
-        <div className="flex flex-col justify-between">
-            <div className="overflow-y-auto max-h-[75vh]">
+        <div className="flex-grow flex justify-between flex-col">
+            <div className="overflow-y-auto overflow-x-hidden h-[78vh]">
                 {messages && messages.map((m, index) => <Message key={index} message={m} />)}
                 <div ref={messagesEndRef} />
             </div>
-            <MessageField sendMessage={sendMessage} />
+            <div className="">
+                <MessageField sendMessage={sendMessage} />
+            </div>
         </div>
     )
 }
