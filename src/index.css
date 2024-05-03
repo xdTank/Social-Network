@@ -9,29 +9,26 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #2B2D31;
-overflow: hidden;
-
 }
-
+main {
+  min-height: 100vh;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
 ::-webkit-scrollbar {
-  width: 10px; /* Ширина скроллбара */
+  width: 10px
 }
 
-/* Стиль для ползунка (бегунка) скроллбара */
 ::-webkit-scrollbar-thumb {
-  background-color: #888; /* Цвет ползунка */
-  border-radius: 5px; /* Закругление углов ползунка */
+  background-color: #888; 
+  border-radius: 5px; 
 }
 
-/* Стиль для трека (полосы) скроллбара */
 ::-webkit-scrollbar-track {
-  background-color: #f1f1f1; /* Цвет трека */
+  background-color: #f1f1f1; 
  border-radius: 5px;
 
 }

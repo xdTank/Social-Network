@@ -8,16 +8,18 @@ import { reducer as toastrReducer } from "react-redux-toastr";
 import { profileSlice } from "./reducers/profile-slice";
 import storage from "redux-persist/lib/storage";
 import { authSlice } from "./reducers/auth-slice";
+import { userSlice } from "./reducers/user-slice";
 
 
 const logger = createLogger({
     collapsed: true
 })
 
- 
+
 const rootReducer = combineReducers({
     auth: authSlice.reducer,
     profile: profileSlice.reducer,
+    users: userSlice.reducer,
     [api.reducerPath]: api.reducer,
     toastr: toastrReducer
 })
@@ -31,16 +33,16 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const store = configureStore({
-        reducer: persistedReducer,
-        middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-            serializableCheck: {
-                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-            },
-        }).concat(
-            api.middleware,
-            logger as any,
-        ),
-    })
+    reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        serializableCheck: {
+            ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        },
+    }).concat(
+        api.middleware,
+        logger as any,
+    ),
+})
 
 
 export const persistor = persistStore(store)

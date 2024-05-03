@@ -32,8 +32,7 @@ const UsersSearchForm: React.FC<PropsType> = ({ searchTerm, friend, onSearch }) 
                         options={[
                             { value: null, label: 'All' },
                             { value: true, label: 'Only followed' },
-                            { value: false, label: 'Only unfollowed' },
-                            { value: 'disabled', label: 'Disabled', disabled: true },
+                            { value: false, label: 'Not a follower' },
                         ]}
                     />
                 </Form.Item>
