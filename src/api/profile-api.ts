@@ -33,13 +33,13 @@ export const profileApi = api.injectEndpoints({
     endpoints: (build) => ({
         getProfile: build.query<ProfileType, number | null>({
             query: (userId) => ({
-                url: `profile/` + userId
+                url: `profile/${userId}`
             }),
             providesTags: ['Profile'],
         }),
         getStatus: build.query<string, number | null>({
             query: (userId) => ({
-                url: `profile/status/` + userId
+                url: `profile/status/${userId}`
             }),
             providesTags: ['Profile'],
         }),

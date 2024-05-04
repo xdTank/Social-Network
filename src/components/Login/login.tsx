@@ -31,7 +31,7 @@ const LoginForm: React.FC = () => {
 
     useEffect(() => {
         if (isAuth) {
-            navigate('/profile')
+            navigate('/')
         }
     },[isAuth, navigate])
     return (

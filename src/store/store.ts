@@ -8,7 +8,7 @@ import { reducer as toastrReducer } from "react-redux-toastr";
 import { profileSlice } from "./reducers/profile-slice";
 import storage from "redux-persist/lib/storage";
 import { authSlice } from "./reducers/auth-slice";
-import { userSlice } from "./reducers/user-slice";
+import { postSlice } from "./reducers/post-slice";
 
 
 const logger = createLogger({
@@ -19,7 +19,7 @@ const logger = createLogger({
 const rootReducer = combineReducers({
     auth: authSlice.reducer,
     profile: profileSlice.reducer,
-    users: userSlice.reducer,
+    post: postSlice.reducer,
     [api.reducerPath]: api.reducer,
     toastr: toastrReducer
 })
@@ -27,7 +27,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
     key: "root",
     storage,
-    whitelist: ["auth",]
+    whitelist: ["auth", 'post']
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

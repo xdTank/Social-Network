@@ -31,12 +31,12 @@ export const NavBar: React.FC = () => {
                     </NavButton>
                 </li>
                 <li>
-                    <NavButton to="followers" icon={<FaUsers />}>
+                    <NavButton to="following" icon={<FiUsers />}>
                         Подписчики
                     </NavButton>
                 </li>
                 <li>
-                    <NavButton to="following" icon={<FiUsers />}>
+                    <NavButton to="followers" icon={<FaUsers />}>
                         Подписки
                     </NavButton>
                 </li>

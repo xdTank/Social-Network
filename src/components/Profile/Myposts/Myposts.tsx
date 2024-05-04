@@ -13,7 +13,7 @@ import { Textarea } from "@nextui-org/react";
 
 const Myposts: FC<{ isOwner: boolean, profile: ProfileType }> = React.memo(({ isOwner }) => {
     const posts = useAppSelector(state => state.profile.posts)
-    const postsElements = [...posts].reverse().map(p => <Posts message={p.message} likeCount={p.likeCount} id={p.id} />)
+    // const postsElements = [...posts].reverse().map(p => <Posts message={p.message} likeCount={p.likeCount} id={p.id} />)
 
     return (
         <div className="flex flex-col">
@@ -23,7 +23,7 @@ const Myposts: FC<{ isOwner: boolean, profile: ProfileType }> = React.memo(({ is
                 </div>
             </div>
             <div className={s.posts} style={{ height: '55vh', overflowY: 'auto', }}>
-                {postsElements}
+                {/* {postsElements} */}
             </div>
         </div >
     )
@@ -53,11 +53,11 @@ const Posts: FC<PostType> = ({ message, likeCount, id }) => {
                 {likes}
             </div>
             <div >
-                <Button
+                {/* <Button
                     onClick={() => { dispatch(profileSlice.actions.removePost(id)) }}
                     style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#fff' }} size="small" type="text">
                     <DeleteOutlined />
-                </Button>
+                </Button> */}
             </div>
         </div >
     )
@@ -69,7 +69,7 @@ const AddNewPostForm = () => {
     const [form] = Form.useForm()
 
     const onFinish = (value: any) => {
-        dispatch(profileSlice.actions.addPost(value))
+        // dispatch(profileSlice.actions.addPost(value))
         form.resetFields()
     }
     return (

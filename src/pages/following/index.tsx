@@ -1,14 +1,12 @@
-import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { Card, CardBody, User } from "@nextui-org/react"
 import { usersAPI } from "../../api/users-api"
 import { Button } from "../../components/follow-button"
 
-export const Followers = () => {
+export const Following = () => {
     const { data: user, } = usersAPI.useGetUsersQuery({})
 
-
-    const followers = user?.items.filter(user => user.followed);
+    const followers = user?.items.filter(user => user.followed)
     if (!followers) {
         return null
     }
@@ -34,6 +32,6 @@ export const Followers = () => {
             ))}
         </div>
     ) : (
-        <h2>Вы не подписаны ни на кого</h2>
+        <h2>У вас нет подписчиков</h2>
     )
 }

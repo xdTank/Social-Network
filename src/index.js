@@ -16,11 +16,13 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 import { LoginPage } from './components/Login/login';
 import { Layout } from './components/layout';
-import Profile from './pages/profile/Profile';
 import Dialogs from './components/Dialogs/Dialogs';
 import { Users } from './pages/users/Users';
 import Chat from './pages/chat/chat';
 import { Followers } from './pages/followers';
+import { Following } from './pages/following';
+import { Posts } from './components/post';
+import { Profile } from './pages/profile';
 
 const router = createBrowserRouter([
     {
@@ -33,7 +35,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '',
-                element: <Profile />,
+                element: <Posts />,
             },
             {
                 path: '/profile/:userId?',
@@ -55,7 +57,10 @@ const router = createBrowserRouter([
                 path: '/followers',
                 element: <Followers />,
             },
-
+            {
+                path: '/following',
+                element: <Following />,
+            },
             {
                 path: '*',
                 element: <div><h1>404 not found</h1></div>,

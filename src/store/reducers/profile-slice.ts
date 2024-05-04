@@ -6,11 +6,18 @@ export type PostType = {
     id: number,
     message: string,
     likeCount: number,
+    createdAt: number,
 }
 
 const initialState = {
     posts: [
-        { id: 0, message: 'Hi,how are you?', likeCount: 0 },
+        {
+            id: 0,
+            message: '',
+            likeCount: 0,
+            createdAt: 0,
+
+        },
     ] as Array<PostType>,
     profile: {} as ProfileType,
     status: undefined as string | undefined,
@@ -20,15 +27,8 @@ export const profileSlice = createSlice({
     name: 'profile',
     initialState,
     reducers: {
-        addPost(state, action: PayloadAction<{ message: string }>) {
-            state.posts.push({
-                id: Date.now(),
-                message: action.payload.message,
-                likeCount: 0
-            })
-        },
-        removePost(state, action: PayloadAction<number>) {
-            state.posts = state.posts.filter(p => p.id !== action.payload)
+        resetProfile(state) {
+            state.profile = initialState.profile
         }
     },
     extraReducers: (builder) => {

@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom"
 import { useAppSelector } from "../../hooks/redux"
 import { profileApi } from "../../api/profile-api"
 
-export const Profile = () => {
+export const ProfileCard = () => {
     const id = useAppSelector(state => state.auth.id)
     const { email } = useAppSelector(state => state.auth)
     const { userId } = useParams<{ userId: string }>()
