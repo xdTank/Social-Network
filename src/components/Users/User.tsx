@@ -10,10 +10,8 @@ type PropsType = {
 }
 
 const UserComponent: FC<PropsType> = ({ user }) => {
-
-
     return (
-        <div style={{ display: 'flex', marginBottom: '10px', marginRight: '10px', alignItems: 'center', gap: '5px', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', marginBottom: '12px', marginRight: '20px', alignItems: 'center', gap: '5px', justifyContent: 'space-between' }}>
             <Link to={'/profile/' + user.id}>
                 <User
                     name={user.name}

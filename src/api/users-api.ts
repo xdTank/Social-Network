@@ -16,15 +16,14 @@ export type UserType = {
 
 export const usersAPI = api.injectEndpoints({
     endpoints: (build) => ({
-        getUsers: build.query<GetItemsType, { page?: number, count?: number, term?: string, friend?: null | boolean }>({
-            query: ({ page, count, term, friend }) => ({
+        getUsers: build.query<GetItemsType, { page?: number, count?: number, term?: string }>({
+            query: ({ page, count, term }) => ({
                 url: `users`,
                 method: 'GET',
                 params: {
                     page,
                     count,
                     term,
-                    friend
                 }
             }),
             providesTags: () => [{

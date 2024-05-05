@@ -4,6 +4,7 @@ import { Avatar, Image } from "antd"
 import dayjs from "dayjs"
 import { UserOutlined } from "@ant-design/icons"
 import { MessageType } from "../../pages/chat/chat"
+import { generateAvatar } from "../random-info"
 
 export const Message: React.FC<{ message: MessageType }> = ({ message }) => {
     const id = useAppSelector(state => state.auth.id)
@@ -13,7 +14,7 @@ export const Message: React.FC<{ message: MessageType }> = ({ message }) => {
             <div className={`relative flex items-center  ${isSender ? 'flex-row-reverse' : ''}`}>
                 <Avatar
                     icon={<UserOutlined />}
-                    src={message.photo}
+                    src={message.photo ?? generateAvatar()}
                     alt="!"
                     className='rounded-full'
                 />

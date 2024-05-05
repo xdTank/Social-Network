@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react"
 import { MessageField } from "../../components/Chat/MessageField"
 import { useAuthGuard } from "../../hooks/useAuthGuard"
 import { Message } from "../../components/Chat/Message"
-import { Flex } from "antd"
+import { GoBack } from "../../components/go-back"
 
 
 export interface MessageType {
@@ -47,7 +47,8 @@ const Chat = () => {
     useAuthGuard()
     return (
         <div className="flex-grow flex justify-between flex-col">
-            <div className="overflow-y-auto overflow-x-hidden h-[78vh]">
+            <GoBack />
+            <div className="overflow-y-auto overflow-x-hidden h-[60vh]">
                 {messages && messages.map((m, index) => <Message key={index} message={m} />)}
                 <div ref={messagesEndRef} />
             </div>

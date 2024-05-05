@@ -1,12 +1,13 @@
 import React, { useContext } from "react";
 import { authApi } from "../../api/auth-api";
-import { useNavigate } from "react-router-dom";
-import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem } from "@nextui-org/react";
+import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem, Switch } from "@nextui-org/react";
 import { CiLogout } from "react-icons/ci";
 import { FaRegMoon } from "react-icons/fa";
 import { useAppSelector } from "../../hooks/redux";
 import { LuSunMedium } from "react-icons/lu"
 import { ThemeContext } from "../theme-provider";
+import { AiFillAlert, AiFillAppstore } from "react-icons/ai";
+
 
 
 
@@ -23,14 +24,23 @@ export const Header = () => {
     return (
         <Navbar>
             <NavbarBrand>
-                <p className="font-bold text-inherit">Social Network</p>
+                <p className="font-bold text-inherit flex items-center gap-1 text-center"><AiFillAppstore /> Социальная сеть</p>
             </NavbarBrand>
             <NavbarContent justify="end">
-                <NavbarItem
-                    className="lg:flex text-3xl cursor-pointer"
-                    onClick={() => toggleTheme()}
-                >
-                    {theme === "light" ? <FaRegMoon size={26} /> : <LuSunMedium size={32} />}
+                <NavbarItem>
+                    <Switch
+                        onClick={() => toggleTheme()}
+                        size="lg"
+                        color="primary"
+                        thumbIcon={({ className }) =>
+                            theme === 'light' ? (
+                                <FaRegMoon className={className} />
+                            ) : (
+                                <LuSunMedium className={className} />
+                            )
+                        }
+                    >
+                    </Switch>
                 </NavbarItem>
                 <NavbarItem>
                     {isAuth && (

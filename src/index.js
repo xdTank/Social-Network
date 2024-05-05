@@ -5,24 +5,19 @@ import './index.css';
 import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { PersistGate } from 'redux-persist/integration/react';
-import { QueryParamProvider } from 'use-query-params';
 import { ThemeProvider } from './components/theme-provider';
-import { Spin } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
 import { NextUIProvider } from '@nextui-org/react';
-import ReduxToastr from 'react-redux-toastr';
 import { persistor, store } from './store/store';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 import { LoginPage } from './components/Login/login';
 import { Layout } from './components/layout';
-import Dialogs from './components/Dialogs/Dialogs';
 import { Users } from './pages/users/Users';
 import Chat from './pages/chat/chat';
 import { Followers } from './pages/followers';
 import { Following } from './pages/following';
 import { Posts } from './components/post';
 import { Profile } from './pages/profile';
+import Dialogs from './pages/dialogs';
 
 const router = createBrowserRouter([
     {
@@ -64,7 +59,11 @@ const router = createBrowserRouter([
             {
                 path: '*',
                 element: <div><h1>404 not found</h1></div>,
-            }
+            },
+            {
+                path: '/project',
+                element: <Posts />,
+            },
         ]
     }
 ])
