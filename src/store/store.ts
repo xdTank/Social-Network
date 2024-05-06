@@ -55,10 +55,6 @@ export type AppStore = {
 }
 export type AppDispatch = typeof store.dispatch
 
-type ReducerType = typeof rootReducer
-export type AppStateType = ReturnType<ReducerType>
-export type InferActionsTypes<T> = T extends { [keys: string]: (...args: any[]) => infer U } ? U : never
-export type BaseThunkType<A extends Action, R = Promise<void>> = ThunkAction<R, AppStateType, unknown, A>
 
 
 // @ts-ignore

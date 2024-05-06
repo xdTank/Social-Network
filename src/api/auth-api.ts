@@ -30,16 +30,16 @@ export const authApi = api.injectEndpoints({
                 try {
                     const { data } = await queryFulfilled
                     if (data.resultCode === ResultCodes.Success) {
-                       await dispatch(authApi.endpoints.me.initiate())
+                        await dispatch(authApi.endpoints.me.initiate())
                     } else {
                         if (data.resultCode === ResultCodeForCaptcha.CaptchaIsRequired) {
                             await dispatch(authApi.endpoints.getCaptchaUrl.initiate())
-                        }  
+                        }
                         let message = data.messages.length > 0 ? data.messages[0] : "Some error"
                         dispatch(actions.loginFailure(message))
-                    } 
-                    
-                }catch (e) {
+                    }
+
+                } catch (e) {
                     console.log(e)
                 }
             }

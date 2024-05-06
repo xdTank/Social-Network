@@ -27,6 +27,7 @@ const LoginForm: React.FC = () => {
     const navigate = useNavigate()
     const onFinish =  (values: LoginForm) => {
         login(values)
+        console.log(values)
     }
 
     useEffect(() => {

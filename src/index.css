@@ -30,5 +30,9 @@ code {
 ::-webkit-scrollbar-track {
   background-color: #f2f1f1; 
  border-radius: 5px;
+}
 
+input:-webkit-autofill{
+  transition-delay: 9999s;
+  transition-property: background-color;
 }

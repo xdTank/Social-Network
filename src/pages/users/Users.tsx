@@ -8,7 +8,6 @@ import { GoBack } from "../../components/go-back";
 
 type FilterType = {
     term: string
-    friend: boolean | null
 }
 export const Users: FC = () => {
     const [searchParams] = useSearchParams();

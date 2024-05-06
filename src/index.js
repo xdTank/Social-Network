@@ -9,7 +9,6 @@ import { ThemeProvider } from './components/theme-provider';
 import { NextUIProvider } from '@nextui-org/react';
 import { persistor, store } from './store/store';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { LoginPage } from './components/Login/login';
 import { Layout } from './components/layout';
 import { Users } from './pages/users/Users';
 import Chat from './pages/chat/chat';
@@ -18,11 +17,12 @@ import { Following } from './pages/following';
 import { Posts } from './components/post';
 import { Profile } from './pages/profile';
 import Dialogs from './pages/dialogs';
+import { Auth } from './pages/auth';
 
 const router = createBrowserRouter([
     {
         path: '/login',
-        element: <LoginPage />,
+        element: <Auth />,
     },
     {
         path: '/',

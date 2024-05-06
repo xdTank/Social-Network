@@ -6,7 +6,8 @@ import { FaRegMoon } from "react-icons/fa";
 import { useAppSelector } from "../../hooks/redux";
 import { LuSunMedium } from "react-icons/lu"
 import { ThemeContext } from "../theme-provider";
-import { AiFillAlert, AiFillAppstore } from "react-icons/ai";
+import { AiFillAppstore } from "react-icons/ai";
+
 
 
 
