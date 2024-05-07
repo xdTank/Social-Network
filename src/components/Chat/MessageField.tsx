@@ -1,6 +1,7 @@
 import React from "react"
-import { Button, Form, Input } from "antd"
+import { Button, Form } from "antd"
 import { SendOutlined } from "@ant-design/icons"
+import { Input } from "@nextui-org/react"
 
 interface IMessageField {
     sendMessage: (value: string) => void
@@ -18,18 +19,10 @@ export const MessageField = ({ sendMessage }: IMessageField) => {
                     <Input
                         placeholder="Write"
                         value={message}
+                        autoComplete="off"
                         onChange={(e) => setMessage(e.target.value)}
-                        style={{ backgroundColor: "#383A40", border: "none", color: "#C7CACE", }}
-                        suffix={
-                            <Button
-                                htmlType="submit"
-                                type="text"
-                                disabled={!message}
-                                style={{ backgroundColor: "transparent", alignItems: 'center', textAlign: 'center', display: 'flex', left: '15px' }}
-                                className='ml-2'
-                            >
-                                <SendOutlined style={{ color: "#C7CACE" }} />
-                            </Button>
+                        endContent={
+                            <SendOutlined className={`${message ? 'opacity-100' : 'opacity-0'}`}  /> 
                         }
                     />
                 </Form.Item>

@@ -47,25 +47,19 @@ export const EditProfile: React.FC<Props> = ({
     })
 
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        try {
-            if (event.target.files !== null) {
-                setSelectedFile(event.target.files[0])
-                const formData = new FormData()
-                selectedFile && formData.append("image", selectedFile)
-                await savePhoto(formData)
-            }
-        } catch (err) {
-            if (hasErrorField(err)) {
-                setError(err.data.error)
-            }
+        if (event.target.files !== null) {
+            setSelectedFile(event.target.files[0])
         }
-
+        const formData = new FormData()
+                selectedFile && formData.append("image", selectedFile) 
+                await savePhoto(formData)
     }
+
 
     const onSubmit = async (data: ProfileType) => {
         try {
             await saveProfile(data)
-            console.log(data)
+            
             onClose()
         } catch (err) {
             console.log(err)

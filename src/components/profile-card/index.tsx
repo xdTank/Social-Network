@@ -15,11 +15,8 @@ export const ProfileCard = () => {
         skip: !userId && !id,
     })
 
-    const { data: status, } = profileApi.useGetStatusQuery(Number(userId) || id, {
-        skip: !userId && !id,
-    })
 
-    if (!profile || !status) {
+    if (!profile) {
         return null
     }
 

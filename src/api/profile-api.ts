@@ -56,9 +56,7 @@ export const profileApi = api.injectEndpoints({
                 url: `profile/photo`,
                 method: 'PUT',
                 body: formData,
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                }
+
             }),
         }),
         saveProfile: build.mutation<ProfileType, ProfileType>({

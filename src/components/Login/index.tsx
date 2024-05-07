@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { useAppSelector } from "../../hooks/redux";
 import { authApi } from "../../api/auth-api";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Button, Checkbox, Image } from "@nextui-org/react";
 import { ErrorMessage } from "../error-message";
-import { hasErrorField } from "../../utils/has-error-field";
-import { useAuthGuard } from "../../hooks/useAuthGuard";
 import { Input } from "../input";
 
 interface Login {
