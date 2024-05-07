@@ -1,5 +1,5 @@
 import { Card, CardBody } from "@nextui-org/react"
-import { Login } from "../../components/Login"
+import { Login } from "../../components/login"
 
 export const Auth = () => {
 

@@ -15,7 +15,7 @@ export const CreatePost = () => {
 
     const onSubmit = handleSubmit((data) => {
         try {
-            createPost({ content: data.post })
+            createPost({ content: data.post,  })
             setValue("post", "")
         } catch (error) {
             console.log("err", error)

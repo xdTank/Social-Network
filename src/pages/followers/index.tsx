@@ -18,11 +18,12 @@ export const Followers = () => {
             <GoBack />
             {followers.map((user) => (
                 <>
-                    <Link to={`/profile/${user.id}`} key={user.id}>
+                    <Link to={`/profile/${user.id}`}>
                         <Card>
                             <CardBody className="block">
                                 <div className="flex justify-between items-center">
                                     <User
+                                        key={user.id}
                                         name={user.name ?? ""}
                                         avatarProps={{ src: user.photos.large ?? "" }}
                                         description={user.status ?? ""}

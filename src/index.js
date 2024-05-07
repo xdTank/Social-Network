@@ -10,8 +10,8 @@ import { NextUIProvider } from '@nextui-org/react';
 import { persistor, store } from './store/store';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { Layout } from './components/layout';
-import { Users } from './pages/users/Users';
-import Chat from './pages/chat/chat';
+import { Users } from './pages/users';
+import Chat from './pages/chat';
 import { Followers } from './pages/followers';
 import { Following } from './pages/following';
 import { Posts } from './components/post';
@@ -37,16 +37,12 @@ const router = createBrowserRouter([
                 element: <Profile />,
             },
             {
-                path: '/dialogs',
-                element: <Dialogs />,
+                path: '/chat',
+                element: <Chat />,
             },
             {
                 path: '/users',
                 element: <Users />,
-            },
-            {
-                path: '/chat',
-                element: <Chat />,
             },
             {
                 path: '/followers',
@@ -76,9 +72,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <QueryClientProvider client={queryClient}>
                 <PersistGate loading={null} persistor={persistor}>
                     <ThemeProvider>
-                        <NextUIProvider>
-                            <RouterProvider router={router} />
-                        </NextUIProvider>
+                        <RouterProvider router={router} />
                     </ThemeProvider>
                 </PersistGate>
             </QueryClientProvider>

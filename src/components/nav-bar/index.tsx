@@ -16,8 +16,13 @@ export const NavBar: React.FC = () => {
                     </NavButton>
                 </li>
                 <li>
-                    <NavButton to="/dialogs" icon={<LuMessageCircle />}>
+                    <NavButton to="/chat" icon={<LuMessageCircle />}>
                         Сообщение
+                    </NavButton>
+                </li>
+                <li>
+                    <NavButton to="/following" icon={<FiUsers />}>
+                        Подписчики
                     </NavButton>
                 </li>
                 <li>
@@ -26,17 +31,7 @@ export const NavBar: React.FC = () => {
                     </NavButton>
                 </li>
                 <li>
-                    <NavButton to="/chat" icon={<BsPostcard />}>
-                        Чат
-                    </NavButton>
-                </li>
-                <li>
-                    <NavButton to="following" icon={<FiUsers />}>
-                        Подписчики
-                    </NavButton>
-                </li>
-                <li>
-                    <NavButton to="followers" icon={<FaUsers />}>
+                    <NavButton to="/followers" icon={<FaUsers />}>
                         Подписки
                     </NavButton>
                 </li>

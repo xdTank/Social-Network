@@ -3,7 +3,7 @@ import { useAppSelector } from "../../hooks/redux"
 import { Avatar, Image } from "antd"
 import dayjs from "dayjs"
 import { UserOutlined } from "@ant-design/icons"
-import { MessageType } from "../../pages/chat/chat"
+import { MessageType } from "../../pages/chat"
 import { generateAvatar } from "../random-info"
 
 export const Message: React.FC<{ message: MessageType }> = ({ message }) => {

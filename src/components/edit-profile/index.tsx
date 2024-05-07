@@ -22,12 +22,14 @@ type Props = {
     isOpen: boolean
     onClose: () => void
     user?: ProfileType
+    refetchProfile: () => void
 }
 
 export const EditProfile: React.FC<Props> = ({
     isOpen = false,
     onClose = () => null,
-    user
+    user,
+    refetchProfile
 }) => {
     const { theme } = useContext(ThemeContext)
     const [saveProfile, { isLoading }] = profileApi.useSaveProfileMutation()
@@ -50,17 +52,18 @@ export const EditProfile: React.FC<Props> = ({
         if (event.target.files !== null) {
             setSelectedFile(event.target.files[0])
         }
-        const formData = new FormData()
-                selectedFile && formData.append("image", selectedFile) 
-                await savePhoto(formData)
+
     }
 
 
     const onSubmit = async (data: ProfileType) => {
         try {
             await saveProfile(data)
-            
+            const formData = new FormData()
+            selectedFile && formData.append("image", selectedFile)
+            await savePhoto(formData)
             onClose()
+            refetchProfile()
         } catch (err) {
             console.log(err)
             if (hasErrorField(err)) {
@@ -119,7 +122,7 @@ export const EditProfile: React.FC<Props> = ({
                                     <Checkbox
                                         name="lookingForAJob"
                                         type="checkbox"
-                                        
+
                                     />
                                 </div>
                                 <Controller

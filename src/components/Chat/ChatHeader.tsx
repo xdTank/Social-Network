@@ -7,7 +7,6 @@ export const ChatHeader = ({}) => {
             <div>
                 <Image
                 />
-
             </div>
         </div>
     )

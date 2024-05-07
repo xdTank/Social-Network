@@ -22,7 +22,7 @@ export const MessageField = ({ sendMessage }: IMessageField) => {
                         autoComplete="off"
                         onChange={(e) => setMessage(e.target.value)}
                         endContent={
-                            <SendOutlined className={`${message ? 'opacity-100' : 'opacity-0'}`}  /> 
+                            <SendOutlined className={`${message ? 'opacity-100 text-default-500 text-default-500' : 'opacity-0'}`} />
                         }
                     />
                 </Form.Item>

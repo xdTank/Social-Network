@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import User from "../../components/Users/User"
+import User from "../../components/user"
 import { usersAPI } from "../../api/users-api";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Pagination, Spinner } from "@nextui-org/react";

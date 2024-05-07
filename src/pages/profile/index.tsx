@@ -12,7 +12,6 @@ import { useAppSelector } from "../../hooks/redux"
 import { CountInfo } from "../../components/count-info"
 import { ProfileInfo } from "../../components/profile-info"
 import dayjs from "dayjs"
-import { useActions } from "../../hooks/useActions"
 import { generateAvatar, generateLocationName } from "../../components/random-info"
 
 export const Profile = () => {
@@ -20,22 +19,12 @@ export const Profile = () => {
     const id = useAppSelector(state => state.auth.id)
     const { userId } = useParams<{ userId: string }>()
 
-    const { data: profile, isLoading } = profileApi.useGetProfileQuery(Number(userId) || id, {
+    const { data: profile, isLoading, refetch: refetchProfile } = profileApi.useGetProfileQuery(Number(userId) || id, {
         skip: !userId && !id,
     })
 
-    const { data: user } = usersAPI.useGetUsersQuery({})
-    const isFollowing = user?.items.filter(user => user.followed)
-
-    const { resetProfile } = useActions()
-    useEffect(
-        () => () => {
-            resetProfile()
-        },
-        [],
-    )
-
-
+    const { data: users } = usersAPI.useGetUsersQuery({})
+    const isFollowing = users?.items.filter(user => user.followed)
 
     const handleClose = async () => {
         try {
@@ -67,7 +56,7 @@ export const Profile = () => {
                     <div className="flex flex-col text-2xl font-bold gap-4 items-center">
                         {profile.fullName}
                         {id?.toString() !== userId ? (
-                            <NextUIButton user={user?.items.find(user => user.id === Number(userId))!} />
+                            <NextUIButton user={users?.items.find(user => user.id === Number(userId))!} />
                         ) : (
                             <Button
                                 endContent={<CiEdit />}
@@ -79,12 +68,11 @@ export const Profile = () => {
                     </div>
                 </Card>
                 <Card className="flex flex-col space-y-4 p-5 flex-1">
-                    <ProfileInfo title="Почта:" info={profile.contacts.website} />
                     <ProfileInfo title="Местоположение:" info={generateLocationName()} />
-                    <ProfileInfo title="Ищу работу:" info={profile.lookingForAJob ? 'Да' : 'Нет'} />
-                    <ProfileInfo title="Описание работы:" info={profile.lookingForAJobDescription} />
                     <ProfileInfo title="Дата рождения:" info={dayjs(new Date()).format('DD.MM.YYYY')} />
                     <ProfileInfo title="Обо мне:" info={profile.aboutMe} />
+                    <ProfileInfo title="Ищу работу:" info={profile.lookingForAJob ? 'Да' : 'Нет'} />
+                    <ProfileInfo title="Описание работы:" info={profile.lookingForAJobDescription} />
                     <div className="flex gap-2">
                         <Link to={`/following`}>
                             <CountInfo count={isFollowing?.length} title="Подписчики" />
@@ -95,7 +83,7 @@ export const Profile = () => {
                     </div>
                 </Card>
             </div>
-            <EditProfile isOpen={isOpen} onClose={handleClose} user={profile} />
+            <EditProfile refetchProfile={refetchProfile} isOpen={isOpen} onClose={handleClose} user={profile} />
         </>
     )
 }
