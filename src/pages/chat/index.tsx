@@ -1,9 +1,9 @@
-import React, { InvalidEvent, useEffect, useRef, useState } from "react"
-import { MessageField } from "../../components/Chat/MessageField"
+import React, {  useEffect, useRef, useState } from "react"
 import { useAuthGuard } from "../../hooks/useAuthGuard"
-import { Message } from "../../components/Chat/Message"
 import { GoBack } from "../../components/go-back"
 import { InvalidateEvent, useReactQuerySubscription } from "../../hooks/useReactQuerySubscription"
+import { Message } from "../../components/messages"
+import { MessageField } from "../../components/message-field"
 
 
 export interface MessageType {

@@ -1,14 +1,16 @@
 import { Button, Textarea } from "@nextui-org/react"
 import { IoMdCreate } from "react-icons/io"
 import { useForm, Controller } from "react-hook-form"
-import { useActions } from "../../hooks/useActions"
 import { ErrorMessage } from "../error-message"
-import { ProfileType } from "../../api/profile-api"
+import { useParams } from "react-router-dom"
+import { useActions } from "../../hooks/useActions"
 import { useAppSelector } from "../../hooks/redux"
 
-export const CreatePost = () => {
-    const { createPost } = useActions()
+export const CreateComment = ({ onClose }: { onClose: () => void }) => {
+    const { id } = useParams<{ id: string }>()
+    const { createComment } = useActions()
     const { profile } = useAppSelector(state => state.profile)
+
     const {
         handleSubmit,
         control,
@@ -17,41 +19,42 @@ export const CreatePost = () => {
     } = useForm()
 
     const onSubmit = handleSubmit((data) => {
-        try {
-            createPost({ content: data.post, authorId: profile?.userId ?? 0, author: profile ?? {} as ProfileType })
-            setValue("post", "")
-        } catch (error) {
-            console.log("err", error)
+        if (id) {
+            createComment({ content: data.comment, postId: Number(id), user: profile, userId: profile?.userId ?? 0 })
+            setValue("comment", "")
+            onClose()
         }
-    })
-    const error = errors?.post?.message as string
+    }
+    )
+
+    const error = errors?.comment?.message as string
 
     return (
         <form className="flex-grow" onSubmit={onSubmit}>
             <Controller
-                name="post"
+                name="comment"
                 control={control}
                 defaultValue=""
                 rules={{
-                    required: "Обязательное поле",
+                    required: "Поле обязательно",
                 }}
                 render={({ field }) => (
                     <Textarea
                         {...field}
                         labelPlacement="outside"
-                        placeholder="О чем думайте?"
+                        placeholder="Напишите свой ответ"
                         className="mb-5"
                     />
                 )}
             />
             {errors && <ErrorMessage error={error} />}
             <Button
-                color="success"
+                color="primary"
                 className="flex-end"
                 endContent={<IoMdCreate />}
                 type="submit"
             >
-                Добавить пост
+                Ответить
             </Button>
         </form>
     )

@@ -6,11 +6,10 @@ export type Post = {
     content: string
     author: ProfileType
     authorId: number
-    // likes: Like[]
-    // comments: Comment[]
+    likes: Like[]
+    comments: Comment[]
     likedByUser: boolean
     createdAt: Date
-    updatedAt: Date
 }
 
 export type Like = {
@@ -18,16 +17,16 @@ export type Like = {
     user: ProfileType
     userId: string
     post: Post
-    postId: string
+    postId: number
 }
 
 export type Comment = {
     id: number
     content: string
     user: ProfileType
-    userId: string
+    userId: number
     post: Post
-    postId: string
+    postId: number
 }
 
 const initialState = {
@@ -38,17 +37,16 @@ export const postSlice = createSlice({
     name: 'post',
     initialState,
     reducers: {
-        createPost(state, action: PayloadAction<{ content: string, authorId: number, }>) {
+        createPost(state, action: PayloadAction<{ content: string, authorId: number, author: ProfileType }>) {
             state.posts.push({
                 id: Date.now(),
                 content: action.payload.content,
-                author: {} as ProfileType,
+                author: action.payload.author,
                 authorId: action.payload.authorId,
-                // likes: [],
-                // comments: [],
+                likes: [],
+                comments: [],
                 likedByUser: false,
                 createdAt: new Date(),
-                updatedAt: new Date(),
             })
         },
         deletePost(state, action: PayloadAction<number>) {
@@ -60,14 +58,30 @@ export const postSlice = createSlice({
         likePost(state, action: PayloadAction<number>) {
             state.posts = state.posts.map(p => p.id === action.payload ? { ...p, likedByUser: !p.likedByUser } : p)
         },
-        // deleteComment(state, action: PayloadAction<{ postId: number, commentId: number }>) {
-        //     state.posts = state.posts.map(p => p.id === action.payload.postId ? { ...p, comments: p.comments.filter(c => c.id !== action.payload.commentId) } : p)
-        // },
+        deleteComment(state, action: PayloadAction<{ postId: number, commentId: number }>) {
+            state.posts = state.posts.map(p => p.id === action.payload.postId ? { ...p, comments: p.comments.filter(c => c.id !== action.payload.commentId) } : p)
+        },
         unlikePost(state, action: PayloadAction<number>) {
             state.posts = state.posts.map(p => p.id === action.payload ? { ...p, likedByUser: !p.likedByUser } : p)
-        }
-
-    },
+        },
+        createComment(state, action: PayloadAction<{ postId: number, content: string, user: ProfileType, userId: number }>) {
+            state.posts = state.posts.map(p => p.id === action.payload.postId ? {
+                ...p,
+                comments: [
+                    ...p.comments,
+                    {
+                        id: Date.now(),
+                        content: action.payload.content,
+                        user: action.payload.user,
+                        userId: action.payload.userId,
+                        postId: action.payload.postId,
+                        post: p,
+                    }
+                ]
+            } : p);
+        },
+      
+    }
 })
 
 export const { actions, reducer } = postSlice

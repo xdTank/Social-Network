@@ -1,9 +1,12 @@
+export function randomIndex(length: number) {
+    return Math.floor(Math.random() * length);
+}
+
 export function generateLocationName() {
     const locations = ['Нью-Йорк', 'Лондон', 'Токио', 'Париж', 'Берлин'];
 
-    const randomIndex = Math.floor(Math.random() * locations.length);
 
-    return locations[randomIndex];
+    return locations[randomIndex(locations.length)];
 }
 
 export function generateAvatar() {
@@ -15,6 +18,5 @@ export function generateAvatar() {
         // 'https://mir-s3-cdn-cf.behance.net/project_modules/max_632/b602f3148207527.62d1246c2784c.jpg',
         // 'https://mir-s3-cdn-cf.behance.net/project_modules/max_632/bf2be4148207527.62d127d18c331.jpg'
     ]
-    const randomIndex = Math.floor(Math.random() * avatars.length);
-    return avatars[randomIndex];
+    return avatars[randomIndex(avatars.length)];
 }

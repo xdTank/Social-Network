@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { authApi } from "../../api/auth-api";
 import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem, Switch } from "@nextui-org/react";
-import { CiLogout } from "react-icons/ci";
+import { CiLogout, CiSettings } from "react-icons/ci";
 import { FaRegMoon } from "react-icons/fa";
 import { useAppSelector } from "../../hooks/redux";
 import { LuSunMedium } from "react-icons/lu"
@@ -55,6 +55,7 @@ export const Header = () => {
                         </Button>
                     )}
                 </NavbarItem>
+
             </NavbarContent>
         </Navbar>
     )
