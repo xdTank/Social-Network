@@ -9,17 +9,22 @@ import { profileSlice } from "./reducers/profile-slice";
 import storage from "redux-persist/lib/storage";
 import { authSlice } from "./reducers/auth-slice";
 import { postSlice } from "./reducers/post-slice";
+import sessionStorage from "redux-persist/es/storage/session";
 
 
 const logger = createLogger({
     collapsed: true
 })
 
+const postConfig = {
+    key: 'post',
+    storage: sessionStorage
+}
 
 const rootReducer = combineReducers({
     auth: authSlice.reducer,
     profile: profileSlice.reducer,
-    post: postSlice.reducer,
+    post: persistReducer(postConfig, postSlice.reducer),
     [api.reducerPath]: api.reducer,
     toastr: toastrReducer
 })
@@ -27,7 +32,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
     key: "root",
     storage,
-    whitelist: ["auth", 'post']
+    whitelist: ["auth",]
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

@@ -14,25 +14,22 @@ export const Posts = () => {
         skip: !userId && !id,
     })
 
-    const { data: status, } = profileApi.useGetStatusQuery(Number(userId) || id, {
-        skip: !userId && !id,
-    })
 
     return (
         <div className="flex justify-between">
             <div className="flex-1 p-4">
                 <div className="mb-10 w-full">
-                    <CreatePost />
+                    <CreatePost  />
                 </div>
                 {/* {posts && posts.length > 0 ? (
-                    posts.map(({ content, authorId, comments, likes, likedByUser, createdAt, id }) => (
+                    posts.map(({ content, likedByUser, createdAt, id,authorId }) => (
                         <Card
                             key={id}
                             avatarUrl={profile?.photos.small ?? ""}
                             content={content}
                             name={profile?.fullName ?? ""}
-                            likesCount={likes.length}
-                            commentsCount={comments.length}
+                            // likesCount={likes.length}
+                            // commentsCount={comments.length}
                             authorId={authorId}
                             id={id}
                             likedByUser={likedByUser}
@@ -41,7 +38,7 @@ export const Posts = () => {
                         />
                     ))
                 ) : (
-                    <p>No posts found</p>
+                    <p>У вас нет постов</p>
                 )} */}
             </div>
             <div className="flex-2 p-4">

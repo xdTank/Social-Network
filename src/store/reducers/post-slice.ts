@@ -5,9 +5,9 @@ export type Post = {
     id: number
     content: string
     author: ProfileType
-    authorId: string
-    likes: Like[]
-    comments: Comment[]
+    authorId: number
+    // likes: Like[]
+    // comments: Comment[]
     likedByUser: boolean
     createdAt: Date
     updatedAt: Date
@@ -31,24 +31,21 @@ export type Comment = {
 }
 
 const initialState = {
-    posts: [
-        {
-        },
-    ] as Array<Post>,
+    posts: [] as Array<Post>,
 }
 
 export const postSlice = createSlice({
     name: 'post',
     initialState,
     reducers: {
-        createPost(state, action: PayloadAction<{ content: string }>) {
+        createPost(state, action: PayloadAction<{ content: string, authorId: number, }>) {
             state.posts.push({
                 id: Date.now(),
                 content: action.payload.content,
                 author: {} as ProfileType,
-                authorId: '',
-                likes: [],
-                comments: [],
+                authorId: action.payload.authorId,
+                // likes: [],
+                // comments: [],
                 likedByUser: false,
                 createdAt: new Date(),
                 updatedAt: new Date(),
@@ -63,9 +60,9 @@ export const postSlice = createSlice({
         likePost(state, action: PayloadAction<number>) {
             state.posts = state.posts.map(p => p.id === action.payload ? { ...p, likedByUser: !p.likedByUser } : p)
         },
-        deleteComment(state, action: PayloadAction<{ postId: number, commentId: number }>) {
-            state.posts = state.posts.map(p => p.id === action.payload.postId ? { ...p, comments: p.comments.filter(c => c.id !== action.payload.commentId) } : p)
-        },
+        // deleteComment(state, action: PayloadAction<{ postId: number, commentId: number }>) {
+        //     state.posts = state.posts.map(p => p.id === action.payload.postId ? { ...p, comments: p.comments.filter(c => c.id !== action.payload.commentId) } : p)
+        // },
         unlikePost(state, action: PayloadAction<number>) {
             state.posts = state.posts.map(p => p.id === action.payload ? { ...p, likedByUser: !p.likedByUser } : p)
         }
