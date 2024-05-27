@@ -49,8 +49,9 @@ export const CreateComment = ({ onClose }: { onClose: () => void }) => {
             />
             {errors && <ErrorMessage error={error} />}
             <Button
+                fullWidth
                 color="primary"
-                className="flex-end"
+                className="flex-end "
                 endContent={<IoMdCreate />}
                 type="submit"
             >

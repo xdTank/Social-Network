@@ -17,6 +17,7 @@ import { ErrorMessage } from "../error-message"
 import { MdOutlineEmail } from "react-icons/md"
 import { ProfileType, profileApi } from "../../api/profile-api"
 import { Input } from "../input"
+import { message } from "antd"
 
 type Props = {
     isOpen: boolean
@@ -36,6 +37,18 @@ export const EditProfile: React.FC<Props> = ({
     const [savePhoto] = profileApi.useSavePhotoMutation()
     const [error, setError] = useState("")
     const [selectedFile, setSelectedFile] = useState<File | null>(null)
+
+    const beforeUpload = (file: File) => {
+        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+        if (!isJpgOrPng) {
+            message.error('You can only upload JPG/PNG file!');
+        }
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+            message.error('Image must smaller than 2MB!');
+        }
+        return isJpgOrPng && isLt2M;
+    }
 
     const { handleSubmit, control } = useForm<ProfileType>({
         mode: "onChange",
@@ -61,6 +74,7 @@ export const EditProfile: React.FC<Props> = ({
             await saveProfile(data)
             const formData = new FormData()
             selectedFile && formData.append("image", selectedFile)
+            beforeUpload(selectedFile as File)
             await savePhoto(formData)
             onClose()
             refetchProfile()

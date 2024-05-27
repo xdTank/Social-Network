@@ -15,7 +15,6 @@ export const CurrentPost = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
         return <h2>Поста не существует</h2>;
     }
 
-
     return (
         <>
             <Modal isOpen={isOpen} onClose={onClose}
@@ -28,16 +27,16 @@ export const CurrentPost = ({ isOpen, onClose }: { isOpen: boolean, onClose: () 
                                 Комментарии
                             </ModalHeader>
                             <ModalBody>
-                                <CreateComment onClose={onClose} />
                                 <div className="mt-10 ">
                                     {data
                                         ? data.map((comment) => (
-                                         <Card key={comment.id} className="w-full"/>
+                                            <Card key={comment.id} className="w-full" />
                                         ))
                                         : null}
                                 </div>
                             </ModalBody>
                             <ModalFooter>
+                                <CreateComment onClose={onClose} />
                             </ModalFooter>
                         </>
                     )}
