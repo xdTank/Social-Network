@@ -1,50 +1,62 @@
 import { useParams } from "react-router-dom"
 import { CreateComment } from "../../components/create-comment"
 import { GoBack } from "../../components/go-back"
-import { useAppSelector } from "../../hooks/redux"
-import { Card, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react"
-import { useContext } from "react"
-import { ThemeContext } from "../theme-provider"
+import { useGetPostByIdQuery } from "../../app/services/post-api"
+import { Card } from "../post-card"
 
-export const CurrentPost = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
-    const data = useAppSelector(state => state.post.posts)
-    const { theme } = useContext(ThemeContext)
+export const CurrentPost = () => {
+  const params = useParams<{ id: string }>()
+  const { data } = useGetPostByIdQuery(params?.id ?? "")
 
+  if (!data) {
+    return <h2>Поста не существует</h2>
+  }
 
-    if (!data) {
-        return <h2>Поста не существует</h2>;
-    }
+  const {
+    content,
+    id,
+    authorId,
+    comments,
+    likes,
+    author,
+    likedByUser,
+    createdAt,
+  } = data
 
-    return (
-        <>
-            <Modal isOpen={isOpen} onClose={onClose}
-                className={`${theme} text-foreground`}
-            >
-                <ModalContent>
-                    {() => (
-                        <>
-                            <ModalHeader>
-                                Комментарии
-                            </ModalHeader>
-                            <ModalBody>
-                                <div className="mt-10 ">
-                                    {data
-                                        ? data.map((comment) => (
-                                            <Card key={comment.id} className="w-full" />
-                                        ))
-                                        : null}
-                                </div>
-                            </ModalBody>
-                            <ModalFooter>
-                                <CreateComment onClose={onClose} />
-                            </ModalFooter>
-                        </>
-                    )}
-                </ModalContent>
-
-            </Modal>
-
-        </>
-
-    )
+  return (
+    <>
+      <GoBack />
+      <Card
+        cardFor="current-post"
+        avatarUrl={author?.avatarUrl ?? ""}
+        content={content}
+        name={author?.name ?? ""}
+        likesCount={likes.length}
+        commentsCount={comments?.length}
+        authorId={authorId}
+        id={id}
+        likedByUser={likedByUser}
+        createdAt={createdAt}
+      />
+      <div className="mt-10">
+        <CreateComment />
+      </div>
+      <div className="mt-10">
+        {data.comments
+          ? data.comments.map((comment) => (
+              <Card
+                cardFor="comment"
+                key={comment.id}
+                avatarUrl={comment.user.avatarUrl ?? ""}
+                content={comment.content}
+                name={comment.user.name ?? ""}
+                authorId={comment.userId}
+                commentId={comment.id}
+                id={id}
+              />
+            ))
+          : null}
+      </div>
+    </>
+  )
 }

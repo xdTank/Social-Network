@@ -1,40 +1,33 @@
+import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import { Card, CardBody, User } from "@nextui-org/react"
-import { usersAPI } from "../../api/users-api"
-import { Button } from "../../components/follow-button"
-import { GoBack } from "../../components/go-back"
+import { Card, CardBody } from "@nextui-org/react"
+import { User } from "../../components/user"
+import { selectCurrent } from "../../feauters/user/userSlice"
 
 export const Following = () => {
-    const { data: user, } = usersAPI.useGetUsersQuery({})
+  const currentUser = useSelector(selectCurrent)
 
-    const followers = user?.items.filter(user => user.followed)
-    if (!followers) {
-        return null
-    }
-    return followers.length > 0 ? (
-        <div className="gap-5 flex flex-col ">
-            <GoBack />
-            {followers.map((user) => (
-                <Link to={`/profile/${user.id}`} key={user.id}>
-                    <Card>
-                        <CardBody className="block">
-                            <div className="flex justify-between items-center">
-                                <User
-                                    name={user.name ?? ""}
-                                    avatarProps={{ src: user.photos.large ?? "" }}
-                                    description={user.status ?? ""}
-                                />
-                                <Button user={user} />
-                            </div>
-                        </CardBody>
-                    </Card>
-                </Link>
-            ))}
-        </div>
-    ) : (
-        <>
-            <GoBack />
-            <h2>У вас нет подписчиков</h2>
-        </>
-    )
+  if (!currentUser) {
+    return null
+  }
+
+  return currentUser.following.length > 0 ? (
+    <div className="gap-5 flex flex-col">
+      {currentUser.following.map((user) => (
+        <Link to={`/users/${user.following.id}`} key={user.following.id}>
+          <Card>
+            <CardBody className="block">
+              <User
+                name={user.following.name ?? ""}
+                avatarUrl={user.following.avatarUrl ?? ""}
+                description={user.following.email ?? ""}
+              />
+            </CardBody>
+          </Card>
+        </Link>
+      ))}
+    </div>
+  ) : (
+    <h2>Вы не подписаны ни на кого</h2>
+  )
 }

@@ -1,29 +1,28 @@
-import React, { FC, useEffect, useState } from 'react';
-import { Link, NavLink } from "react-router-dom";
-import { UserType, usersAPI } from '../../api/users-api';
-import { User } from '@nextui-org/react';
-import { Button } from '../follow-button';
+import React from "react"
+import { User as NextUiUser } from "@nextui-org/react"
+import { BASE_URL } from "../../utils/constants"
 
-
-type PropsType = {
-    user: UserType
+type Props = {
+  name: string
+  avatarUrl: string
+  description?: string
+  className?: string
 }
 
-const UserComponent: FC<PropsType> = ({ user }) => {
-    return (
-        <div className='flex justify-between items-center mb-3 mr-6'>
-            <Link to={'/profile/' + user.id}>
-                <User
-                    name={user.name}
-                    avatarProps={({
-                        src: user.photos.large ?? '',
-                        size: 'lg',
-                    })}
-                    description={user.status}
-                />
-            </Link>
-            <Button user={user} />
-        </div >)
+export const User: React.FC<Props> = ({
+  name = "",
+  description = "",
+  avatarUrl = "",
+  className = "",
+}) => {
+  return (
+    <NextUiUser
+      name={name}
+      className={className}
+      description={description}
+      avatarProps={{
+        src: `${BASE_URL}${avatarUrl}`,
+      }}
+    />
+  )
 }
-
-export default UserComponent;

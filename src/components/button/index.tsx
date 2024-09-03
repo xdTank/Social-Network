@@ -1,6 +1,5 @@
 import React from "react"
 import { Button as NextButton } from "@nextui-org/react"
-import { Link } from "react-router-dom"
 
 type Props = {
   children: React.ReactNode
